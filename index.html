@@ -89,7 +89,7 @@
     <!-- MAIN APP WRAPPER -->
     <div id="main-app" class="w-full h-full flex flex-col md:flex-row hidden opacity-0 transition-opacity duration-500">
         
-        <!-- NAVBAR: DENGAN 5 MENU BARU (Beranda, Akademik, AI, Berita, Profile) -->
+        <!-- NAVBAR: DENGAN 5 MENU -->
         <nav class="glass-header z-40 flex flex-row md:flex-col justify-around items-center h-[4.5rem] md:h-full w-[calc(100%-1.5rem)] md:w-24 lg:w-64 border border-paper-200 md:border-y-0 md:border-l-0 px-2 md:px-0 md:pt-8 shrink-0 transition-all bg-white/95 order-2 md:order-1 rounded-[2rem] md:rounded-none shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:shadow-none mb-3 md:mb-0 mx-auto md:mx-0">
             <div class="hidden md:flex items-center justify-center lg:justify-start px-0 lg:px-8 mb-10 text-brand-600 w-full">
                 <i class="fa-solid fa-leaf text-3xl lg:mr-3"></i>
@@ -108,7 +108,7 @@
                 <span class="text-[10px] md:text-xs mt-1 font-bold">Akademik</span>
             </button>
 
-            <!-- 3. Eco-Neo Chatbot AI (Tengah, desain menyatu) -->
+            <!-- 3. Eco-Neo Chatbot AI -->
             <button onclick="switchTab('chatbot', this)" class="nav-btn flex flex-col items-center justify-center w-full h-full hover:text-brand-500 transition group rounded-full">
                 <div class="bg-gradient-to-br from-brand-400 to-accent-500 text-white w-9 h-9 md:w-10 md:h-10 rounded-[0.9rem] flex items-center justify-center shadow-md group-hover:-translate-y-1 transition-transform duration-300">
                     <i class="fa-solid fa-robot text-lg"></i>
@@ -144,7 +144,7 @@
                 <div id="view-feed" class="view-section fade-in h-full w-full overflow-y-auto">
                     <div class="max-w-2xl mx-auto pt-4 md:pt-6 px-4 pb-6">
 
-                        <!-- NEWS SLIDER (Top Position) -->
+                        <!-- NEWS SLIDER -->
                         <div class="relative w-full h-32 mb-8 rounded-[2rem] overflow-hidden shadow-sm border border-brand-100 bg-white group eco-news-glow cursor-pointer" onclick="switchTab('news', document.querySelectorAll('.nav-btn')[3])">
                             <div id="news-slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out">
                                 <div class="min-w-full h-full flex items-center px-8 bg-gradient-to-r from-brand-50 to-white">
@@ -153,7 +153,7 @@
                             </div>
                             <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2" id="slider-dots"></div>
                             
-                            <!-- News Badge (Diperbarui: Miring dan lebih hidup) -->
+                            <!-- News Badge -->
                             <div class="absolute top-4 left-4 bg-brand-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md z-10 uppercase tracking-widest transform -rotate-6 italic">Hot News</div>
                         </div>
 
@@ -175,9 +175,10 @@
                                 <div class="w-12 h-12 bg-accent-50 text-accent-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-regular fa-calendar-days text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Jadwal</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-amber-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Membuka SIAKAD Universitas...')">
-                                <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-building-columns text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">SIAKAD</span>
+                            <!-- Menu Izin Ketidakhadiran (Menggantikan SIAKAD) -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-amber-300 cursor-pointer transition active:scale-95" onclick="openModal('modal-izin')">
+                                <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-envelope-open-text text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Izin</span>
                             </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition active:scale-95" onclick="window.showToast('E-KTM Virtual sedang diproses.')">
                                 <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-id-card text-xl"></i></div>
@@ -314,7 +315,7 @@
                     </div>
                 </div>
 
-                <!-- GLOBAL CHAT (Dapat diakses dari Beranda) -->
+                <!-- GLOBAL CHAT -->
                 <div id="view-chat-detail" class="view-section hidden fade-in h-full flex flex-col bg-white rounded-b-[2rem] md:rounded-[2rem] md:my-4 md:mx-auto md:max-w-4xl border border-paper-200 overflow-hidden shadow-sm">
                     <div class="p-5 border-b border-paper-100 flex items-center space-x-4 bg-white shrink-0 shadow-sm rounded-t-[2rem]">
                         <button onclick="switchTab('feed')" class="text-slate-500 hover:text-brand-600 p-2 rounded-full hover:bg-paper-50 transition w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-lg"></i></button>
@@ -430,6 +431,46 @@
             <div class="mt-8 flex space-x-4">
                 <button onclick="closeModal('modal-edit-profile')" class="flex-1 bg-paper-100 hover:bg-paper-200 transition py-3.5 rounded-2xl font-bold text-slate-600 active:scale-95 transform">Batal</button>
                 <button onclick="saveProfile()" class="flex-1 bg-brand-500 hover:bg-brand-600 transition text-white py-3.5 rounded-2xl font-bold shadow-md active:scale-95 transform">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL IZIN KETIDAKHADIRAN -->
+    <div id="modal-izin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl relative scale-95 transform transition-all duration-300" id="modal-izin-content">
+            <h3 class="font-bold text-2xl mb-6 text-slate-800 text-center">Form Izin</h3>
+            <div class="space-y-4">
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-2 uppercase tracking-widest">Keterangan</p>
+                    <div class="relative">
+                        <select id="izin-type" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-accent-400 p-4 rounded-2xl border-none outline-none text-slate-800 transition font-medium appearance-none">
+                            <option value="Sakit">Sakit</option>
+                            <option value="Izin Pribadi">Izin Keperluan Pribadi</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-2 uppercase tracking-widest">Tanggal</p>
+                    <input type="date" id="izin-date" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-accent-400 p-4 rounded-2xl border-none outline-none text-slate-800 transition font-medium">
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-2 uppercase tracking-widest">Detail / Alasan</p>
+                    <textarea id="izin-reason" rows="3" placeholder="Jelaskan alasan ketidakhadiran..." class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-accent-400 p-4 rounded-[1.5rem] border-none outline-none text-slate-800 transition resize-none font-medium"></textarea>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-2 uppercase tracking-widest">Lampiran Bukti (Opsional)</p>
+                    <div class="flex items-center space-x-2">
+                        <input type="file" id="izin-file" class="hidden" onchange="document.getElementById('izin-file-name').innerText = this.files[0] ? this.files[0].name : 'Tidak ada file dipilih'">
+                        <button onclick="document.getElementById('izin-file').click()" class="bg-paper-100 hover:bg-paper-200 text-slate-600 px-4 py-3 rounded-2xl font-bold text-xs transition">Pilih File</button>
+                        <span id="izin-file-name" class="text-[10px] text-slate-400 truncate max-w-[140px] font-medium">Tidak ada file</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 flex space-x-4">
+                <button onclick="closeModal('modal-izin')" class="flex-1 bg-paper-100 hover:bg-paper-200 transition py-3.5 rounded-2xl font-bold text-slate-600 active:scale-95 transform">Batal</button>
+                <button onclick="submitIzin()" class="flex-1 bg-brand-500 hover:bg-brand-600 transition text-white py-3.5 rounded-2xl font-bold shadow-md active:scale-95 transform">Kirim</button>
             </div>
         </div>
     </div>
@@ -594,6 +635,34 @@
             }, 500);
 
             window.showToast("Selamat datang di Kampus EcoVerse!");
+        };
+
+        // FORM IZIN KETIDAKHADIRAN
+        window.submitIzin = async () => {
+            const type = document.getElementById('izin-type').value;
+            const date = document.getElementById('izin-date').value;
+            const reason = document.getElementById('izin-reason').value.trim();
+
+            if (!date) return window.showToast('Silakan pilih tanggal ketidakhadiran!');
+            if (!reason) return window.showToast('Silakan isi alasan izin!');
+
+            if (currentUser && useFirebase) {
+                try {
+                    await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'izin_akademik'), {
+                        type, date, reason, timestamp: Date.now()
+                    });
+                } catch (e) { console.error("Gagal mengirim form izin", e); }
+            }
+
+            window.closeModal('modal-izin');
+            
+            // Reset form setelah dikirim
+            document.getElementById('izin-date').value = '';
+            document.getElementById('izin-reason').value = '';
+            document.getElementById('izin-file').value = '';
+            document.getElementById('izin-file-name').innerText = 'Tidak ada file';
+
+            window.showToast("Form izin berhasil dikirim ke akademik!");
         };
 
         // GEOFENCING PRESENSI
