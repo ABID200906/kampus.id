@@ -217,8 +217,8 @@
                                 <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-id-card text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-KTM</span>
                             </div>
-                            <!-- 7. E-Lib -->
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Membuka Pustaka Digital (E-Library)')">
+                            <!-- 7. E-Lib (DIPERBARUI) -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" onclick="openELibrary()">
                                 <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-journal-whills text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-Lib</span>
                             </div>
@@ -450,6 +450,27 @@
                         <h3 class="font-black text-slate-800 text-xl mb-6 flex items-center"><i class="fa-solid fa-book-open text-indigo-500 mr-3"></i>Daftar Kelas Saya</h3>
                         <div id="daftar-kelas-container" class="space-y-4">
                             <div class="text-center py-12 text-slate-400 font-medium text-base border-2 border-dashed border-paper-200 rounded-[2rem] bg-white/50">Belum ada kelas yang Anda ikuti.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6.8. E-LIBRARY VIEW (BARU) -->
+                <div id="view-elibrary" class="view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
+                    <div class="max-w-3xl mx-auto pt-6 md:pt-10 px-4 pb-24">
+                        <div class="flex items-center mb-8">
+                            <button onclick="switchTab('feed', document.querySelectorAll('.nav-btn')[0])" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-600 hover:bg-paper-100 shadow-sm mr-4 transition"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                            <h2 class="text-3xl font-black text-slate-800 flex items-center"><i class="fa-solid fa-book-journal-whills text-teal-500 mr-3"></i>E-Library</h2>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-[2rem] border border-paper-200 shadow-sm mb-8 flex items-center space-x-3 transition focus-within:ring-2 ring-teal-300">
+                            <i class="fa-solid fa-search text-slate-400 ml-3 text-lg"></i>
+                            <input type="text" id="elib-search-input" placeholder="Cari buku ekologi, sains, novel..." class="flex-1 outline-none border-none text-sm md:text-base font-medium text-slate-700 bg-transparent" onkeypress="if(event.key === 'Enter') window.searchBooks(this.value)">
+                            <button onclick="window.searchBooks(document.getElementById('elib-search-input').value)" class="bg-teal-500 hover:bg-teal-600 text-white px-6 py-3 rounded-xl font-bold transition shadow-md active:scale-95 text-sm">Cari</button>
+                        </div>
+
+                        <div id="elibrary-container" class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                            <!-- Buku akan di-inject di sini oleh JS -->
+                            <div class="col-span-2 md:col-span-3 text-center py-10 text-slate-400 font-medium">Mencari rak buku digital...</div>
                         </div>
                     </div>
                 </div>
@@ -1241,6 +1262,66 @@
         window.removePostImage = () => { currentPostImageBase64 = null; document.getElementById('post-image-preview').classList.add('hidden'); };
         
         window.openGlobalChat = () => { document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden')); document.getElementById('view-chat-detail').classList.remove('hidden'); };
+
+        // FUNGSI E-LIBRARY (BARU)
+        window.openELibrary = () => {
+            switchTab('elibrary');
+            const container = document.getElementById('elibrary-container');
+            // Muat buku rekomendasi secara otomatis jika kosong
+            if (container.innerText.includes('Mencari rak')) {
+                window.searchBooks('lingkungan alam teknologi'); 
+            }
+        };
+
+        window.searchBooks = async (query) => {
+            if(!query.trim()) return window.showToast("Masukkan kata kunci judul buku!");
+            const container = document.getElementById('elibrary-container');
+            container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-16 text-teal-500 flex flex-col items-center"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4"></i><span class="font-bold tracking-wider uppercase text-xs">Menjelajahi Pustaka Dunia...</span></div>';
+            
+            try {
+                // Mengambil data dari Google Books API Publik
+                const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=12`);
+                const data = await res.json();
+                window.renderBooks(data.items || []);
+            } catch (e) {
+                container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-10 text-red-400 font-medium">Koneksi ke server perpustakaan terputus. Coba lagi.</div>';
+            }
+        };
+
+        window.renderBooks = (books) => {
+            const container = document.getElementById('elibrary-container');
+            if (books.length === 0) {
+                container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-12 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[2rem]">Buku tidak ditemukan di rak kami.</div>';
+                return;
+            }
+
+            let html = '';
+            books.forEach((book, idx) => {
+                const info = book.volumeInfo;
+                const title = info.title || 'Tanpa Judul';
+                const author = info.authors ? info.authors[0] : 'Penulis Anonim';
+                const thumb = info.imageLinks ? info.imageLinks.thumbnail : 'https://via.placeholder.com/128x192.png?text=No+Cover&bg=cbd5e1&textColor=fff';
+                // Jika tersedia link baca/preview, gunakan. Jika tidak gunakan info link.
+                const link = info.previewLink || info.infoLink || '#';
+
+                html += `
+                    <div class="bg-white rounded-[1.5rem] border border-paper-200 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-lg hover:border-teal-200 transition-all duration-300 group fade-in" style="animation-delay: ${idx * 0.05}s">
+                        <div class="h-44 md:h-52 bg-paper-100 flex items-center justify-center overflow-hidden p-3 relative">
+                            <div class="absolute inset-0 bg-teal-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                            <img src="${thumb}" alt="${title}" class="h-full object-contain shadow-md group-hover:scale-105 transition-transform duration-300 rounded-sm">
+                        </div>
+                        <div class="p-4 md:p-5 flex flex-col flex-1">
+                            <h4 class="font-black text-slate-800 text-sm md:text-base line-clamp-2 mb-1.5 leading-snug">${title}</h4>
+                            <p class="text-[10px] md:text-xs text-slate-500 font-bold uppercase tracking-wider mb-4 line-clamp-1">${author}</p>
+                            <a href="${link}" target="_blank" class="mt-auto w-full bg-teal-50 text-teal-600 hover:bg-teal-500 hover:text-white transition font-bold py-2.5 rounded-xl text-xs md:text-sm text-center border border-teal-100 shadow-sm active:scale-95 flex items-center justify-center">
+                                <i class="fa-brands fa-google mr-2"></i> Baca / Preview
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        };
 
         // FUNGSI MEMBUKA DETAIL KELAS (SUBTOPIK, MATERI, KUIS)
         window.bukaDetailKelas = (code, subjectName, colorFrom, colorTo, icon1, icon2) => {
