@@ -45,15 +45,17 @@
         @keyframes popIn { from { opacity: 0; transform: translate(-50%, 20px) scale(0.9); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
         @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
         
+        .pet-bounce { animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        
         .glass-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border-top: 1px solid rgba(226, 232, 240, 0.6); }
         .nav-btn.active { color: #10b981; font-weight: 700; }
         .nav-btn:not(.active) { color: #94a3b8; }
         
-        .eco-news-glow { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15); }
-        .news-ticker-container { overflow: hidden; white-space: nowrap; position: relative; }
-        .news-ticker-content { display: inline-block; padding-left: 100%; animation: ticker 35s linear infinite; }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+        .eco-news-glow { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15); }
         .bg-login { background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%); }
     </style>
 </head>
@@ -87,8 +89,8 @@
     <!-- MAIN APP WRAPPER -->
     <div id="main-app" class="w-full h-full flex flex-col md:flex-row hidden opacity-0 transition-opacity duration-500">
         
-        <!-- NAVBAR DENGAN 5 MENU (Diperbarui) -->
-        <nav class="glass-header z-40 flex flex-row md:flex-col justify-around items-center h-[5rem] md:h-full w-[calc(100%-1.5rem)] md:w-24 lg:w-64 px-2 md:px-0 md:pt-8 shrink-0 transition-all order-2 md:order-1 rounded-[2rem] md:rounded-none shadow-[0_10px_40px_rgba(0,0,0,0.08)] md:shadow-none mb-3 md:mb-0 mx-auto md:mx-0 border border-paper-200 md:border-y-0 md:border-l-0 bg-white/95">
+        <!-- NAVBAR: DENGAN 5 MENU PROPOSIONAL -->
+        <nav class="glass-header z-40 flex flex-row md:flex-col justify-around items-center h-[4.5rem] md:h-full w-[calc(100%-1.5rem)] md:w-24 lg:w-64 border border-paper-200 md:border-y-0 md:border-l-0 px-2 md:px-0 md:pt-8 shrink-0 transition-all bg-white/95 order-2 md:order-1 rounded-[2rem] md:rounded-none shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:shadow-none mb-3 md:mb-0 mx-auto md:mx-0">
             <div class="hidden md:flex items-center justify-center lg:justify-start px-0 lg:px-8 mb-10 text-brand-600 w-full">
                 <i class="fa-solid fa-leaf text-3xl lg:mr-3"></i>
                 <h1 class="text-2xl font-black hidden lg:block tracking-tight">EcoVerse</h1>
@@ -106,18 +108,18 @@
                 <span class="text-[10px] md:text-xs mt-1 font-bold">Akademik</span>
             </button>
 
-            <!-- 3. Eco-Neo Chatbot (Tengah) -->
+            <!-- 3. Tantangan (Tengah) -->
+            <button onclick="switchTab('challenges', this)" class="nav-btn flex flex-col items-center justify-center w-full h-full hover:text-brand-500 transition rounded-full">
+                <i class="fa-solid fa-medal text-xl md:text-2xl transition-transform duration-200"></i>
+                <span class="text-[10px] md:text-xs mt-1 font-bold">Tantangan</span>
+            </button>
+            
+            <!-- 4. Eco-Neo Chatbot (Dengan aksen warna) -->
             <button onclick="switchTab('chatbot', this)" class="nav-btn flex flex-col items-center justify-center w-full h-full hover:text-brand-500 transition group rounded-full">
                 <div class="bg-gradient-to-br from-brand-400 to-accent-500 text-white w-9 h-9 md:w-10 md:h-10 rounded-[0.9rem] flex items-center justify-center shadow-md group-hover:-translate-y-1 transition-transform duration-300">
                     <i class="fa-solid fa-robot text-lg"></i>
                 </div>
-                <span class="text-[10px] md:text-xs font-bold text-slate-800 md:font-bold mt-1">Eco-Neo</span>
-            </button>
-            
-            <!-- 4. Tantangan (Kanan, desain menyatu) -->
-            <button onclick="switchTab('challenges', this)" class="nav-btn flex flex-col items-center justify-center w-full h-full hover:text-brand-500 transition rounded-full">
-                <i class="fa-solid fa-medal text-xl md:text-2xl transition-transform duration-200"></i>
-                <span class="text-[10px] md:text-xs mt-1 font-bold">Tantangan</span>
+                <span class="text-[10px] md:text-xs font-bold text-slate-800 mt-1">Eco-Neo</span>
             </button>
             
             <!-- 5. Profile -->
@@ -130,7 +132,7 @@
         <!-- CONTENT AREA -->
         <div class="flex-1 flex flex-col relative overflow-hidden bg-paper-50 w-full order-1 md:order-2 h-full min-h-0">
             
-            <!-- Header Mobile (Center) -->
+            <!-- Header Mobile -->
             <header class="px-4 pt-4 pb-3 z-20 md:hidden shrink-0 flex justify-center items-center relative glass-header">
                 <h1 class="text-lg font-black text-brand-600 tracking-tight flex items-center"><i class="fa-solid fa-leaf mr-2 text-brand-500"></i>EcoVerse</h1>
                 <button class="absolute right-4 text-slate-500 hover:text-brand-500 transition"><i class="fa-regular fa-bell text-lg"></i></button>
@@ -140,57 +142,63 @@
                 
                 <!-- 1. HOME & FEED VIEW -->
                 <div id="view-feed" class="view-section fade-in h-full w-full overflow-y-auto">
-                    <div class="max-w-2xl mx-auto pt-4 md:pt-8 px-4 pb-6">
+                    <div class="max-w-2xl mx-auto pt-4 md:pt-6 px-4 pb-6">
                         
+                        <!-- NEWS SLIDER (Top Position) -->
+                        <div class="relative w-full h-32 mb-8 rounded-[2rem] overflow-hidden shadow-sm border border-brand-100 bg-white group eco-news-glow">
+                            <div id="news-slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out">
+                                <!-- Slides akan di-inject oleh JS -->
+                                <div class="min-w-full h-full flex items-center px-8 bg-gradient-to-r from-brand-50 to-white">
+                                    <p class="text-sm font-bold text-brand-600 animate-pulse">Memuat kabar kampus hari ini...</p>
+                                </div>
+                            </div>
+                            <!-- Slider Dots -->
+                            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2" id="slider-dots"></div>
+                            <!-- News Badge -->
+                            <div class="absolute top-4 left-4 bg-brand-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-sm z-10 uppercase tracking-widest">Hot News</div>
+                        </div>
+
                         <!-- GREETING -->
-                        <div class="mb-6">
-                            <h2 class="text-2xl font-black text-slate-800">Halo, <span id="home-greeting-name">Mahasiswa</span>! 👋</h2>
-                            <p class="text-sm text-slate-500 font-medium mt-1">Siap untuk produktif dan menjaga bumi hari ini?</p>
+                        <div class="mb-6 flex justify-between items-end">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Halo, <span id="home-greeting-name">Mahasiswa</span>! 👋</h2>
+                                <p class="text-sm text-slate-500 font-medium mt-1">Siap untuk produktif dan menjaga bumi hari ini?</p>
+                            </div>
                         </div>
 
                         <!-- MENU KAMPUS (QUICK SHORTCUTS GRID) -->
-                        <div class="grid grid-cols-4 gap-3 mb-8">
+                        <div class="grid grid-cols-4 gap-3 mb-10">
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="switchTab('academy', document.querySelectorAll('.nav-btn')[1])">
-                                <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
+                                <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Akademik</span>
                             </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-accent-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Fitur Jadwal Kuliah segera hadir!')">
-                                <div class="w-12 h-12 bg-accent-50 text-accent-600 rounded-full flex items-center justify-center mb-2"><i class="fa-regular fa-calendar-days text-xl"></i></div>
+                                <div class="w-12 h-12 bg-accent-50 text-accent-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-regular fa-calendar-days text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Jadwal</span>
                             </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-amber-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Membuka SIAKAD Universitas...')">
-                                <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-building-columns text-xl"></i></div>
+                                <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-building-columns text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">SIAKAD</span>
                             </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition active:scale-95" onclick="window.showToast('E-KTM Virtual sedang diproses.')">
-                                <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-id-card text-xl"></i></div>
+                                <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-id-card text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-KTM</span>
                             </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-rose-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Informasi Pendaftaran UKM Kampus')">
-                                <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-bullhorn text-xl"></i></div>
+                                <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
                             </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Membuka Pustaka Digital (E-Library)')">
-                                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-book-journal-whills text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-Library</span>
+                                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-journal-whills text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-Lib</span>
                             </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" onclick="openGlobalChat()">
-                                <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-earth-asia text-xl"></i></div>
+                                <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-earth-asia text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Obrolan</span>
                             </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-slate-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Menampilkan semua menu...')">
-                                <div class="w-12 h-12 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-ellipsis text-xl"></i></div>
+                                <div class="w-12 h-12 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-ellipsis text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Lainnya</span>
-                            </div>
-                        </div>
-
-                        <!-- Eco News AI -->
-                        <div class="bg-white border border-brand-100 p-2 mb-6 rounded-full flex items-center eco-news-glow shrink-0 shadow-sm">
-                            <span class="bg-brand-50 text-brand-600 text-[10px] font-black px-3 py-1.5 rounded-full mr-3 uppercase tracking-widest shrink-0 flex items-center"><i class="fa-solid fa-bolt mr-1.5"></i>News</span>
-                            <div class="news-ticker-container flex-1">
-                                <div class="news-ticker-content text-xs font-semibold text-slate-600" id="eco-news-ticker">
-                                    Memindai berita lingkungan terbaru...
-                                </div>
                             </div>
                         </div>
 
@@ -205,11 +213,12 @@
                             <button class="text-brand-500 hover:text-white hover:bg-brand-500 transition p-2 bg-brand-50 rounded-full w-10 h-10 flex items-center justify-center shadow-sm" onclick="openModal('modal-post')"><i class="fa-solid fa-camera"></i></button>
                         </div>
 
+                        <!-- Posts List -->
                         <div id="feed-container" class="space-y-6 pb-20"></div>
                     </div>
                 </div>
 
-                <!-- 2. ACADEMY VIEW -->
+                <!-- 2. ACADEMY VIEW (GEOFENCING & PAPERLESS) -->
                 <div id="view-academy" class="view-section hidden fade-in h-full w-full overflow-y-auto">
                     <div class="max-w-2xl mx-auto pt-4 md:pt-8 px-4 pb-20">
                         <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center"><i class="fa-solid fa-graduation-cap mr-3 text-accent-500"></i>Akademik & Presensi</h2>
@@ -294,8 +303,8 @@
                     </div>
                 </div>
 
-                <!-- GLOBAL CHAT (Hidden initially, opens via home shortcut) -->
-                <div id="view-chat-detail" class="view-section hidden fade-in h-full flex flex-col bg-white rounded-b-[2rem] md:rounded-[2rem] md:my-4 md:mx-auto md:max-w-4xl border overflow-hidden shadow-sm">
+                <!-- GLOBAL CHAT (Dapat diakses dari Beranda) -->
+                <div id="view-chat-detail" class="view-section hidden fade-in h-full flex flex-col bg-white rounded-b-[2rem] md:rounded-[2rem] md:my-4 md:mx-auto md:max-w-4xl border border-paper-200 overflow-hidden shadow-sm">
                     <div class="p-5 border-b border-paper-100 flex items-center space-x-4 bg-white shrink-0 shadow-sm rounded-t-[2rem]">
                         <button onclick="switchTab('feed')" class="text-slate-500 hover:text-brand-600 p-2 rounded-full hover:bg-paper-50 transition w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-lg"></i></button>
                         <div class="w-10 h-10 bg-brand-500 text-white rounded-full flex items-center justify-center shadow-sm"><i class="fa-solid fa-earth-asia"></i></div>
@@ -455,7 +464,7 @@
                 <div class="bg-paper-50 w-48 h-48 rounded-[3rem] flex items-center justify-center border-4 border-white shadow-inner mb-8 relative overflow-hidden">
                     <div id="pet-icon-modal" class="text-[5.5rem] pet-bounce">🌱</div>
                 </div>
-                <div class="w-full bg-paper-200 rounded-full h-4 mb-3 overflow-hidden shadow-inner"><div id="pet-progress" class="bg-gradient-to-r from-brand-400 to-brand-600 h-full transition-all duration-700 rounded-full" style="width: 0%"></div></div>
+                <div class="w-full bg-paper-200 rounded-full h-4 mb-3 overflow-hidden shadow-inner border border-paper-200"><div id="pet-progress" class="bg-gradient-to-r from-brand-400 to-brand-600 h-full transition-all duration-700 rounded-full" style="width: 0%"></div></div>
                 <p class="text-[11px] text-slate-500 mb-8 font-bold tracking-widest uppercase"><span id="exp-text" class="text-slate-800">0</span> / 100 EXP</p>
                 <button class="w-full bg-brand-600 hover:bg-brand-700 transition text-white font-bold py-4 rounded-full shadow-lg active:scale-95 transform" onclick="feedPet()"><i class="fa-solid fa-droplet mr-2 text-blue-200"></i> SIRAM & PUPUK (50 Poin)</button>
             </div>
@@ -483,10 +492,10 @@
     <!-- SCRIPT UTAMA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // FIREBASE CONFIG 
+        // FIREBASE CONFIG
         const myFirebaseConfig = {
             apiKey: "AIzaSyD2vM1dU_YuLGPYtPqN8DqM_qxq4CqDLLU",
             authDomain: "ecopulse-f8b26.firebaseapp.com",
@@ -498,13 +507,13 @@
         }; 
 
         // API KIMI
-        const kimiApiKey = "AIzaSyAiOKxoWlyKt78wx5rn5GbZHJpoa4uHgOc"; 
-        const appId = 'ecoverse-campus'; 
+        const kimiApiKey = "<YOUR_API_KEY>"; // <-- GANTI DENGAN API KEY KIMI ANDA DI SINI
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'ecoverse-campus';
         
         let firebaseApp, auth, db, currentUser = null;
         let useFirebase = true;
 
-        // MANAJEMEN STATE LOKAL
+        // MANAJEMEN STATE LOKAL & DAILY RESET
         let appState = JSON.parse(localStorage.getItem('ecoverse_state'));
         const todayDate = new Date().toDateString();
 
@@ -521,18 +530,16 @@
                 userName: "Student_" + randomNum, 
                 userBio: "Mahasiswa EcoVerse 🌍",
                 newsDate: null,
-                newsText: "Memuat berita..."
+                newsText: null
             };
             localStorage.setItem('ecoverse_state', JSON.stringify(appState));
         } else {
             if(appState.isLoggedIn === undefined) appState.isLoggedIn = false;
             if(!appState.completedChallengeIds) appState.completedChallengeIds = [];
-            // Daily Reset untuk Tantangan
-            if(appState.lastAttendanceDate !== todayDate && appState.lastAttendanceDate !== null) {
-                // Jangan reset presensi jika belum absen hari ini, tapi reset tantangan jika beda hari
-                if (appState.newsDate !== todayDate) {
-                   appState.completedChallengeIds = [];
-                }
+            
+            // Reset Tantangan Harian jika beda hari (TIDAK mereset presensi jika belum absen hari ini)
+            if (appState.newsDate !== todayDate) {
+                appState.completedChallengeIds = [];
             }
         }
 
@@ -578,7 +585,7 @@
             window.showToast("Selamat datang di Kampus EcoVerse!");
         };
 
-        // GEOFENCING
+        // GEOFENCING PRESENSI
         window.handleCheckIn = () => {
             if (appState.lastAttendanceDate === todayDate) {
                 window.showToast("Anda sudah melakukan presensi hari ini!"); return;
@@ -612,9 +619,57 @@
             } else window.showToast("❌ Poin kurang!");
         };
 
+        // SLIDER NEWS
+        let currentSlide = 0;
+        window.renderNewsSlider = (newsText) => {
+            const wrapper = document.getElementById('news-slider-wrapper');
+            const dots = document.getElementById('slider-dots');
+            if(!wrapper || !newsText) return;
+
+            const newsItems = newsText.split('•').map(t => t.trim()).filter(t => t.length > 5);
+            if(newsItems.length === 0) return;
+            
+            wrapper.innerHTML = ''; dots.innerHTML = '';
+
+            newsItems.forEach((news, idx) => {
+                wrapper.innerHTML += `
+                    <div class="min-w-full h-full flex items-center px-8 bg-gradient-to-br from-brand-50 via-white to-accent-50">
+                        <div class="max-w-md">
+                            <p class="text-xs font-black text-brand-600 uppercase tracking-tighter mb-1">EcoVerse Today</p>
+                            <h4 class="text-sm md:text-base font-bold text-slate-800 leading-tight">${news}</h4>
+                        </div>
+                    </div>`;
+                dots.innerHTML += `<div class="w-2 h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-brand-500 w-6' : 'bg-brand-200'}"></div>`;
+            });
+
+            clearInterval(window.newsInterval);
+            window.newsInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % newsItems.length;
+                wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+                Array.from(dots.children).forEach((dot, dIdx) => {
+                    if(dIdx === currentSlide) { dot.classList.add('bg-brand-500', 'w-6'); dot.classList.remove('bg-brand-200'); }
+                    else { dot.classList.remove('bg-brand-500', 'w-6'); dot.classList.add('bg-brand-200'); }
+                });
+            }, 5000);
+        };
+
+        // FETCH NEWS DARI KIMI AI
+        async function checkAndFetchDailyNews() {
+            if (appState.newsDate !== todayDate || !appState.newsText) {
+                try {
+                    const res = await window.fetchKimiAPI("Buatlah 3 berita pendek & positif (maks 10 kata) tentang inovasi hijau kampus. Pisahkan dengan tanda •.", false, "Jurnalis EcoVerse.");
+                    if (res && !res.includes("sibuk")) {
+                        appState.newsText = res;
+                        appState.newsDate = todayDate;
+                        saveState();
+                    }
+                } catch(e) {}
+            }
+            if(appState.newsText) window.renderNewsSlider(appState.newsText);
+        }
+
         // UPDATE UI KESELURUHAN
         window.updateUI = () => {
-            // Stats Update
             if(document.getElementById('header-points')) document.getElementById('header-points').innerText = appState.points + ' Pts';
             if(document.getElementById('profile-points')) document.getElementById('profile-points').innerText = appState.points;
             if(document.getElementById('profile-level')) document.getElementById('profile-level').innerText = appState.level;
@@ -622,14 +677,12 @@
             const progressPct = Math.min((appState.points / 2500) * 100, 100);
             if(document.getElementById('profile-progress')) document.getElementById('profile-progress').style.width = progressPct + '%';
 
-            // Profile Pet Update
             if(document.getElementById('pet-points')) document.getElementById('pet-points').innerText = appState.points;
             if(document.getElementById('exp-text')) document.getElementById('exp-text').innerText = appState.exp || 0;
             if(document.getElementById('pet-progress')) document.getElementById('pet-progress').style.width = (appState.exp || 0) + '%';
             if(document.getElementById('pet-level-float')) document.getElementById('pet-level-float').innerText = appState.level;
             if(document.getElementById('pet-status')) document.getElementById('pet-status').innerText = "LEVEL " + appState.level;
 
-            // Avatars & Texts
             if(document.getElementById('profile-name-display')) document.getElementById('profile-name-display').innerText = appState.userName;
             if(document.getElementById('profile-bio-display')) document.getElementById('profile-bio-display').innerText = appState.userBio;
             if(document.getElementById('home-greeting-name')) document.getElementById('home-greeting-name').innerText = appState.userName.split(' ')[0];
@@ -648,7 +701,6 @@
                 document.getElementById('modal-post-name').innerText = appState.userName;
             }
 
-            // Check-in Button
             const btn = document.getElementById('btn-checkin');
             if (btn && appState.lastAttendanceDate === todayDate) {
                 btn.classList.replace('bg-slate-800', 'bg-brand-500');
@@ -656,26 +708,10 @@
                 btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
             }
             
-            // News
-            const ticker = document.getElementById('eco-news-ticker');
-            if(ticker && appState.newsText) ticker.innerText = appState.newsText;
+            if(appState.newsText) window.renderNewsSlider(appState.newsText);
         };
 
-        async function checkAndFetchDailyNews() {
-            if (appState.newsDate !== todayDate) {
-                try {
-                    const res = await window.fetchKimiAPI("Buatlah 3 headline berita pendek dan positif tentang inovasi hijau di lingkungan kampus. Pisahkan dengan •.", false, "Kamu jurnalis akademik EcoVerse.");
-                    if (res && !res.includes("sibuk") && !res.includes("terganggu")) {
-                        appState.newsText = res;
-                        appState.newsDate = todayDate;
-                        saveState();
-                    }
-                } catch(e) {}
-            }
-            if(document.getElementById('eco-news-ticker')) document.getElementById('eco-news-ticker').innerText = appState.newsText;
-        }
-
-        // TANTANGAN
+        // TANTANGAN LOGIC
         window.renderChallenges = () => {
             const list = document.getElementById('challenge-list');
             if(!list) return;
@@ -732,9 +768,10 @@
             }
         }
 
-        // RENDER POSTS
+        // RENDER POSTS & INTERACTIONS
         window.renderPosts = (posts) => {
             const container = document.getElementById('feed-container');
+            if(!container) return;
             container.innerHTML = '';
             
             if(posts.length === 0) {
@@ -770,13 +807,9 @@
             try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', id), { likes: likes }); } catch(e){}
         };
 
-        // KOMENTAR
-        let currentCommentPostId = null;
-        let currentCommentBtn = null;
-
+        let currentCommentPostId = null; let currentCommentBtn = null;
         window.openCommentModal = (postId, btn) => {
-            currentCommentPostId = postId;
-            currentCommentBtn = btn;
+            currentCommentPostId = postId; currentCommentBtn = btn;
             document.getElementById('new-comment-text').value = '';
             const container = document.getElementById('comment-list-container');
             container.innerHTML = '<div class="text-center text-slate-400 text-sm py-6 bg-paper-50 rounded-[1.5rem]" id="empty-comment-msg">Belum ada komentar. Jadilah yang pertama!</div>';
@@ -786,7 +819,6 @@
         window.submitComment = async () => {
             const input = document.getElementById('new-comment-text');
             const text = input.value.trim(); if(!text) return;
-            
             let newCommentCount = 1;
             if(currentCommentBtn) {
                 const countSpan = currentCommentBtn.querySelector('span');
@@ -798,18 +830,16 @@
             const emptyMsg = document.getElementById('empty-comment-msg');
             if (emptyMsg) emptyMsg.style.display = 'none';
 
-            const newCommentHtml = `
+            container.insertAdjacentHTML('beforeend', `
                 <div class="flex space-x-3 fade-in mb-4">
                     <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff" class="w-10 h-10 rounded-full shadow-sm">
                     <div class="bg-white p-4 rounded-[1.5rem] rounded-tl-sm text-sm flex-1 border border-paper-200">
                         <p class="font-bold text-xs text-slate-800 mb-1">${appState.userName}</p>
                         <p class="text-slate-700 leading-relaxed">${text}</p>
                     </div>
-                </div>`;
-            container.insertAdjacentHTML('beforeend', newCommentHtml);
+                </div>`);
             container.scrollTop = container.scrollHeight;
-            input.value = '';
-            window.showToast("Komentar ditambahkan!");
+            input.value = ''; window.showToast("Komentar ditambahkan!");
 
             if (currentUser && currentCommentPostId && !currentCommentPostId.startsWith('local')) {
                 try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', currentCommentPostId), { comments: newCommentCount }); } 
@@ -817,27 +847,29 @@
             }
         };
 
-        // POSTING BARU
         let currentPostImageBase64 = null;
         window.submitPost = async () => {
             const text = document.getElementById('new-post-text').value;
             if(!text.trim() && !currentPostImageBase64) return;
+            const newPost = { authorName: appState.userName, authorAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff`, text, image: currentPostImageBase64, timestamp: Date.now(), likes: 0, comments: 0 };
             
-            const newPost = {
-                authorName: appState.userName,
-                authorAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff`,
-                text, image: currentPostImageBase64, timestamp: Date.now(), likes: 0, comments: 0
-            };
-            
+            // Add Optimistically
+            const container = document.getElementById('feed-container');
+            container.insertAdjacentHTML('afterbegin', `
+                <div class="bg-white p-6 mb-6 shadow-sm rounded-[2rem] border border-paper-200 fade-in">
+                    <div class="flex items-center space-x-4 mb-5">
+                        <img src="${newPost.authorAvatar}" class="w-12 h-12 rounded-full border border-paper-100 shadow-sm">
+                        <div><p class="font-bold text-base text-slate-800">${newPost.authorName}</p><p class="text-[10px] text-brand-500 uppercase tracking-widest font-bold">Baru Saja</p></div>
+                    </div>
+                    <p class="text-sm mb-5 text-slate-700 leading-relaxed font-medium">${newPost.text}</p>
+                    ${newPost.image ? `<img src="${newPost.image}" class="w-full rounded-2xl mb-5 border border-paper-100 object-cover shadow-sm">` : ''}
+                </div>`);
+
             if(currentUser) {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'posts'), newPost);
-                addPoints(10); 
+                try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'posts'), newPost); addPoints(10); } 
+                catch(e) {}
             }
-            
-            window.closeModal('modal-post');
-            document.getElementById('new-post-text').value = '';
-            window.removePostImage();
-            window.showToast("Aksi berhasil dibagikan! (+10 Pts)");
+            window.closeModal('modal-post'); document.getElementById('new-post-text').value = ''; window.removePostImage(); window.showToast("Aksi berhasil dibagikan! (+10 Pts)");
         };
 
         window.handleRealPostImageUpload = (e) => {
@@ -848,7 +880,6 @@
         window.removePostImage = () => { currentPostImageBase64 = null; document.getElementById('post-image-preview').classList.add('hidden'); };
         
         window.openGlobalChat = () => { document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden')); document.getElementById('view-chat-detail').classList.remove('hidden'); };
-        window.closeGlobalChat = () => { document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden')); document.getElementById('view-feed').classList.remove('hidden'); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.nav-btn')[0].classList.add('active'); };
 
         window.sendGlobalMessage = async function() {
             const input = document.getElementById('dm-input');
@@ -867,6 +898,7 @@
 
         window.renderGlobalChat = function(messages) {
             const dmBox = document.getElementById('dm-messages');
+            if(!dmBox) return;
             dmBox.innerHTML = '<div class="flex justify-center mb-6"><span class="text-[10px] text-slate-500 bg-paper-200 px-4 py-1.5 rounded-full font-bold uppercase tracking-widest">Ruang Obrolan Kampus</span></div>';
             messages.forEach(msg => {
                 const isMe = msg.userId === (currentUser ? currentUser.uid : '');
@@ -944,13 +976,14 @@
         petWidget.addEventListener('mousedown', startD); document.addEventListener('mousemove', doD, { passive: false }); document.addEventListener('mouseup', stopD);
         petWidget.addEventListener('touchstart', startD, { passive: true }); document.addEventListener('touchmove', doD, { passive: false }); document.addEventListener('touchend', stopD);
 
-        // GLOBALS
+        // UI UTILS
         window.switchTab = (id, el) => { document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden')); document.getElementById('view-'+id).classList.remove('hidden'); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); if(el) el.classList.add('active'); };
         window.openModal = (id) => { document.getElementById(id).classList.remove('hidden'); setTimeout(() => document.getElementById(id + '-content').classList.remove('translate-y-full', 'scale-95'), 10); };
         window.closeModal = (id) => { document.getElementById(id + '-content').classList.add('translate-y-full', 'scale-95'); setTimeout(() => document.getElementById(id).classList.add('hidden'), 300); };
         window.showToast = (m) => { const t = document.getElementById("toast"); t.innerText = m; t.className = "toast show"; setTimeout(() => t.className = "toast", 3000); };
+        window.saveProfile = () => { appState.userName = document.getElementById('edit-profile-name').value; appState.userBio = document.getElementById('edit-profile-bio').value; saveState(); window.closeModal('modal-edit-profile'); window.showToast("Data Akademik diperbarui!"); };
         
-        // INIT
+        // INIT & FIREBASE CONNECT
         const initApp = async () => {
             if (appState.isLoggedIn) {
                 document.getElementById('login-view').classList.add('hidden');
@@ -962,22 +995,37 @@
             window.updateUI();
 
             if (auth) {
+                const checkAuth = async () => {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        try { await signInWithCustomToken(auth, __initial_auth_token); } catch(e) { await signInAnonymously(auth); }
+                    } else {
+                        try { await signInAnonymously(auth); } catch(e) {}
+                    }
+                };
+                
+                await checkAuth();
+
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         currentUser = user;
+                        // Fetch Profile
+                        onSnapshot(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'main'), (s) => { 
+                            if(s.exists()){ appState = {...appState, ...s.data()}; localStorage.setItem('ecoverse_state', JSON.stringify(appState)); window.updateUI(); } 
+                        });
+                        // Fetch Posts
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'posts'), (s) => { 
                             const ps = []; s.forEach(d => ps.push({id: d.id, ...d.data()})); 
                             ps.sort((a,b) => b.timestamp - a.timestamp); window.renderPosts(ps); 
                         });
+                        // Fetch Chat
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'global_chat'), (s) => { 
                             const ms = []; s.forEach(d => ms.push({id: d.id, ...d.data()})); 
                             ms.sort((a,b) => a.timestamp - b.timestamp); window.renderGlobalChat(ms); 
                         });
                     }
                 });
-                signInAnonymously(auth).catch(e => {});
             }
-            
+
             checkAndFetchDailyNews();
             window.renderChallenges();
         };
