@@ -90,7 +90,7 @@
     <div id="main-app" class="w-full h-full flex flex-col md:flex-row hidden opacity-0 transition-opacity duration-500">
         
         <!-- NAVBAR: DENGAN 5 MENU & TOMBOL FULLSCREEN (DESKTOP) -->
-        <nav class="glass-header z-40 flex flex-row md:flex-col justify-around items-center h-[4.5rem] md:h-full w-[calc(100%-1.5rem)] md:w-24 lg:w-64 border border-paper-200 md:border-y-0 md:border-l-0 px-2 md:px-0 md:pt-8 shrink-0 transition-all bg-white/95 order-2 md:order-1 rounded-[2rem] md:rounded-none shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:shadow-none mb-3 md:mb-0 mx-auto md:mx-0">
+        <nav id="main-navbar" class="glass-header z-40 flex flex-row md:flex-col justify-around items-center h-[4.5rem] md:h-full w-[calc(100%-1.5rem)] md:w-24 lg:w-64 border border-paper-200 md:border-y-0 md:border-l-0 px-2 md:px-0 md:pt-8 shrink-0 transition-all bg-white/95 order-2 md:order-1 rounded-[2rem] md:rounded-none shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:shadow-none mb-3 md:mb-0 mx-auto md:mx-0">
             <div class="hidden md:flex items-center justify-center lg:justify-start px-0 lg:px-8 mb-10 text-brand-600 w-full">
                 <i class="fa-solid fa-leaf text-3xl lg:mr-3"></i>
                 <h1 class="text-2xl font-black hidden lg:block tracking-tight">EcoVerse</h1>
@@ -148,7 +148,7 @@
         <div class="flex-1 flex flex-col relative overflow-hidden bg-paper-50 w-full order-1 md:order-2 h-full min-h-0">
             
             <!-- Header Mobile DENGAN TOMBOL FULLSCREEN -->
-            <header class="px-4 pt-4 pb-3 z-20 md:hidden shrink-0 flex justify-between items-center relative glass-header">
+            <header id="mobile-header" class="px-4 pt-4 pb-3 z-20 md:hidden shrink-0 flex justify-between items-center relative glass-header">
                 <button onclick="toggleFullscreen()" class="text-slate-500 hover:text-brand-500 transition w-10 h-10 flex items-center justify-center rounded-full hover:bg-paper-100">
                     <i class="fa-solid fa-expand text-lg" id="fs-icon-mobile"></i>
                 </button>
@@ -741,6 +741,22 @@
             }
         };
 
+        // FUNGSI UNTUK MENGHILANGKAN UI SAAT UJIAN
+        window.toggleUIForExam = (hide) => {
+            const navbar = document.getElementById('main-navbar');
+            const header = document.getElementById('mobile-header');
+            const pet = document.getElementById('floating-pet-widget');
+            if (hide) {
+                if(navbar) navbar.style.display = 'none';
+                if(header) header.style.display = 'none';
+                if(pet) pet.style.display = 'none';
+            } else {
+                if(navbar) navbar.style.display = '';
+                if(header) header.style.display = '';
+                if(pet) pet.style.display = '';
+            }
+        };
+
         document.addEventListener('fullscreenchange', () => {
             const isFs = !!document.fullscreenElement;
             const iconMobile = document.getElementById('fs-icon-mobile');
@@ -755,13 +771,14 @@
             }
             
             // Keamanan Exam Browser
-            if (!isFs && examModeActive) {
-                examModeActive = false;
+            if (!isFs && window.examModeActive) {
+                window.examModeActive = false;
                 window.showToast('⚠️ PELANGGARAN: Anda keluar dari mode ujian! Sesi dihentikan.');
                 document.getElementById('ujian-setup-area').classList.remove('hidden');
                 document.getElementById('btn-kembali-ujian').classList.remove('hidden');
                 document.getElementById('ujian-active-area').classList.add('hidden');
                 document.getElementById('kode-ujian-input').value = '';
+                window.toggleUIForExam(false); // Munculkan kembali navbar
             }
         });
 
@@ -1161,7 +1178,7 @@
         };
 
         // FUNGSI EXAM BROWSER ANTI-CONTEK
-        let examModeActive = false;
+        window.examModeActive = false;
         
         window.mulaiUjian = () => {
             const input = document.getElementById('kode-ujian-input');
@@ -1171,10 +1188,13 @@
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen().then(() => {
-                    examModeActive = true;
+                    window.examModeActive = true;
                     document.getElementById('ujian-setup-area').classList.add('hidden');
                     document.getElementById('btn-kembali-ujian').classList.add('hidden');
                     document.getElementById('ujian-active-area').classList.remove('hidden');
+                    
+                    window.toggleUIForExam(true); // Sembunyikan navbar dan header
+
                     window.showToast('Mode Ujian Aktif. Sistem mengunci layar Anda!');
                 }).catch(err => {
                     window.showToast('Gagal memulai mode layar penuh! Pastikan browser Anda mendukung fitur ini.');
@@ -1185,7 +1205,7 @@
         };
 
         window.selesaiUjian = () => {
-            examModeActive = false;
+            window.examModeActive = false;
             if (document.exitFullscreen && document.fullscreenElement) {
                 document.exitFullscreen();
             }
@@ -1198,6 +1218,8 @@
                 document.getElementById('btn-kembali-ujian').classList.remove('hidden');
                 document.getElementById('ujian-active-area').classList.add('hidden');
                 document.getElementById('kode-ujian-input').value = '';
+                
+                window.toggleUIForExam(false); // Munculkan kembali navbar
             }, 500);
         };
 
