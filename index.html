@@ -167,38 +167,65 @@
 
                         <!-- MENU KAMPUS (QUICK SHORTCUTS GRID) -->
                         <div class="grid grid-cols-4 gap-3 mb-10">
+                            <!-- 1. Akademik -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="switchTab('academy', document.querySelectorAll('.nav-btn')[1])">
                                 <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Akademik</span>
                             </div>
+                            <!-- 2. Tugasku (BARU) -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-indigo-300 cursor-pointer transition active:scale-95" onclick="switchTab('tugasku')">
+                                <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-open text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tugasku</span>
+                            </div>
+                            <!-- 3. Ujian / Exam Browser (BARU) -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-red-300 cursor-pointer transition active:scale-95" onclick="switchTab('ujian')">
+                                <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-laptop-code text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Ujian</span>
+                            </div>
+                            <!-- 4. Jadwal -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-accent-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Fitur Jadwal Kuliah segera hadir!')">
                                 <div class="w-12 h-12 bg-accent-50 text-accent-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-regular fa-calendar-days text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Jadwal</span>
                             </div>
-                            <!-- Menu Izin Ketidakhadiran (Menggantikan SIAKAD) -->
+                            <!-- 5. Izin -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-amber-300 cursor-pointer transition active:scale-95" onclick="openModal('modal-izin')">
                                 <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-envelope-open-text text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Izin</span>
                             </div>
+                            <!-- 6. E-KTM -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition active:scale-95" onclick="window.showToast('E-KTM Virtual sedang diproses.')">
                                 <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-id-card text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-KTM</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-rose-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Informasi Pendaftaran UKM Kampus')">
-                                <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
-                            </div>
+                            <!-- 7. E-Lib -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Membuka Pustaka Digital (E-Library)')">
                                 <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-journal-whills text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-Lib</span>
                             </div>
+                            <!-- 8. Al-Quran (BARU) -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-emerald-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Membuka Al-Quran Digital...')">
+                                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-quran text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Al-Quran</span>
+                            </div>
+                            <!-- 9. Info UKM -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-rose-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Informasi Pendaftaran UKM Kampus')">
+                                <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
+                            </div>
+                            <!-- 10. Obrolan -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" onclick="openGlobalChat()">
                                 <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-earth-asia text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Obrolan</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="switchTab('challenges')">
+                            <!-- 11. Tantangan -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="switchTab('challenges', document.querySelectorAll('.nav-btn')[2])">
                                 <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-medal text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tantangan</span>
+                            </div>
+                            <!-- 12. Lainnya -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-slate-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Menampilkan semua menu...')">
+                                <div class="w-12 h-12 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-ellipsis text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Lainnya</span>
                             </div>
                         </div>
 
@@ -377,6 +404,72 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 6. TUGASKU VIEW (GABUNG KELAS) -->
+                <div id="view-tugasku" class="view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
+                    <div class="max-w-2xl mx-auto pt-4 md:pt-8 px-4 pb-20">
+                        <div class="flex items-center mb-6">
+                            <button onclick="switchTab('feed', document.querySelectorAll('.nav-btn')[0])" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-600 hover:bg-paper-100 shadow-sm mr-4 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                            <h2 class="text-2xl font-black text-slate-800">Tugasku</h2>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-[2rem] border border-paper-200 shadow-sm mb-8">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <div class="w-10 h-10 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-plus"></i></div>
+                                <div>
+                                    <h3 class="font-bold text-slate-800">Gabung Kelas Baru</h3>
+                                    <p class="text-[10px] font-medium text-slate-500">Masukkan kode kelas dari dosen Anda</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3">
+                                <input type="text" id="kode-kelas-input" placeholder="Contoh: ECO-101" class="flex-1 bg-paper-50 rounded-[1rem] py-3 px-4 outline-none border border-paper-200 text-sm focus:ring-2 focus:ring-indigo-300 transition uppercase font-bold text-slate-700">
+                                <button onclick="gabungKelas()" class="bg-indigo-500 hover:bg-indigo-600 transition text-white px-6 py-3 rounded-[1rem] font-bold shadow-md active:scale-95 text-sm">Gabung</button>
+                            </div>
+                        </div>
+
+                        <h3 class="font-black text-slate-800 text-lg mb-4 flex items-center"><i class="fa-solid fa-book-open text-indigo-500 mr-2"></i>Daftar Kelas Saya</h3>
+                        <div id="daftar-kelas-container" class="space-y-4">
+                            <div class="text-center py-10 text-slate-400 font-medium text-sm border-2 border-dashed border-paper-200 rounded-[2rem]">Belum ada kelas yang Anda ikuti.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. UJIAN (EXAM BROWSER ANTI-CONTEK) -->
+                <div id="view-ujian" class="view-section hidden fade-in h-full w-full overflow-y-auto bg-slate-900 absolute inset-0 z-[100]">
+                    <div class="max-w-2xl mx-auto pt-8 px-6 pb-20 flex flex-col items-center justify-center min-h-full text-center">
+                        <button onclick="switchTab('feed', document.querySelectorAll('.nav-btn')[0])" id="btn-kembali-ujian" class="absolute top-6 left-6 w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 hover:bg-slate-700 transition"><i class="fa-solid fa-arrow-left text-xl"></i></button>
+
+                        <div class="w-24 h-24 bg-red-500/20 text-red-500 rounded-[2rem] flex items-center justify-center mb-6 text-5xl shadow-lg border border-red-500/30">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h2 class="text-3xl font-black text-white mb-2 tracking-tight">Exam Browser</h2>
+                        <p class="text-sm text-slate-400 mb-8 max-w-sm font-medium">Sistem ini mengunci layar Anda ke mode penuh (Fullscreen). Keluar dari mode penuh dianggap sebagai kecurangan.</p>
+                        
+                        <!-- Layar Masukkan Kode -->
+                        <div id="ujian-setup-area" class="w-full max-w-sm bg-slate-800 p-8 rounded-[2.5rem] border border-slate-700 shadow-2xl relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-500"></div>
+                            <h3 class="font-bold text-white mb-4 text-left">Kode Akses Ujian</h3>
+                            <input type="text" id="kode-ujian-input" placeholder="Masukkan kode pengawas..." class="w-full bg-slate-900 rounded-xl py-4 px-5 outline-none border border-slate-600 text-base focus:ring-2 focus:ring-red-500 transition text-white uppercase font-black text-center tracking-widest mb-6">
+                            <button onclick="mulaiUjian()" class="w-full bg-red-500 hover:bg-red-600 transition text-white py-4 rounded-xl font-bold shadow-lg shadow-red-500/20 active:scale-95 text-lg">Mulai Ujian</button>
+                        </div>
+
+                        <!-- Layar Ujian Berlangsung -->
+                        <div id="ujian-active-area" class="hidden w-full max-w-lg bg-white p-8 rounded-[2.5rem] text-left shadow-2xl relative">
+                            <div class="absolute top-0 left-0 w-full h-2 bg-red-500"></div>
+                            <div class="flex justify-between items-center mb-6 border-b border-paper-100 pb-4 mt-2">
+                                <h3 class="font-black text-xl text-slate-800">Ujian Tengah Semester</h3>
+                                <div class="text-red-500 font-bold flex items-center bg-red-50 px-3 py-1 rounded-full text-sm"><i class="fa-solid fa-circle text-[8px] animate-pulse mr-2"></i> LIVE</div>
+                            </div>
+                            <div class="bg-paper-50 p-5 rounded-2xl border border-paper-200 mb-6">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Soal 1 / 1</p>
+                                <p class="text-slate-700 font-medium">Jelaskan secara komprehensif 3 cara efektif untuk mengurangi jejak karbon di lingkungan kampus EcoVerse!</p>
+                            </div>
+                            <textarea rows="6" class="w-full bg-white border border-paper-300 rounded-[1.5rem] p-5 outline-none focus:ring-2 focus:ring-brand-500 transition mb-6 text-sm text-slate-700 font-medium resize-none shadow-inner" placeholder="Ketik jawaban esai Anda di sini..."></textarea>
+                            <button onclick="selesaiUjian()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 rounded-xl active:scale-95 transition shadow-lg">Selesai & Kumpulkan Ujian</button>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -990,6 +1083,95 @@
         window.removePostImage = () => { currentPostImageBase64 = null; document.getElementById('post-image-preview').classList.add('hidden'); };
         
         window.openGlobalChat = () => { document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden')); document.getElementById('view-chat-detail').classList.remove('hidden'); };
+
+        // FUNGSI TUGASKU (GABUNG KELAS)
+        window.gabungKelas = () => {
+            const input = document.getElementById('kode-kelas-input');
+            const code = input.value.trim().toUpperCase();
+            if(!code) return window.showToast('Masukkan kode kelas yang valid!');
+            
+            const container = document.getElementById('daftar-kelas-container');
+            // Jika masih kosong, hapus pesan default-nya
+            if(container.innerText.includes('Belum ada')) container.innerHTML = '';
+
+            // Menambahkan card kelas baru secara dinamis
+            container.insertAdjacentHTML('afterbegin', `
+                <div class="bg-white p-5 rounded-[1.5rem] border border-paper-200 shadow-sm flex items-center justify-between fade-in">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-book"></i></div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Kelas ${code}</p>
+                            <p class="text-[10px] text-slate-500 font-medium mt-0.5">Dosen: Dr. Eco • 1 Tugas Aktif</p>
+                        </div>
+                    </div>
+                    <button class="text-indigo-500 font-bold text-xs bg-indigo-50 hover:bg-indigo-100 transition px-4 py-2 rounded-xl" onclick="window.showToast('Membuka rincian kelas...')">Buka</button>
+                </div>
+            `);
+            input.value = '';
+            window.showToast('Berhasil bergabung ke kelas ' + code);
+        };
+
+        // FUNGSI EXAM BROWSER ANTI-CONTEK
+        let examModeActive = false;
+        
+        window.mulaiUjian = () => {
+            const input = document.getElementById('kode-ujian-input');
+            const code = input.value.trim();
+            if(!code) return window.showToast('Masukkan kode pengawas terlebih dahulu!');
+
+            // Meminta browser untuk masuk ke mode Fullscreen
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().then(() => {
+                    examModeActive = true;
+                    // Menyembunyikan form input dan tombol back
+                    document.getElementById('ujian-setup-area').classList.add('hidden');
+                    document.getElementById('btn-kembali-ujian').classList.add('hidden');
+                    // Menampilkan soal ujian
+                    document.getElementById('ujian-active-area').classList.remove('hidden');
+                    window.showToast('Mode Ujian Aktif. Sistem mengunci layar Anda!');
+                }).catch(err => {
+                    window.showToast('Gagal memulai mode layar penuh! Pastikan browser Anda mendukung fitur ini.');
+                });
+            } else {
+                window.showToast('Browser Anda tidak mendukung Exam Mode.');
+            }
+        };
+
+        window.selesaiUjian = () => {
+            examModeActive = false;
+            // Keluar dari Fullscreen dengan aman
+            if (document.exitFullscreen && document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+            window.showToast('Ujian Anda berhasil dikumpulkan!');
+            
+            // Kembali ke beranda
+            switchTab('feed', document.querySelectorAll('.nav-btn')[0]);
+            
+            // Reset layout ujian ke awal setelah animasi transisi
+            setTimeout(() => {
+                document.getElementById('ujian-setup-area').classList.remove('hidden');
+                document.getElementById('btn-kembali-ujian').classList.remove('hidden');
+                document.getElementById('ujian-active-area').classList.add('hidden');
+                document.getElementById('kode-ujian-input').value = '';
+            }, 500);
+        };
+
+        // DETEKSI PELANGGARAN KECURANGAN (Jika User Menekan ESC / Keluar Fullscreen)
+        document.addEventListener('fullscreenchange', () => {
+            // Jika mode ujian sedang aktif TAPI layarnya tidak fullscreen, berarti user keluar (curang)
+            if (!document.fullscreenElement && examModeActive) {
+                examModeActive = false;
+                window.showToast('⚠️ PELANGGARAN: Anda keluar dari mode ujian! Sesi dihentikan.');
+                
+                // Tutup soal secara paksa
+                document.getElementById('ujian-setup-area').classList.remove('hidden');
+                document.getElementById('btn-kembali-ujian').classList.remove('hidden');
+                document.getElementById('ujian-active-area').classList.add('hidden');
+                document.getElementById('kode-ujian-input').value = '';
+            }
+        });
 
         window.sendGlobalMessage = async function() {
             const input = document.getElementById('dm-input');
