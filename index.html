@@ -94,7 +94,7 @@
                 </button>
             </div>
 
-            <!-- Form Mahasiswa (Awalnya Sembunyi) -->
+            <!-- Form Mahasiswa -->
             <div id="mahasiswa-form" class="w-full space-y-4 hidden fade-in mt-2">
                 <button onclick="backToRole()" class="text-xs font-bold text-brand-600 mb-4 flex items-center hover:underline bg-brand-50 px-3 py-1.5 rounded-lg w-max mx-auto transition"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali Pilih Peran</button>
                 <div class="relative">
@@ -120,21 +120,16 @@
                 <h1 class="text-2xl font-black hidden lg:block tracking-tight">EcoVerse</h1>
             </div>
 
-            <!-- 1. Home / Dashboard -->
             <button onclick="switchTab('feed', this)" class="nav-btn active flex flex-col items-center justify-center w-full md:h-auto md:py-4 hover:text-brand-500 transition rounded-full">
                 <i class="fa-solid fa-house text-xl md:text-2xl transition-transform duration-200 lg:mb-1"></i>
                 <span class="text-[10px] md:text-xs mt-1 font-bold lg:hidden">Beranda</span>
                 <span class="hidden lg:block text-sm font-bold mt-1">Beranda</span>
             </button>
-            
-            <!-- 2. Akademik -->
             <button onclick="switchTab('academy', this)" class="nav-btn flex flex-col items-center justify-center w-full md:h-auto md:py-4 hover:text-accent-500 transition rounded-full">
                 <i class="fa-solid fa-graduation-cap text-xl md:text-2xl transition-transform duration-200 lg:mb-1"></i>
                 <span class="text-[10px] md:text-xs mt-1 font-bold lg:hidden">Akademik</span>
                 <span class="hidden lg:block text-sm font-bold mt-1">Akademik</span>
             </button>
-
-            <!-- 3. Eco-Neo Chatbot AI -->
             <button onclick="switchTab('chatbot', this)" class="nav-btn flex flex-col items-center justify-center w-full md:h-auto md:py-4 hover:text-brand-500 transition group rounded-full">
                 <div class="bg-gradient-to-br from-brand-400 to-accent-500 text-white w-9 h-9 md:w-12 md:h-12 rounded-[0.9rem] flex items-center justify-center shadow-md group-hover:-translate-y-1 transition-transform duration-300">
                     <i class="fa-solid fa-robot text-lg md:text-xl"></i>
@@ -142,15 +137,11 @@
                 <span class="text-[10px] md:text-xs font-bold text-slate-800 mt-1 lg:hidden">Eco-Neo</span>
                 <span class="hidden lg:block text-sm font-bold text-slate-800 mt-2">Eco-Neo</span>
             </button>
-            
-            <!-- 4. Berita -->
             <button onclick="switchTab('news', this)" class="nav-btn flex flex-col items-center justify-center w-full md:h-auto md:py-4 hover:text-brand-500 transition rounded-full">
                 <i class="fa-solid fa-newspaper text-xl md:text-2xl transition-transform duration-200 lg:mb-1"></i>
                 <span class="text-[10px] md:text-xs mt-1 font-bold lg:hidden">Berita</span>
                 <span class="hidden lg:block text-sm font-bold mt-1">Berita</span>
             </button>
-            
-            <!-- 5. Profile -->
             <button onclick="switchTab('profile', this)" class="nav-btn flex flex-col items-center justify-center w-full md:h-auto md:py-4 hover:text-brand-500 transition rounded-full">
                 <i class="fa-regular fa-user text-xl md:text-2xl transition-transform duration-200 lg:mb-1"></i>
                 <span class="text-[10px] md:text-xs mt-1 font-bold lg:hidden">Profil</span>
@@ -196,7 +187,6 @@
                                 </div>
                             </div>
                             <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2" id="slider-dots"></div>
-                            <!-- News Badge -->
                             <div class="absolute top-4 left-4 bg-brand-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md z-10 uppercase tracking-widest transform -rotate-6 italic">Hot News</div>
                         </div>
 
@@ -262,7 +252,6 @@
 
                         <h3 class="font-black text-slate-800 text-lg mb-4 flex items-center"><i class="fa-solid fa-layer-group text-brand-500 mr-2"></i> Green Feed</h3>
 
-                        <!-- Post Input -->
                         <div class="bg-white p-4 mb-6 flex items-center space-x-3 shadow-sm rounded-[2rem] border border-paper-200 shrink-0">
                             <img id="feed-input-avatar" src="" class="w-10 h-10 rounded-full shadow-sm border border-paper-100">
                             <div class="flex-1 bg-paper-50 border border-paper-200 rounded-full py-3 px-4 text-xs text-slate-400 cursor-pointer hover:bg-paper-100 transition font-medium" onclick="openModal('modal-post')">
@@ -271,17 +260,15 @@
                             <button class="text-brand-500 hover:text-white hover:bg-brand-500 transition p-2 bg-brand-50 rounded-full w-10 h-10 flex items-center justify-center shadow-sm" onclick="openModal('modal-post')"><i class="fa-solid fa-camera"></i></button>
                         </div>
 
-                        <!-- Posts List -->
                         <div id="feed-container" class="space-y-6 pb-20"></div>
                     </div>
                 </div>
 
-                <!-- 2. ACADEMY VIEW (GEOFENCING & PAPERLESS) -->
+                <!-- 2. ACADEMY VIEW -->
                 <div id="view-academy" class="view-section hidden fade-in h-full w-full overflow-y-auto">
                     <div class="max-w-3xl mx-auto pt-4 md:pt-8 px-4 pb-20">
                         <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center"><i class="fa-solid fa-graduation-cap mr-3 text-accent-500"></i>Akademik & Presensi</h2>
                         
-                        <!-- Geofencing Check-in -->
                         <div class="bg-white rounded-[2rem] p-6 md:p-8 border border-accent-100 shadow-sm mb-8 relative overflow-hidden">
                             <div class="absolute -right-10 -top-10 text-accent-50 opacity-50 pointer-events-none"><i class="fa-solid fa-map-location-dot text-[10rem]"></i></div>
                             <div class="relative z-10">
@@ -313,7 +300,6 @@
                             </div>
                         </div>
 
-                        <!-- Paperless Tasks -->
                         <h3 class="font-bold text-slate-800 text-lg mb-4 mt-8">Tugas Paperless Aktif</h3>
                         <div class="space-y-4">
                             <div class="bg-white p-5 md:p-6 rounded-2xl border border-paper-200 flex items-center justify-between hover:shadow-md transition cursor-pointer">
@@ -439,7 +425,7 @@
                     </div>
                 </div>
 
-                <!-- 6. TUGASKU VIEW (GABUNG KELAS) -->
+                <!-- 6. TUGASKU VIEW (GABUNG KELAS YANG SUDAH TERKONEKSI FIREBASE) -->
                 <div id="view-tugasku" class="view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
                     <div class="max-w-3xl mx-auto pt-6 md:pt-10 px-4 pb-20">
                         <div class="flex items-center mb-8">
@@ -452,11 +438,11 @@
                                 <div class="w-14 h-14 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-plus"></i></div>
                                 <div>
                                     <h3 class="font-bold text-slate-800 text-lg">Gabung Kelas Baru</h3>
-                                    <p class="text-xs font-medium text-slate-500 mt-1">Masukkan kode kelas dari dosen Anda</p>
+                                    <p class="text-xs font-medium text-slate-500 mt-1">Masukkan kode kelas yang dibuat dosen</p>
                                 </div>
                             </div>
                             <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                                <input type="text" id="kode-kelas-input" placeholder="Contoh: ECO-101" class="flex-1 bg-paper-50 rounded-2xl py-4 px-5 outline-none border border-paper-200 text-base focus:ring-2 focus:ring-indigo-300 transition uppercase font-bold text-slate-700">
+                                <input type="text" id="kode-kelas-input" placeholder="Contoh: BIO-202" class="flex-1 bg-paper-50 rounded-2xl py-4 px-5 outline-none border border-paper-200 text-base focus:ring-2 focus:ring-indigo-300 transition uppercase font-bold text-slate-700">
                                 <button onclick="gabungKelas()" class="bg-indigo-500 hover:bg-indigo-600 transition text-white px-8 py-4 rounded-2xl font-bold shadow-md active:scale-95 text-base w-full sm:w-auto">Gabung</button>
                             </div>
                         </div>
@@ -510,13 +496,10 @@
 
                         <!-- Daftar Subtopik Materi -->
                         <div class="space-y-6">
-                            
                             <!-- Topik 1 -->
                             <div>
                                 <h3 class="font-black text-slate-800 text-lg mb-4 flex items-center"><i class="fa-solid fa-bookmark text-brand-500 mr-3 text-xl"></i> Topik 1: Pengantar & Konsep Dasar</h3>
                                 <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">
-                                    
-                                    <!-- PDF Item -->
                                     <div class="p-5 border-b border-paper-100 flex items-center justify-between hover:bg-paper-50 transition cursor-pointer group" onclick="window.showToast('Memulai unduhan: Modul 1 PDF...')">
                                         <div class="flex items-center space-x-4">
                                             <div class="w-12 h-12 bg-red-50 text-red-500 rounded-[1rem] flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform"><i class="fa-regular fa-file-pdf"></i></div>
@@ -527,8 +510,6 @@
                                         </div>
                                         <i class="fa-solid fa-cloud-arrow-down text-slate-300 group-hover:text-brand-500 transition text-xl"></i>
                                     </div>
-                                    
-                                    <!-- Video Item -->
                                     <div class="p-5 border-b border-paper-100 flex items-center justify-between hover:bg-paper-50 transition cursor-pointer group" onclick="window.showToast('Membuka Video Player Materi...')">
                                         <div class="flex items-center space-x-4">
                                             <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-[1rem] flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-circle-play"></i></div>
@@ -539,47 +520,13 @@
                                         </div>
                                         <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-brand-500 transition text-lg"></i>
                                     </div>
-
-                                    <!-- PPT/Slide Item -->
-                                    <div class="p-5 border-b border-paper-100 flex items-center justify-between hover:bg-paper-50 transition cursor-pointer group" onclick="window.showToast('Menampilkan Slide Presentasi...')">
-                                        <div class="flex items-center space-x-4">
-                                            <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-[1rem] flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-desktop"></i></div>
-                                            <div>
-                                                <p class="font-bold text-slate-800 text-sm md:text-base">Slide Presentasi Dosen</p>
-                                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-1">PowerPoint • 15 Slides</p>
-                                            </div>
-                                        </div>
-                                        <i class="fa-solid fa-cloud-arrow-down text-slate-300 group-hover:text-brand-500 transition text-xl"></i>
-                                    </div>
-                                    
-                                    <!-- Quiz Item -->
-                                    <div class="p-5 flex items-center justify-between hover:bg-paper-50 transition cursor-pointer group" onclick="window.showToast('Membuka Kuis Evaluasi Topik 1...')">
-                                        <div class="flex items-center space-x-4">
-                                            <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-[1rem] flex items-center justify-center text-xl shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-list-check"></i></div>
-                                            <div>
-                                                <p class="font-bold text-slate-800 text-sm md:text-base">Kuis Evaluasi Topik 1</p>
-                                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-1">10 Pilihan Ganda • Tenggat: Besok</p>
-                                            </div>
-                                        </div>
-                                        <span class="text-[10px] font-black text-white bg-brand-500 px-3 py-1.5 rounded-lg shadow-sm tracking-widest uppercase">Wajib</span>
-                                    </div>
                                 </div>
                             </div>
-
-                            <!-- Topik 2 (Terkunci) -->
-                            <div class="opacity-70">
-                                <h3 class="font-black text-slate-600 text-lg mb-4 flex items-center"><i class="fa-solid fa-lock text-slate-400 mr-3 text-lg"></i> Topik 2: Pendalaman (Terkunci)</h3>
-                                <div class="bg-paper-100 rounded-[2rem] border border-paper-200 shadow-sm p-6 text-center">
-                                    <i class="fa-solid fa-clock-rotate-left text-3xl text-slate-400 mb-3"></i>
-                                    <p class="font-bold text-slate-600 text-sm">Selesaikan Topik 1 terlebih dahulu untuk membuka materi ini.</p>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
 
-                <!-- 7. UJIAN (EXAM BROWSER ANTI-CONTEK & FULLSCREEN) -->
+                <!-- 7. UJIAN (EXAM BROWSER ANTI-CONTEK) -->
                 <div id="view-ujian" class="view-section hidden fade-in h-full w-full overflow-y-auto bg-slate-900 absolute inset-0 z-[100]">
                     <div class="max-w-3xl mx-auto pt-8 px-6 pb-20 flex flex-col items-center justify-center min-h-full text-center">
                         <button onclick="switchTab('feed', document.querySelectorAll('.nav-btn')[0])" id="btn-kembali-ujian" class="absolute top-6 left-6 w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 hover:bg-slate-700 transition shadow-lg"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
@@ -590,7 +537,6 @@
                         <h2 class="text-4xl font-black text-white mb-4 tracking-tight">Exam Browser</h2>
                         <p class="text-base text-slate-400 mb-10 max-w-md font-medium leading-relaxed">Sistem ini mengunci layar Anda ke mode penuh (Fullscreen). Keluar dari mode penuh dianggap sebagai kecurangan.</p>
                         
-                        <!-- Layar Masukkan Kode -->
                         <div id="ujian-setup-area" class="w-full max-w-md bg-slate-800 p-10 rounded-[3rem] border border-slate-700 shadow-2xl relative overflow-hidden">
                             <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-500 to-orange-500"></div>
                             <h3 class="font-bold text-white mb-6 text-left text-lg">Kode Akses Ujian</h3>
@@ -598,7 +544,6 @@
                             <button onclick="mulaiUjian()" class="w-full bg-red-500 hover:bg-red-600 transition text-white py-5 rounded-2xl font-bold shadow-lg shadow-red-500/20 active:scale-95 text-xl">Mulai Ujian</button>
                         </div>
 
-                        <!-- Layar Ujian Berlangsung -->
                         <div id="ujian-active-area" class="hidden w-full max-w-2xl bg-white p-8 md:p-10 rounded-[3rem] text-left shadow-2xl relative">
                             <div class="absolute top-0 left-0 w-full h-2 bg-red-500"></div>
                             <div class="flex justify-between items-center mb-8 border-b border-paper-100 pb-5 mt-2">
@@ -796,14 +741,14 @@
             appId: "1:369786445975:web:ebfe8a06019761572309d2"
         }; 
 
-        // API KIMI
         const kimiApiKey = "AIzaSyAiOKxoWlyKt78wx5rn5GbZHJpoa4uHgOc"; 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'ecoverse-campus';
         
         let firebaseApp, auth, db, currentUser = null;
         let useFirebase = true;
+        let globalClasses = []; // PENYIMPANAN DATA KELAS REALTIME
 
-        // MANAJEMEN STATE LOKAL & DAILY RESET
+        // MANAJEMEN STATE LOKAL MAHASISWA
         let appState = JSON.parse(localStorage.getItem('ecoverse_state'));
         const todayDate = new Date().toDateString();
 
@@ -816,6 +761,7 @@
                 exp: 0,
                 aksiCount: 0,
                 completedChallengeIds: [],
+                joinedClasses: [], // DATA KELAS YANG DIIKUTI
                 lastAttendanceDate: null,
                 userName: "Student_" + randomNum, 
                 userBio: "Mahasiswa EcoVerse 🌍",
@@ -826,6 +772,7 @@
         } else {
             if(appState.isLoggedIn === undefined) appState.isLoggedIn = false;
             if(!appState.completedChallengeIds) appState.completedChallengeIds = [];
+            if(!appState.joinedClasses) appState.joinedClasses = []; // PERBAIKAN STATE BARU
             if (appState.newsDate !== todayDate) {
                 appState.completedChallengeIds = [];
             }
@@ -849,8 +796,7 @@
         const challenges = [
             { id: 1, title: "Bawa Botol Minum", points: 20, desc: "Kurangi penggunaan botol plastik sekali pakai.", icon: "fa-bottle-water" },
             { id: 2, title: "Gunakan Angkutan Umum", points: 40, desc: "Gunakan bus atau kereta untuk transportasi.", icon: "fa-bus" },
-            { id: 3, title: "Habiskan Makananmu", points: 25, desc: "Kurangi sampah makanan (food waste) hari ini.", icon: "fa-utensils" },
-            { id: 4, title: "Tanam Tanaman Baru", points: 100, desc: "Tanam bibit pohon atau tanaman hias baru.", icon: "fa-seedling" }
+            { id: 3, title: "Habiskan Makananmu", points: 25, desc: "Kurangi sampah makanan (food waste) hari ini.", icon: "fa-utensils" }
         ];
 
         // LOGIKA PORTAL GATEWAY
@@ -871,7 +817,7 @@
             document.getElementById('role-selection').classList.remove('hidden');
         };
 
-        // FULLSCREEN TOGGLE API
+        // FULLSCREEN TOGGLE
         window.toggleFullscreen = () => {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
@@ -882,7 +828,6 @@
             }
         };
 
-        // FUNGSI UNTUK MENGHILANGKAN UI SAAT UJIAN
         window.toggleUIForExam = (hide) => {
             const navbar = document.getElementById('main-navbar');
             const header = document.getElementById('mobile-header');
@@ -902,7 +847,6 @@
             const isFs = !!document.fullscreenElement;
             const iconMobile = document.getElementById('fs-icon-mobile');
             const iconDesktop = document.getElementById('fs-icon-desktop');
-            
             if (isFs) {
                 if(iconMobile) iconMobile.className = 'fa-solid fa-compress text-lg';
                 if(iconDesktop) iconDesktop.className = 'fa-solid fa-compress text-lg group-hover:scale-110 transition-transform';
@@ -910,8 +854,6 @@
                 if(iconMobile) iconMobile.className = 'fa-solid fa-expand text-lg';
                 if(iconDesktop) iconDesktop.className = 'fa-solid fa-expand text-lg group-hover:scale-110 transition-transform';
             }
-            
-            // Keamanan Exam Browser
             if (!isFs && window.examModeActive) {
                 window.examModeActive = false;
                 window.showToast('⚠️ PELANGGARAN: Anda keluar dari mode ujian! Sesi dihentikan.');
@@ -923,11 +865,9 @@
             }
         });
 
-        // FUNGSI AUTH MAHASISWA
         window.handleLogin = () => {
             const uname = document.getElementById('login-username').value.trim();
             if(!uname) return window.showToast('Masukkan NIM Mahasiswa!');
-            
             appState.userName = uname;
             appState.isLoggedIn = true;
             saveState();
@@ -939,19 +879,15 @@
                 mainApp.classList.remove('hidden');
                 setTimeout(() => mainApp.classList.remove('opacity-0'), 50);
             }, 500);
-
             window.showToast("Selamat datang di Kampus EcoVerse!");
         };
 
-        // FORM IZIN KETIDAKHADIRAN
         window.submitIzin = async () => {
             const type = document.getElementById('izin-type').value;
             const date = document.getElementById('izin-date').value;
             const reason = document.getElementById('izin-reason').value.trim();
-
             if (!date) return window.showToast('Silakan pilih tanggal ketidakhadiran!');
             if (!reason) return window.showToast('Silakan isi alasan izin!');
-
             if (currentUser && useFirebase) {
                 try {
                     await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'izin_akademik'), {
@@ -959,37 +895,25 @@
                     });
                 } catch (e) {}
             }
-
             window.closeModal('modal-izin');
             document.getElementById('izin-date').value = '';
             document.getElementById('izin-reason').value = '';
-            document.getElementById('izin-file').value = '';
-            document.getElementById('izin-file-name').innerText = 'Tidak ada file';
             window.showToast("Form izin berhasil dikirim ke akademik!");
         };
 
-        // GEOFENCING PRESENSI
         window.handleCheckIn = () => {
-            if (appState.lastAttendanceDate === todayDate) {
-                window.showToast("Anda sudah melakukan presensi hari ini!"); return;
-            }
+            if (appState.lastAttendanceDate === todayDate) return window.showToast("Anda sudah melakukan presensi hari ini!");
             appState.lastAttendanceDate = todayDate;
             addPoints(50);
-            
             const btn = document.getElementById('btn-checkin');
             btn.classList.replace('bg-slate-800', 'bg-brand-500');
             btn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> Presensi Tercatat! (+50 Pts)`;
             window.showToast("Presensi berhasil! Data terkirim ke server Akademik.");
         };
 
-        // LEVELING SYSTEM
         function addPoints(amount) {
             appState.points += amount;
-            if (appState.points >= 2500) {
-                appState.points -= 2500;
-                appState.level++;
-                window.showToast(`🎉 SELAMAT! Anda naik ke LEVEL ${appState.level}!`);
-            }
+            if (appState.points >= 2500) { appState.points -= 2500; appState.level++; window.showToast(`🎉 SELAMAT! Anda naik ke LEVEL ${appState.level}!`); }
             saveState();
         }
 
@@ -1002,38 +926,123 @@
             } else window.showToast("❌ Poin kurang!");
         };
 
-        // SLIDER NEWS (AI)
-        let currentSlide = 0;
-        window.renderNewsSlider = (newsText) => {
-            const wrapper = document.getElementById('news-slider-wrapper');
-            const dots = document.getElementById('slider-dots');
-            if(!wrapper || !newsText) return;
+        // RENDER KELAS (TERHUBUNG KE FIREBASE DOSEN)
+        window.renderJoinedClasses = () => {
+            const container = document.getElementById('daftar-kelas-container');
+            if(!container) return;
 
-            const newsItems = newsText.split('•').map(t => t.trim()).filter(t => t.length > 5);
-            if(newsItems.length === 0) return;
-            
-            wrapper.innerHTML = ''; dots.innerHTML = '';
+            if (!appState.joinedClasses || appState.joinedClasses.length === 0) {
+                container.innerHTML = '<div class="text-center py-12 text-slate-400 font-medium text-base border-2 border-dashed border-paper-200 rounded-[2rem] bg-white/50">Belum ada kelas yang Anda ikuti. Minta kode kelas dari Dosen Anda!</div>';
+                return;
+            }
 
-            newsItems.forEach((news, idx) => {
-                wrapper.innerHTML += `
-                    <div class="min-w-full h-full flex items-center px-8 md:px-12 bg-gradient-to-br from-brand-50 via-white to-accent-50">
-                        <div class="max-w-md">
-                            <p class="text-[10px] md:text-xs font-black text-brand-600 uppercase tracking-tighter mb-1">EcoVerse Today</p>
-                            <h4 class="text-sm md:text-lg font-bold text-slate-800 leading-tight">${news}</h4>
+            let html = '';
+            appState.joinedClasses.forEach(code => {
+                // Cari data kelas asli dari Firebase
+                const cls = globalClasses.find(c => c.kode === code) || { kode: code, nama: "Kelas " + code, dosen: "Dosen Pengajar" };
+                
+                let subjectName = cls.nama;
+                let colorFrom = "from-brand-400"; let colorTo = "to-brand-500"; let icon1 = "fa-leaf"; let icon2 = "fa-seedling";
+                const codeSearch = code.toUpperCase();
+                
+                if(codeSearch.includes("KIM") || subjectName.toLowerCase().includes("kimia")) { colorFrom = "from-teal-400"; colorTo = "to-emerald-400"; icon1 = "fa-flask"; icon2 = "fa-atom"; } 
+                else if (codeSearch.includes("ING") || subjectName.toLowerCase().includes("inggris")) { colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon1 = "fa-language"; icon2 = "fa-spell-check"; } 
+                else if (codeSearch.includes("MAT") || subjectName.toLowerCase().includes("matematika")) { colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon1 = "fa-calculator"; icon2 = "fa-square-root-variable"; }
+
+                html += `
+                <div class="bg-white rounded-[1.5rem] border border-paper-200 shadow-sm overflow-hidden fade-in relative mb-6">
+                    <div class="h-32 bg-gradient-to-r ${colorFrom} ${colorTo} relative overflow-hidden flex items-center px-6 md:px-8">
+                        <i class="fa-solid ${icon1} absolute -right-4 -bottom-4 text-7xl text-white opacity-20"></i>
+                        <i class="fa-solid ${icon2} absolute right-20 top-4 text-4xl text-white opacity-20"></i>
+                        <h2 class="text-3xl font-black text-white relative z-10 tracking-wide">${subjectName}</h2>
+                    </div>
+                    <div class="p-6 md:p-8">
+                        <div class="flex space-x-2 mb-4">
+                            <span class="bg-brand-50 text-brand-600 px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center uppercase tracking-wider"><i class="fa-solid fa-check-circle mr-1.5 text-xs"></i> Kelas Aktif</span>
                         </div>
-                    </div>`;
-                dots.innerHTML += `<div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-brand-500 w-6 md:w-8' : 'bg-brand-200'}"></div>`;
+                        <h3 class="text-xl font-black text-slate-800 mb-5 tracking-tight">${code} - ${subjectName}</h3>
+                        <div class="space-y-3 mb-6 text-sm font-medium text-slate-600">
+                            <div class="flex items-center"><i class="fa-solid fa-person-chalkboard w-7 text-center text-slate-400 text-lg"></i> ${cls.dosen}</div>
+                        </div>
+                        <button class="w-full border-2 border-paper-200 text-slate-700 font-bold py-3.5 rounded-2xl hover:bg-paper-50 transition active:scale-95 flex items-center justify-center text-base" onclick="bukaDetailKelas('${code}', '${subjectName}', '${colorFrom}', '${colorTo}', '${icon1}', '${icon2}')">Lihat Detail Kelas</button>
+                    </div>
+                </div>`;
             });
+            container.innerHTML = html;
+        };
 
-            clearInterval(window.newsInterval);
-            window.newsInterval = setInterval(() => {
-                currentSlide = (currentSlide + 1) % newsItems.length;
-                wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-                Array.from(dots.children).forEach((dot, dIdx) => {
-                    if(dIdx === currentSlide) { dot.classList.add('bg-brand-500'); dot.classList.add('w-6', 'md:w-8'); dot.classList.remove('bg-brand-200'); }
-                    else { dot.classList.remove('bg-brand-500', 'w-6', 'md:w-8'); dot.classList.add('bg-brand-200'); }
-                });
-            }, 5000);
+        window.gabungKelas = () => {
+            const input = document.getElementById('kode-kelas-input');
+            const code = input.value.trim().toUpperCase();
+            if(!code) return window.showToast('Masukkan kode kelas yang valid!');
+            
+            // Cek apakah kelas tersebut ada di Database yang dibuat dosen
+            const isClassExist = globalClasses.find(c => c.kode === code);
+            
+            // Bypass logika simulasi untuk kode standar agar tetap bisa uji coba, tapi utamakan Firebase
+            if(!isClassExist && !['KIM-101', 'ING-102', 'MAT-103'].includes(code)) {
+                return window.showToast('⚠️ Kelas tidak ditemukan! Pastikan kode dari dosen benar.');
+            }
+
+            if(appState.joinedClasses && appState.joinedClasses.includes(code)) {
+                return window.showToast('Anda sudah bergabung di kelas ini!');
+            }
+
+            if(!appState.joinedClasses) appState.joinedClasses = [];
+            appState.joinedClasses.push(code);
+            saveState();
+
+            window.showToast('Berhasil bergabung ke kelas ' + code);
+            window.renderJoinedClasses();
+            input.value = '';
+        };
+
+        window.bukaDetailKelas = (code, subjectName, colorFrom, colorTo, icon1, icon2) => {
+            const header = document.getElementById('class-detail-header');
+            header.className = `h-48 md:h-56 relative overflow-hidden flex items-end px-6 md:px-10 pb-8 bg-gradient-to-r ${colorFrom} ${colorTo} rounded-b-[2.5rem] shadow-sm`;
+            header.innerHTML = `
+                <button onclick="switchTab('tugasku')" class="absolute top-6 left-6 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/40 transition z-20 shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                <i class="fa-solid ${icon1} absolute -right-6 -bottom-6 text-[8rem] text-white opacity-20 pointer-events-none"></i>
+                <i class="fa-solid ${icon2} absolute right-28 top-8 text-6xl text-white opacity-20 pointer-events-none"></i>
+                <div class="relative z-10 text-white w-full">
+                    <span class="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest mb-3 inline-block shadow-sm">${code}</span>
+                    <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-none">${subjectName}</h2>
+                </div>`;
+            switchTab('class-detail');
+            window.showToast(`Membuka kelas ${subjectName}...`);
+        };
+
+        // EXAM BROWSER
+        window.examModeActive = false;
+        window.mulaiUjian = () => {
+            const input = document.getElementById('kode-ujian-input');
+            const code = input.value.trim();
+            if(!code) return window.showToast('Masukkan kode pengawas terlebih dahulu!');
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().then(() => {
+                    window.examModeActive = true;
+                    document.getElementById('ujian-setup-area').classList.add('hidden');
+                    document.getElementById('btn-kembali-ujian').classList.add('hidden');
+                    document.getElementById('ujian-active-area').classList.remove('hidden');
+                    window.toggleUIForExam(true);
+                    window.showToast('Mode Ujian Aktif. Sistem mengunci layar Anda!');
+                }).catch(err => { window.showToast('Gagal memulai mode layar penuh! Pastikan browser Anda mendukung fitur ini.'); });
+            } else { window.showToast('Browser Anda tidak mendukung Exam Mode.'); }
+        };
+
+        window.selesaiUjian = () => {
+            window.examModeActive = false;
+            if (document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
+            window.showToast('Ujian Anda berhasil dikumpulkan!');
+            switchTab('feed', document.querySelectorAll('.nav-btn')[0]);
+            setTimeout(() => {
+                document.getElementById('ujian-setup-area').classList.remove('hidden');
+                document.getElementById('btn-kembali-ujian').classList.remove('hidden');
+                document.getElementById('ujian-active-area').classList.add('hidden');
+                document.getElementById('kode-ujian-input').value = '';
+                window.toggleUIForExam(false);
+            }, 500);
         };
 
         // PUSAKA KEMENAG SCRAPING
@@ -1081,7 +1090,6 @@
                         });
                     }
                 }
-
                 if (articles.length > 0) window.renderPusakaNewsFeed(articles.slice(0, 12));
                 else throw new Error("Artikel kosong");
             } catch (e) {
@@ -1124,30 +1132,24 @@
             if(appState.newsText) window.renderNewsSlider(appState.newsText);
         }
 
-        // UPDATE UI KESELURUHAN
         window.updateUI = () => {
             if(document.getElementById('header-points')) document.getElementById('header-points').innerText = appState.points + ' Pts';
             if(document.getElementById('profile-points')) document.getElementById('profile-points').innerText = appState.points;
             if(document.getElementById('profile-level')) document.getElementById('profile-level').innerText = appState.level;
-            
             const progressPct = Math.min((appState.points / 2500) * 100, 100);
             if(document.getElementById('profile-progress')) document.getElementById('profile-progress').style.width = progressPct + '%';
-
             if(document.getElementById('pet-points')) document.getElementById('pet-points').innerText = appState.points;
             if(document.getElementById('exp-text')) document.getElementById('exp-text').innerText = appState.exp || 0;
             if(document.getElementById('pet-progress')) document.getElementById('pet-progress').style.width = (appState.exp || 0) + '%';
             if(document.getElementById('pet-level-float')) document.getElementById('pet-level-float').innerText = appState.level;
             if(document.getElementById('pet-status')) document.getElementById('pet-status').innerText = "LEVEL " + appState.level;
-
             if(document.getElementById('profile-name-display')) document.getElementById('profile-name-display').innerText = appState.userName;
             if(document.getElementById('profile-bio-display')) document.getElementById('profile-bio-display').innerText = appState.userBio;
             if(document.getElementById('home-greeting-name')) document.getElementById('home-greeting-name').innerText = appState.userName.split(' ')[0];
-            
             if(document.getElementById('edit-profile-name')) {
                 document.getElementById('edit-profile-name').value = appState.userName;
                 document.getElementById('edit-profile-bio').value = appState.userBio;
             }
-
             const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff&size=256&rounded=true`;
             if(document.getElementById('main-profile-avatar')) document.getElementById('main-profile-avatar').src = avatarUrl;
             if(document.getElementById('feed-input-avatar')) document.getElementById('feed-input-avatar').src = avatarUrl;
@@ -1156,28 +1158,21 @@
                 document.getElementById('modal-post-avatar').src = avatarUrl;
                 document.getElementById('modal-post-name').innerText = appState.userName;
             }
-
             const btn = document.getElementById('btn-checkin');
             if (btn && appState.lastAttendanceDate === todayDate) {
                 btn.classList.replace('bg-slate-800', 'bg-brand-500');
                 btn.classList.replace('hover:bg-slate-700', 'cursor-default');
                 btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
             }
-            
             if(appState.newsText) window.renderNewsSlider(appState.newsText);
         };
 
-        // FUNGSI E-LIBRARY
-        window.openELibrary = () => {
-            switchTab('elibrary');
-            window.searchBooks('lingkungan hidup ekologi sains populer'); 
-        };
-
+        // E-LIBRARY LOGIC
+        window.openELibrary = () => { switchTab('elibrary'); window.searchBooks('lingkungan hidup ekologi sains populer'); };
         window.searchBooks = async (query) => {
             if(!query || !query.trim()) return window.showToast("Masukkan kata kunci judul buku!");
             const container = document.getElementById('elibrary-container');
             container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-24 text-teal-500 flex flex-col items-center"><i class="fa-solid fa-circle-notch fa-spin text-5xl mb-6"></i><span class="font-black tracking-widest uppercase text-xs">Menjelajahi Pustaka Digital...</span></div>';
-            
             try {
                 const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=15&orderBy=relevance`);
                 if (!response.ok) throw new Error("Gagal mengambil data");
@@ -1187,14 +1182,12 @@
                 container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-20 text-red-400 font-bold px-6 bg-white rounded-[2rem] border-2 border-red-50">⚠️ Gagal terhubung ke Pustaka Digital. Silakan periksa koneksi internet Anda atau coba lagi nanti.</div>';
             }
         };
-
         window.renderBooks = (books) => {
             const container = document.getElementById('elibrary-container');
             if (!books || books.length === 0) {
                 container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-16 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[2rem] bg-white">Maaf, tidak ada buku yang cocok dengan pencarian Anda.</div>';
                 return;
             }
-
             let html = '';
             books.forEach((book, idx) => {
                 const info = book.volumeInfo;
@@ -1203,7 +1196,6 @@
                 let thumb = 'https://via.placeholder.com/128x192.png?text=No+Cover&bg=cbd5e1&textColor=fff';
                 if (info.imageLinks) thumb = info.imageLinks.thumbnail.replace('http:', 'https:');
                 const link = info.previewLink || info.infoLink || '#';
-
                 html += `
                     <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-xl hover:border-teal-200 transition-all duration-300 group fade-in" style="animation-delay: ${idx * 0.05}s">
                         <div class="h-48 md:h-64 bg-paper-100 flex items-center justify-center overflow-hidden p-4 relative">
@@ -1213,343 +1205,11 @@
                         <div class="p-5 md:p-6 flex flex-col flex-1">
                             <h4 class="font-black text-slate-800 text-sm md:text-base line-clamp-2 mb-2 leading-snug group-hover:text-teal-600 transition-colors">${title}</h4>
                             <p class="text-[10px] md:text-xs text-slate-500 font-bold uppercase tracking-wider mb-5 line-clamp-1">${author}</p>
-                            <a href="${link}" target="_blank" class="mt-auto w-full bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white transition-all font-black py-3 rounded-2xl text-xs md:text-sm text-center border border-teal-100 shadow-sm active:scale-95 flex items-center justify-center">
-                                <i class="fa-brands fa-google mr-2 text-lg"></i> BACA BUKU
-                            </a>
+                            <a href="${link}" target="_blank" class="mt-auto w-full bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white transition-all font-black py-3 rounded-2xl text-xs md:text-sm text-center border border-teal-100 shadow-sm active:scale-95 flex items-center justify-center"><i class="fa-brands fa-google mr-2 text-lg"></i> BACA BUKU</a>
                         </div>
                     </div>`;
             });
             container.innerHTML = html;
-        };
-
-        // FUNGSI MEMBUKA DETAIL KELAS
-        window.bukaDetailKelas = (code, subjectName, colorFrom, colorTo, icon1, icon2) => {
-            const header = document.getElementById('class-detail-header');
-            header.className = `h-48 md:h-56 relative overflow-hidden flex items-end px-6 md:px-10 pb-8 bg-gradient-to-r ${colorFrom} ${colorTo} rounded-b-[2.5rem] shadow-sm`;
-            header.innerHTML = `
-                <button onclick="switchTab('tugasku')" class="absolute top-6 left-6 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/40 transition z-20 shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
-                <i class="fa-solid ${icon1} absolute -right-6 -bottom-6 text-[8rem] text-white opacity-20 pointer-events-none"></i>
-                <i class="fa-solid ${icon2} absolute right-28 top-8 text-6xl text-white opacity-20 pointer-events-none"></i>
-                <div class="relative z-10 text-white w-full">
-                    <span class="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest mb-3 inline-block shadow-sm">${code}</span>
-                    <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-none">${subjectName}</h2>
-                </div>`;
-            switchTab('class-detail');
-            window.showToast(`Membuka kelas ${subjectName}...`);
-        };
-
-        // FUNGSI TUGASKU (GABUNG KELAS)
-        window.gabungKelas = () => {
-            const input = document.getElementById('kode-kelas-input');
-            const code = input.value.trim().toUpperCase();
-            if(!code) return window.showToast('Masukkan kode kelas yang valid!');
-            
-            const container = document.getElementById('daftar-kelas-container');
-            if(container.innerText.includes('Belum ada')) container.innerHTML = '';
-
-            let subjectName = "Ekologi Dasar"; let colorFrom = "from-brand-400"; let colorTo = "to-brand-500"; let icon1 = "fa-leaf"; let icon2 = "fa-seedling";
-            if(code.includes("KIM")) { subjectName = "Kimia"; colorFrom = "from-teal-400"; colorTo = "to-emerald-400"; icon1 = "fa-flask"; icon2 = "fa-atom"; } 
-            else if (code.includes("ING")) { subjectName = "Bahasa Inggris"; colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon1 = "fa-language"; icon2 = "fa-spell-check"; } 
-            else if (code.includes("MAT")) { subjectName = "Matematika"; colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon1 = "fa-calculator"; icon2 = "fa-square-root-variable"; }
-
-            container.insertAdjacentHTML('afterbegin', `
-                <div class="bg-white rounded-[1.5rem] border border-paper-200 shadow-sm overflow-hidden fade-in relative mb-6">
-                    <div class="h-32 bg-gradient-to-r ${colorFrom} ${colorTo} relative overflow-hidden flex items-center px-6 md:px-8">
-                        <i class="fa-solid ${icon1} absolute -right-4 -bottom-4 text-7xl text-white opacity-20"></i>
-                        <i class="fa-solid ${icon2} absolute right-20 top-4 text-4xl text-white opacity-20"></i>
-                        <h2 class="text-3xl font-black text-white relative z-10 tracking-wide">${subjectName}</h2>
-                    </div>
-                    <div class="p-6 md:p-8">
-                        <div class="flex space-x-2 mb-4">
-                            <span class="bg-blue-50 text-blue-500 px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center uppercase tracking-wider"><i class="fa-solid fa-clock mr-1.5 text-xs"></i> 1 hari lagi</span>
-                            <span class="bg-brand-50 text-brand-600 px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center uppercase tracking-wider"><i class="fa-solid fa-chalkboard-user mr-1.5 text-xs"></i> Sesi Offline</span>
-                        </div>
-                        <h3 class="text-xl font-black text-slate-800 mb-5 tracking-tight">${code} - ${subjectName}</h3>
-                        <div class="space-y-3 mb-6 text-sm font-medium text-slate-600">
-                            <div class="flex items-center"><i class="fa-regular fa-calendar w-7 text-center text-slate-400 text-lg"></i> Selasa, 28 Apr 2026</div>
-                            <div class="flex items-center"><i class="fa-regular fa-clock w-7 text-center text-slate-400 text-lg"></i> 17:00 - 18:30 WIB</div>
-                            <div class="flex items-center"><i class="fa-solid fa-person-chalkboard w-7 text-center text-slate-400 text-lg"></i> Firda A.</div>
-                            <div class="flex items-center"><i class="fa-solid fa-door-open w-7 text-center text-slate-400 text-lg"></i> Ruang 302</div>
-                        </div>
-                        <button class="w-full border-2 border-paper-200 text-slate-700 font-bold py-3.5 rounded-2xl hover:bg-paper-50 transition active:scale-95 flex items-center justify-center text-base" onclick="bukaDetailKelas('${code}', '${subjectName}', '${colorFrom}', '${colorTo}', '${icon1}', '${icon2}')">Lihat Detail</button>
-                    </div>
-                </div>`);
-            input.value = ''; window.showToast('Berhasil bergabung ke kelas ' + code);
-        };
-
-        // FUNGSI EXAM BROWSER
-        window.examModeActive = false;
-        window.mulaiUjian = () => {
-            const input = document.getElementById('kode-ujian-input');
-            const code = input.value.trim();
-            if(!code) return window.showToast('Masukkan kode pengawas terlebih dahulu!');
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen().then(() => {
-                    window.examModeActive = true;
-                    document.getElementById('ujian-setup-area').classList.add('hidden');
-                    document.getElementById('btn-kembali-ujian').classList.add('hidden');
-                    document.getElementById('ujian-active-area').classList.remove('hidden');
-                    window.toggleUIForExam(true);
-                    window.showToast('Mode Ujian Aktif. Sistem mengunci layar Anda!');
-                }).catch(err => { window.showToast('Gagal memulai mode layar penuh! Pastikan browser Anda mendukung fitur ini.'); });
-            } else { window.showToast('Browser Anda tidak mendukung Exam Mode.'); }
-        };
-
-        window.selesaiUjian = () => {
-            window.examModeActive = false;
-            if (document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
-            window.showToast('Ujian Anda berhasil dikumpulkan!');
-            switchTab('feed', document.querySelectorAll('.nav-btn')[0]);
-            setTimeout(() => {
-                document.getElementById('ujian-setup-area').classList.remove('hidden');
-                document.getElementById('btn-kembali-ujian').classList.remove('hidden');
-                document.getElementById('ujian-active-area').classList.add('hidden');
-                document.getElementById('kode-ujian-input').value = '';
-                window.toggleUIForExam(false);
-            }, 500);
-        };
-
-        // TANTANGAN LOGIC
-        window.renderChallenges = () => {
-            const list = document.getElementById('challenge-list');
-            if(!list) return;
-            list.innerHTML = '';
-            challenges.forEach(c => {
-                const isDone = appState.completedChallengeIds && appState.completedChallengeIds.includes(c.id);
-                const btnClass = isDone ? "bg-paper-100 text-slate-400" : "bg-brand-50 text-brand-600 hover:bg-brand-500 hover:text-white";
-                list.insertAdjacentHTML('beforeend', `
-                    <div class="bg-white p-5 rounded-[1.5rem] border border-paper-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between transition hover:shadow-md">
-                        <div class="flex items-center space-x-4 mb-4 sm:mb-0">
-                            <div class="bg-paper-50 text-brand-500 w-14 h-14 rounded-full flex items-center justify-center shrink-0 shadow-inner"><i class="fa-solid ${c.icon} text-2xl"></i></div>
-                            <div><h3 class="font-bold text-slate-800 text-lg">${c.title}</h3><p class="text-xs text-slate-500 mt-1">${c.desc}</p><p class="text-[10px] font-black text-orange-500 mt-2 bg-orange-50 inline-block px-3 py-1 rounded-full tracking-widest">+${c.points} POIN</p></div>
-                        </div>
-                        <button onclick="openChallengeValidation(${c.id})" class="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-bold active:scale-95 transform ${btnClass}" ${isDone ? 'disabled' : ''}>${isDone ? 'Selesai' : 'Selesaikan'}</button>
-                    </div>`);
-            });
-        };
-
-        let currentChallengeValidationId = null;
-        window.openChallengeValidation = (id) => {
-            currentChallengeValidationId = id; const c = challenges.find(x => x.id === id);
-            document.getElementById('cv-title').innerText = c.title;
-            document.getElementById('cv-upload-area').classList.remove('hidden'); document.getElementById('cv-preview-area').classList.add('hidden'); document.getElementById('cv-result').classList.add('hidden');
-            window.openModal('modal-challenge');
-        };
-
-        window.handleChallengeImage = (e) => {
-            const f = e.target.files[0]; if(!f) return;
-            const r = new FileReader(); r.onload = (ev) => {
-                document.getElementById('cv-image').src = ev.target.result;
-                document.getElementById('cv-upload-area').classList.add('hidden'); document.getElementById('cv-preview-area').classList.remove('hidden'); document.getElementById('cv-loading').classList.remove('hidden');
-                verifyChallengeWithAI(ev.target.result);
-            }; r.readAsDataURL(f);
-        };
-
-        async function verifyChallengeWithAI(b64) {
-            const c = challenges.find(x => x.id === currentChallengeValidationId);
-            const res = await window.fetchKimiAPI("Verifikasi tantangan: " + c.title, 'challenge');
-            document.getElementById('cv-loading').classList.add('hidden');
-            const resDiv = document.getElementById('cv-result'); resDiv.classList.remove('hidden');
-            if(res && res.includes("VALID") && !res.includes("TIDAK")) {
-                resDiv.className = "p-5 rounded-2xl mb-6 text-sm font-bold text-center bg-green-50 text-green-700 border-2 border-green-200";
-                resDiv.innerHTML = `<i class="fa-solid fa-circle-check mb-2 text-3xl"></i><br>Validasi Berhasil!`;
-                setTimeout(() => {
-                    if(!appState.completedChallengeIds) appState.completedChallengeIds = [];
-                    if(!appState.completedChallengeIds.includes(c.id)) {
-                        appState.completedChallengeIds.push(c.id); addPoints(c.points); appState.aksiCount++;
-                        saveState(); window.renderChallenges(); window.closeModal('modal-challenge'); window.showToast(`+${c.points} Poin!`);
-                    }
-                }, 2000);
-            } else {
-                resDiv.className = "p-5 rounded-2xl mb-6 text-sm font-bold text-center bg-red-50 text-red-700 border-2 border-red-200";
-                resDiv.innerHTML = `<i class="fa-solid fa-circle-xmark mb-2 text-3xl"></i><br>Gagal. Coba lagi.`; document.getElementById('cv-upload-area').classList.remove('hidden');
-            }
-        }
-
-        // RENDER POSTS & INTERACTIONS
-        window.renderPosts = (posts) => {
-            const container = document.getElementById('feed-container');
-            if(!container) return;
-            container.innerHTML = '';
-            
-            if(posts.length === 0) {
-                container.innerHTML = '<div class="text-center py-10 text-slate-500 font-medium">Belum ada aksi lingkungan di kampus hari ini.</div>';
-            }
-
-            posts.forEach(p => {
-                const html = `
-                <div class="bg-white p-6 md:p-8 mb-6 shadow-sm rounded-[2rem] md:rounded-[2.5rem] border border-paper-200 fade-in">
-                    <div class="flex items-center space-x-4 mb-5">
-                        <img src="${p.authorAvatar}" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-paper-100 shadow-sm">
-                        <div><p class="font-bold text-base md:text-lg text-slate-800">${p.authorName}</p><p class="text-[10px] text-brand-500 uppercase tracking-widest font-bold">Green Feed</p></div>
-                    </div>
-                    <p class="text-sm md:text-base mb-5 text-slate-700 leading-relaxed font-medium">${p.text}</p>
-                    ${p.image ? `<img src="${p.image}" class="w-full rounded-[1.5rem] mb-5 border border-paper-100 object-cover shadow-sm">` : ''}
-                    <div class="flex space-x-6 text-slate-400 border-t border-paper-100 pt-5">
-                        <button onclick="toggleLike('${p.id}', this)" class="flex items-center space-x-2 transition hover:text-brand-500 font-bold"><i class="${p.likes > 0 ? 'fa-solid text-brand-500' : 'fa-regular'} fa-leaf text-xl"></i> <span class="text-sm">${p.likes || 0}</span></button>
-                        <button onclick="openCommentModal('${p.id}', this)" class="flex items-center space-x-2 transition hover:text-accent-500 font-bold"><i class="fa-regular fa-comment text-xl"></i> <span class="text-sm">${p.comments || 0}</span></button>
-                    </div>
-                </div>`;
-                container.insertAdjacentHTML('beforeend', html);
-            });
-        };
-
-        window.toggleLike = async (id, btn) => {
-            if(!id || !currentUser) return;
-            const icon = btn.querySelector('i');
-            const span = btn.querySelector('span');
-            let likes = parseInt(span.innerText) || 0;
-            if(icon.classList.contains('fa-regular')) { icon.classList.replace('fa-regular', 'fa-solid'); icon.classList.add('text-brand-500'); likes++; }
-            else { icon.classList.replace('fa-solid', 'fa-regular'); icon.classList.remove('text-brand-500'); likes--; }
-            span.innerText = likes;
-            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', id), { likes: likes }); } catch(e){}
-        };
-
-        let currentCommentPostId = null; let currentCommentBtn = null;
-        window.openCommentModal = (postId, btn) => {
-            currentCommentPostId = postId; currentCommentBtn = btn;
-            document.getElementById('new-comment-text').value = '';
-            const container = document.getElementById('comment-list-container');
-            container.innerHTML = '<div class="text-center text-slate-400 text-sm py-8 bg-paper-50 rounded-[1.5rem]" id="empty-comment-msg">Belum ada komentar. Jadilah yang pertama!</div>';
-            window.openModal('modal-comment');
-        };
-
-        window.submitComment = async () => {
-            const input = document.getElementById('new-comment-text');
-            const text = input.value.trim(); if(!text) return;
-            let newCommentCount = 1;
-            if(currentCommentBtn) {
-                const countSpan = currentCommentBtn.querySelector('span');
-                newCommentCount = (parseInt(countSpan.innerText) || 0) + 1;
-                countSpan.innerText = newCommentCount;
-            }
-
-            const container = document.getElementById('comment-list-container');
-            const emptyMsg = document.getElementById('empty-comment-msg');
-            if (emptyMsg) emptyMsg.style.display = 'none';
-
-            container.insertAdjacentHTML('beforeend', `
-                <div class="flex space-x-4 fade-in mb-5">
-                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff" class="w-10 h-10 md:w-12 md:h-12 rounded-full shadow-sm">
-                    <div class="bg-white p-5 rounded-[1.5rem] rounded-tl-sm text-sm md:text-base flex-1 border border-paper-200">
-                        <p class="font-bold text-xs md:text-sm text-slate-800 mb-1.5">${appState.userName}</p>
-                        <p class="text-slate-700 leading-relaxed">${text}</p>
-                    </div>
-                </div>`);
-            container.scrollTop = container.scrollHeight;
-            input.value = ''; window.showToast("Komentar ditambahkan!");
-
-            if (currentUser && currentCommentPostId && !currentCommentPostId.startsWith('local')) {
-                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', currentCommentPostId), { comments: newCommentCount }); } 
-                catch (e) {}
-            }
-        };
-
-        let currentPostImageBase64 = null;
-        window.submitPost = async () => {
-            const text = document.getElementById('new-post-text').value;
-            if(!text.trim() && !currentPostImageBase64) return;
-            const newPost = { authorName: appState.userName, authorAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff`, text, image: currentPostImageBase64, timestamp: Date.now(), likes: 0, comments: 0 };
-            
-            // Add Optimistically
-            const container = document.getElementById('feed-container');
-            container.insertAdjacentHTML('afterbegin', `
-                <div class="bg-white p-6 md:p-8 mb-6 shadow-sm rounded-[2rem] md:rounded-[2.5rem] border border-paper-200 fade-in">
-                    <div class="flex items-center space-x-4 mb-5">
-                        <img src="${newPost.authorAvatar}" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-paper-100 shadow-sm">
-                        <div><p class="font-bold text-base md:text-lg text-slate-800">${newPost.authorName}</p><p class="text-[10px] text-brand-500 uppercase tracking-widest font-bold">Baru Saja</p></div>
-                    </div>
-                    <p class="text-sm md:text-base mb-5 text-slate-700 leading-relaxed font-medium">${newPost.text}</p>
-                    ${newPost.image ? `<img src="${newPost.image}" class="w-full rounded-[1.5rem] mb-5 border border-paper-100 object-cover shadow-sm">` : ''}
-                </div>`);
-
-            if(currentUser) {
-                try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'posts'), newPost); addPoints(10); } 
-                catch(e) {}
-            }
-            window.closeModal('modal-post'); document.getElementById('new-post-text').value = ''; window.removePostImage(); window.showToast("Aksi berhasil dibagikan! (+10 Pts)");
-        };
-
-        window.handleRealPostImageUpload = (e) => {
-            const r = new FileReader();
-            r.onload = (ev) => { currentPostImageBase64 = ev.target.result; document.getElementById('real-post-preview-img').src = ev.target.result; document.getElementById('post-image-preview').classList.remove('hidden'); };
-            if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
-        };
-        window.removePostImage = () => { currentPostImageBase64 = null; document.getElementById('post-image-preview').classList.add('hidden'); };
-
-        // GLOBAL CHAT & KIMI AI
-        window.sendGlobalMessage = async function() {
-            const input = document.getElementById('dm-input');
-            const text = input.value.trim(); if(!text) return;
-            input.value = ''; 
-            const dmBox = document.getElementById('dm-messages');
-            dmBox.innerHTML += `<div class="flex justify-end mb-4 fade-in"><div class="bg-slate-800 text-white rounded-2xl rounded-tr-sm py-3 px-5 text-sm md:text-base max-w-[80%] shadow-sm">${text}</div></div>`;
-            dmBox.scrollTop = dmBox.scrollHeight;
-            if (currentUser) {
-                try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'global_chat'), { text: text, userId: currentUser.uid, authorName: appState.userName, timestamp: Date.now() }); } 
-                catch(e) {}
-            }
-        };
-
-        window.renderGlobalChat = function(messages) {
-            const dmBox = document.getElementById('dm-messages');
-            if(!dmBox) return;
-            dmBox.innerHTML = '<div class="flex justify-center mb-8"><span class="text-[10px] text-slate-500 bg-paper-200 px-5 py-2 rounded-full font-bold uppercase tracking-widest shadow-inner">Ruang Obrolan Kampus</span></div>';
-            messages.forEach(msg => {
-                const isMe = msg.userId === (currentUser ? currentUser.uid : '');
-                if (isMe) { dmBox.innerHTML += `<div class="flex justify-end mb-4 fade-in"><div class="bg-slate-800 text-white rounded-2xl rounded-tr-sm py-3 px-5 text-sm md:text-base max-w-[80%] shadow-sm">${msg.text}</div></div>`; } 
-                else { dmBox.innerHTML += `<div class="flex justify-start mb-4 fade-in"><div class="flex flex-col max-w-[80%]"><span class="text-xs text-slate-500 ml-2 mb-1.5 font-bold">${msg.authorName}</span><div class="bg-white border border-paper-200 text-slate-800 rounded-2xl rounded-tl-sm py-3 px-5 text-sm md:text-base shadow-sm">${msg.text}</div></div></div>`; }
-            });
-            dmBox.scrollTop = dmBox.scrollHeight;
-        };
-
-        window.fetchKimiAPI = async function(promptText, imageType = false, customSystemPrompt = null) {
-            const url = `https://konektika.web.id/v1/chat/completions`; 
-            let messages = [{ role: "system", content: customSystemPrompt || "Kamu adalah Eco-Neo, asisten AI akademik dan lingkungan di kampus EcoVerse. Jawab dengan cerdas, solutif, dan ramah ala mahasiswa modern." }];
-            if (imageType === 'food') messages.push({ role: "system", content: "Beraktinglah seolah kamu melihat gambar makanan. Berikan gizi umum (Kalori, Protein) dan ingatkan untuk dihabiskan." });
-            else if (imageType === 'challenge') messages.push({ role: "system", content: "PENTING: Jawab persis: STATUS: VALID\nALASAN: [apresiasi singkat]." });
-            messages.push({ role: "user", content: promptText });
-            const payload = { model: "kimi-pro", messages, stream: false };
-            try {
-                const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kimiApiKey}` }, body: JSON.stringify(payload) });
-                const result = await response.json();
-                return result.choices[0].message.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-            } catch (error) { return "Koneksi ke server pusat kampus terganggu 📡"; }
-        };
-
-        window.sendBotMessage = function() {
-            const input = document.getElementById('bot-input');
-            const text = input.value.trim(); if(!text) return;
-            const chatBox = document.getElementById('bot-messages');
-            chatBox.innerHTML += `<div class="flex justify-end mb-5 fade-in"><div class="bg-slate-800 text-white rounded-[1.5rem] rounded-tr-sm py-4 px-6 text-sm md:text-base max-w-[85%] shadow-md">${text}</div></div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-            input.value = '';
-            const tid = 'typing-' + Date.now();
-            chatBox.innerHTML += `<div id="${tid}" class="flex justify-start mb-5 fade-in text-brand-500 font-bold"><i class="fa-solid fa-robot mr-3"></i> Neo berpikir...</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-            window.fetchKimiAPI(text).then(res => {
-                document.getElementById(tid).remove();
-                chatBox.innerHTML += `<div class="flex justify-start mb-5 fade-in"><div class="bg-white border border-paper-200 text-slate-800 rounded-[1.5rem] rounded-tl-sm py-5 px-6 md:px-8 text-sm md:text-base max-w-[85%] shadow-sm leading-relaxed">${res}</div></div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
-        };
-
-        window.handleBotImageUpload = (e) => {
-            const f = e.target.files[0]; if (!f) return;
-            const r = new FileReader(); r.onload = (ev) => {
-                const chatBox = document.getElementById('bot-messages');
-                chatBox.innerHTML += `<div class="flex justify-end mb-5 fade-in"><div class="bg-slate-800 text-white rounded-[1.5rem] p-2 max-w-[75%] shadow-md"><img src="${ev.target.result}" class="w-full rounded-[1.2rem]"></div></div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-                const tid = 'typing-' + Date.now();
-                chatBox.innerHTML += `<div id="${tid}" class="flex justify-start mb-5 fade-in text-brand-500 font-bold"><i class="fa-solid fa-robot mr-3"></i> Neo menganalisis foto...</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-                window.fetchKimiAPI("Berapa gizi makanan di foto ini?", 'food').then(res => {
-                    document.getElementById(tid).remove();
-                    chatBox.innerHTML += `<div class="flex justify-start mb-5 fade-in"><div class="bg-white border border-paper-200 text-slate-800 rounded-[1.5rem] rounded-tl-sm py-5 px-6 md:px-8 text-sm md:text-base max-w-[85%] shadow-sm leading-relaxed">${res}</div></div>`;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                });
-            }; r.readAsDataURL(f);
         };
 
         // DRAG & DROP PET WIDGET
@@ -1603,6 +1263,12 @@
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'global_chat'), (s) => { 
                             const ms = []; s.forEach(d => ms.push({id: d.id, ...d.data()})); 
                             ms.sort((a,b) => a.timestamp - b.timestamp); window.renderGlobalChat(ms); 
+                        });
+                        // REAL-TIME SINKRONISASI KELAS DOSEN KE MAHASISWA
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'classes'), (s) => { 
+                            globalClasses = [];
+                            s.forEach(d => globalClasses.push({id: d.id, ...d.data()})); 
+                            window.renderJoinedClasses();
                         });
                     }
                 });
