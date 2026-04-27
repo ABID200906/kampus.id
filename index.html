@@ -89,7 +89,7 @@
     <!-- MAIN APP WRAPPER -->
     <div id="main-app" class="w-full h-full flex flex-col md:flex-row hidden opacity-0 transition-opacity duration-500">
         
-        <!-- NAVBAR: DENGAN 5 MENU PROPOSIONAL -->
+        <!-- NAVBAR: DENGAN 5 MENU BARU (Beranda, Akademik, AI, Berita, Profile) -->
         <nav class="glass-header z-40 flex flex-row md:flex-col justify-around items-center h-[4.5rem] md:h-full w-[calc(100%-1.5rem)] md:w-24 lg:w-64 border border-paper-200 md:border-y-0 md:border-l-0 px-2 md:px-0 md:pt-8 shrink-0 transition-all bg-white/95 order-2 md:order-1 rounded-[2rem] md:rounded-none shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:shadow-none mb-3 md:mb-0 mx-auto md:mx-0">
             <div class="hidden md:flex items-center justify-center lg:justify-start px-0 lg:px-8 mb-10 text-brand-600 w-full">
                 <i class="fa-solid fa-leaf text-3xl lg:mr-3"></i>
@@ -108,18 +108,18 @@
                 <span class="text-[10px] md:text-xs mt-1 font-bold">Akademik</span>
             </button>
 
-            <!-- 3. Tantangan (Tengah) -->
-            <button onclick="switchTab('challenges', this)" class="nav-btn flex flex-col items-center justify-center w-full h-full hover:text-brand-500 transition rounded-full">
-                <i class="fa-solid fa-medal text-xl md:text-2xl transition-transform duration-200"></i>
-                <span class="text-[10px] md:text-xs mt-1 font-bold">Tantangan</span>
-            </button>
-            
-            <!-- 4. Eco-Neo Chatbot (Dengan aksen warna) -->
+            <!-- 3. Eco-Neo Chatbot AI (Tengah, desain menyatu) -->
             <button onclick="switchTab('chatbot', this)" class="nav-btn flex flex-col items-center justify-center w-full h-full hover:text-brand-500 transition group rounded-full">
                 <div class="bg-gradient-to-br from-brand-400 to-accent-500 text-white w-9 h-9 md:w-10 md:h-10 rounded-[0.9rem] flex items-center justify-center shadow-md group-hover:-translate-y-1 transition-transform duration-300">
                     <i class="fa-solid fa-robot text-lg"></i>
                 </div>
                 <span class="text-[10px] md:text-xs font-bold text-slate-800 mt-1">Eco-Neo</span>
+            </button>
+            
+            <!-- 4. Berita -->
+            <button onclick="switchTab('news', this)" class="nav-btn flex flex-col items-center justify-center w-full h-full hover:text-brand-500 transition rounded-full">
+                <i class="fa-solid fa-newspaper text-xl md:text-2xl transition-transform duration-200"></i>
+                <span class="text-[10px] md:text-xs mt-1 font-bold">Berita</span>
             </button>
             
             <!-- 5. Profile -->
@@ -143,27 +143,13 @@
                 <!-- 1. HOME & FEED VIEW -->
                 <div id="view-feed" class="view-section fade-in h-full w-full overflow-y-auto">
                     <div class="max-w-2xl mx-auto pt-4 md:pt-6 px-4 pb-6">
-                        
+
                         <!-- GREETING -->
                         <div class="mb-6 flex justify-between items-end">
                             <div>
                                 <h2 class="text-2xl font-black text-slate-800 tracking-tight">Halo, <span id="home-greeting-name">Mahasiswa</span>! 👋</h2>
                                 <p class="text-sm text-slate-500 font-medium mt-1">Siap untuk produktif dan menjaga bumi hari ini?</p>
                             </div>
-                        </div>
-
-                        <!-- NEWS SLIDER -->
-                        <div class="relative w-full h-32 mb-8 rounded-[2rem] overflow-hidden shadow-sm border border-brand-100 bg-white group eco-news-glow">
-                            <div id="news-slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out">
-                                <!-- Slides akan di-inject oleh JS -->
-                                <div class="min-w-full h-full flex items-center px-8 bg-gradient-to-r from-brand-50 to-white">
-                                    <p class="text-sm font-bold text-brand-600 animate-pulse">Memuat kabar kampus hari ini...</p>
-                                </div>
-                            </div>
-                            <!-- Slider Dots -->
-                            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2" id="slider-dots"></div>
-                            <!-- News Badge -->
-                            <div class="absolute top-4 left-4 bg-brand-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-sm z-10 uppercase tracking-widest">Hot News</div>
                         </div>
 
                         <!-- MENU KAMPUS (QUICK SHORTCUTS GRID) -->
@@ -196,9 +182,9 @@
                                 <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-earth-asia text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Obrolan</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-slate-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Menampilkan semua menu...')">
-                                <div class="w-12 h-12 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-ellipsis text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Lainnya</span>
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="switchTab('challenges')">
+                                <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-medal text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tantangan</span>
                             </div>
                         </div>
 
@@ -268,6 +254,18 @@
                                 </div>
                                 <span class="text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-md">Besok</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEWS VIEW (TAB BARU) -->
+                <div id="view-news" class="view-section hidden fade-in h-full w-full overflow-y-auto">
+                    <div class="max-w-2xl mx-auto pt-4 md:pt-8 px-4 pb-20">
+                        <h2 class="text-2xl font-black mb-2 text-slate-800 flex items-center"><i class="fa-solid fa-newspaper text-brand-500 mr-3"></i>Berita Kampus</h2>
+                        <p class="text-sm text-slate-500 mb-6 font-medium">Informasi dan inovasi hijau terbaru hari ini yang disaring oleh Eco-Neo AI.</p>
+                        
+                        <div id="news-container" class="space-y-4">
+                            <div class="text-center py-10 text-slate-400 font-medium animate-pulse">Memuat berita terbaru...</div>
                         </div>
                     </div>
                 </div>
@@ -619,38 +617,28 @@
             } else window.showToast("❌ Poin kurang!");
         };
 
-        // SLIDER NEWS
-        let currentSlide = 0;
-        window.renderNewsSlider = (newsText) => {
-            const wrapper = document.getElementById('news-slider-wrapper');
-            const dots = document.getElementById('slider-dots');
-            if(!wrapper || !newsText) return;
+        // RENDER BERITA AI DI TAB NEWS
+        window.renderNewsFeed = (newsText) => {
+            const container = document.getElementById('news-container');
+            if(!container || !newsText) return;
 
             const newsItems = newsText.split('•').map(t => t.trim()).filter(t => t.length > 5);
             if(newsItems.length === 0) return;
             
-            wrapper.innerHTML = ''; dots.innerHTML = '';
+            container.innerHTML = '';
 
             newsItems.forEach((news, idx) => {
-                wrapper.innerHTML += `
-                    <div class="min-w-full h-full flex items-center px-8 bg-gradient-to-br from-brand-50 via-white to-accent-50">
-                        <div class="max-w-md">
-                            <p class="text-xs font-black text-brand-600 uppercase tracking-tighter mb-1">EcoVerse Today</p>
-                            <h4 class="text-sm md:text-base font-bold text-slate-800 leading-tight">${news}</h4>
+                container.innerHTML += `
+                    <div class="bg-white p-5 rounded-[1.5rem] border border-paper-200 shadow-sm transition hover:shadow-md flex items-start space-x-4 fade-in" style="animation-delay: ${idx * 0.1}s">
+                        <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-500 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-newspaper text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-black text-accent-500 uppercase tracking-widest">EcoVerse Today</span>
+                            <h4 class="text-sm font-bold text-slate-800 leading-snug mt-1">${news}</h4>
                         </div>
                     </div>`;
-                dots.innerHTML += `<div class="w-2 h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-brand-500 w-6' : 'bg-brand-200'}"></div>`;
             });
-
-            clearInterval(window.newsInterval);
-            window.newsInterval = setInterval(() => {
-                currentSlide = (currentSlide + 1) % newsItems.length;
-                wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-                Array.from(dots.children).forEach((dot, dIdx) => {
-                    if(dIdx === currentSlide) { dot.classList.add('bg-brand-500', 'w-6'); dot.classList.remove('bg-brand-200'); }
-                    else { dot.classList.remove('bg-brand-500', 'w-6'); dot.classList.add('bg-brand-200'); }
-                });
-            }, 5000);
         };
 
         // FETCH NEWS DARI KIMI AI
@@ -665,7 +653,7 @@
                     }
                 } catch(e) {}
             }
-            if(appState.newsText) window.renderNewsSlider(appState.newsText);
+            if(appState.newsText) window.renderNewsFeed(appState.newsText);
         }
 
         // UPDATE UI KESELURUHAN
@@ -708,7 +696,7 @@
                 btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
             }
             
-            if(appState.newsText) window.renderNewsSlider(appState.newsText);
+            if(appState.newsText) window.renderNewsFeed(appState.newsText);
         };
 
         // TANTANGAN LOGIC
