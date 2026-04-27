@@ -1449,7 +1449,36 @@
         window.closeModal = (id) => { document.getElementById(id + '-content').classList.add('translate-y-full', 'scale-95'); setTimeout(() => document.getElementById(id).classList.add('hidden'), 300); };
         window.showToast = (m) => { const t = document.getElementById("toast"); t.innerText = m; t.className = "toast show"; setTimeout(() => t.className = "toast", 3000); };
         window.saveProfile = () => { appState.userName = document.getElementById('edit-profile-name').value; appState.userBio = document.getElementById('edit-profile-bio').value; saveState(); window.closeModal('modal-edit-profile'); window.showToast("Data Akademik diperbarui!"); };
-        
+
+        <script>
+        let selectedRole = 'mahasiswa';
+
+        function selectRole(role) {
+            selectedRole = role;
+            const btnMhs = document.getElementById('btn-mahasiswa');
+            const btnDosen = document.getElementById('btn-dosen');
+            const inputUser = document.getElementById('login-username');
+
+            if (role === 'mahasiswa') {
+                // Update UI Button
+                btnMhs.classList.add('bg-white', 'text-brand-500', 'shadow-sm');
+                btnMhs.classList.remove('text-slate-500');
+                btnDosen.classList.remove('bg-white', 'text-brand-500', 'shadow-sm');
+                btnDosen.classList.add('text-slate-500');
+                // Update Placeholder
+                inputUser.placeholder = "NIM Mahasiswa";
+            } else {
+                // Update UI Button
+                btnDosen.classList.add('bg-white', 'text-brand-500', 'shadow-sm');
+                btnDosen.classList.remove('text-slate-500');
+                btnMhs.classList.remove('bg-white', 'text-brand-500', 'shadow-sm');
+                btnMhs.classList.add('text-slate-500');
+                // Update Placeholder
+                inputUser.placeholder = "NIP / Username Dosen";
+            }
+        }
+    </script>
+    
         // INIT & FIREBASE CONNECT
         const initApp = async () => {
             if (appState.isLoggedIn) {
