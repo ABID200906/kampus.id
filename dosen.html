@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoVerse Lecturer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { 50: '#ecfdf5', 100: '#d1fae5', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857' },
+                        accent: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb' },
+                        paper: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .bg-login { background: linear-gradient(135deg, #047857 0%, #1e293b 100%); }
+        .nav-item.active { background-color: #ecfdf5; color: #10b981; border-right: 4px solid #10b981; font-weight: 700; }
+        .nav-item:not(.active) { color: #64748b; }
+        
+        .toast {
+            visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff;
+            text-align: center; border-radius: 12px; padding: 16px; position: fixed;
+            z-index: 1000; right: 30px; bottom: 30px; font-size: 14px; font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: opacity 0.3s, transform 0.3s;
+            transform: translateY(100px); opacity: 0;
+        }
+        .toast.show { visibility: visible; transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+
+<body class="bg-paper-100 text-slate-800 font-sans antialiased h-screen overflow-hidden flex">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-view" class="fixed inset-0 z-[100] bg-login flex items-center justify-center p-6 transition-opacity duration-500">
+        <div class="bg-white/95 backdrop-blur-xl w-full max-w-md rounded-[2rem] p-10 shadow-2xl flex flex-col items-center fade-in text-center border border-white/20">
+            <div class="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center text-brand-400 text-4xl shadow-lg mb-6">
+                <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+            <h1 class="text-3xl font-black text-slate-800 tracking-tight mb-1">EcoVerse</h1>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-8">Lecturer Portal</p>
+            
+            <div class="w-full space-y-4">
+                <div class="relative">
+                    <i class="fa-solid fa-id-badge absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="login-nidn" placeholder="NIDN / NIP Dosen" class="w-full bg-paper-50 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-500 transition-all border border-paper-200">
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="password" id="login-pass" placeholder="Password" class="w-full bg-paper-50 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-500 transition-all border border-paper-200">
+                </div>
+            </div>
+            
+            <button onclick="handleLogin()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 rounded-xl mt-8 shadow-lg shadow-brand-500/30 active:scale-95 transition-all text-lg">Masuk Dashboard</button>
+        </div>
+    </div>
+
+    <!-- SIDEBAR OVERLAY (Mobile) -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-20 hidden md:hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>
+
+    <!-- SIDEBAR (Desktop & Mobile) -->
+    <aside id="dosen-sidebar" class="w-64 bg-white border-r border-paper-200 flex flex-col h-full shrink-0 z-30 fixed md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+        <div class="p-6 flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 bg-brand-100 text-brand-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-leaf"></i></div>
+            <div>
+                <h1 class="text-lg font-black text-slate-800 tracking-tight">EcoVerse</h1>
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Dosen & Staff</p>
+            </div>
+        </div>
+        
+        <nav class="flex-1 flex flex-col space-y-1 px-3">
+            <button onclick="switchTab('dashboard', this)" class="nav-item active flex items-center px-4 py-3.5 rounded-xl transition-all w-full text-left">
+                <i class="fa-solid fa-chart-pie w-6 text-lg"></i> <span class="font-medium text-sm">Dashboard</span>
+            </button>
+            <button onclick="switchTab('kelas', this)" class="nav-item flex items-center px-4 py-3.5 rounded-xl transition-all w-full text-left">
+                <i class="fa-solid fa-chalkboard-user w-6 text-lg"></i> <span class="font-medium text-sm">Manajemen Kelas</span>
+            </button>
+            <button onclick="switchTab('ujian', this)" class="nav-item flex items-center px-4 py-3.5 rounded-xl transition-all w-full text-left group">
+                <i class="fa-solid fa-laptop-code w-6 text-lg group-hover:text-red-500 transition-colors"></i> <span class="font-medium text-sm">Monitor Ujian</span>
+            </button>
+            <button onclick="switchTab('presensi', this)" class="nav-item flex items-center px-4 py-3.5 rounded-xl transition-all w-full text-left">
+                <i class="fa-solid fa-location-dot w-6 text-lg"></i> <span class="font-medium text-sm">Laporan Presensi</span>
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-paper-200">
+            <div class="flex items-center space-x-3 p-2 bg-paper-50 rounded-xl border border-paper-200 cursor-pointer hover:bg-paper-100 transition">
+                <img id="dosen-avatar" src="" class="w-10 h-10 rounded-lg">
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-slate-800 truncate" id="dosen-name">Dr. Eco</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Fakultas Sains</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MOBILE HEADER -->
+    <header class="md:hidden bg-white border-b border-paper-200 px-4 py-3 flex justify-between items-center z-20 shrink-0 w-full absolute top-0">
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 bg-brand-100 text-brand-600 rounded-lg flex items-center justify-center"><i class="fa-solid fa-leaf"></i></div>
+            <h1 class="text-base font-black text-slate-800">EcoVerse Dosen</h1>
+        </div>
+        <button class="text-slate-500 text-xl w-10 h-10 flex items-center justify-center rounded-full hover:bg-paper-100 transition" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 bg-paper-50 h-full overflow-y-auto relative pt-16 md:pt-0 pb-10">
+        
+        <!-- 1. DASHBOARD VIEW -->
+        <div id="view-dashboard" class="view-section fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
+            <h2 class="text-2xl font-black text-slate-800 mb-2">Selamat datang, <span id="welcome-name">Dosen</span>!</h2>
+            <p class="text-slate-500 text-sm mb-8 font-medium">Ringkasan aktivitas akademik EcoVerse hari ini.</p>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10">
+                <div class="bg-white p-6 rounded-2xl border border-paper-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Kelas Aktif</p>
+                        <p class="text-3xl font-black text-slate-800" id="stat-kelas">3</p>
+                    </div>
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center text-2xl"><i class="fa-solid fa-book-open"></i></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-paper-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Presensi Hari Ini</p>
+                        <p class="text-3xl font-black text-brand-600" id="stat-presensi">124</p>
+                    </div>
+                    <div class="w-14 h-14 bg-brand-50 text-brand-500 rounded-full flex items-center justify-center text-2xl"><i class="fa-solid fa-fingerprint"></i></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-red-100 shadow-sm flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-2 h-full bg-red-500"></div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Pelanggaran Ujian</p>
+                        <p class="text-3xl font-black text-red-600" id="stat-pelanggaran">0</p>
+                    </div>
+                    <div class="w-14 h-14 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <h3 class="text-lg font-bold text-slate-800 mb-4">Aksi Cepat</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button onclick="switchTab('kelas', document.querySelectorAll('.nav-item')[1])" class="bg-white border border-paper-200 p-5 rounded-2xl shadow-sm hover:shadow-md transition text-left group">
+                    <i class="fa-solid fa-plus text-brand-500 text-2xl mb-3 group-hover:scale-110 transition-transform"></i>
+                    <p class="font-bold text-slate-700 text-sm">Buat Kelas Baru</p>
+                </button>
+                <button onclick="switchTab('ujian', document.querySelectorAll('.nav-item')[2])" class="bg-white border border-paper-200 p-5 rounded-2xl shadow-sm hover:shadow-md transition text-left group">
+                    <i class="fa-solid fa-laptop-code text-red-500 text-2xl mb-3 group-hover:scale-110 transition-transform"></i>
+                    <p class="font-bold text-slate-700 text-sm">Mulai Sesi Ujian</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. MANAJEMEN KELAS VIEW -->
+        <div id="view-kelas" class="view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-800 mb-1">Manajemen Kelas</h2>
+                    <p class="text-slate-500 text-sm font-medium">Buat dan kelola materi untuk mahasiswa.</p>
+                </div>
+                <button onclick="openModal('modal-buat-kelas')" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-md transition active:scale-95 text-sm flex items-center"><i class="fa-solid fa-plus mr-2"></i> Kelas Baru</button>
+            </div>
+
+            <!-- Daftar Kelas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="dosen-kelas-list">
+                <!-- Diisi oleh JavaScript -->
+            </div>
+        </div>
+
+        <!-- 2.5. KELOLA MATERI KELAS VIEW (BARU) -->
+        <div id="view-kelola-materi" class="view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
+            <button onclick="switchTab('kelas', document.querySelectorAll('.nav-item')[1])" class="mb-6 flex items-center text-slate-500 hover:text-brand-500 font-bold text-sm transition bg-white px-4 py-2 rounded-xl shadow-sm border border-paper-200 w-max"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Daftar Kelas</button>
+            
+            <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-8 space-y-4 md:space-y-0">
+                <div>
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tight" id="kelola-kelas-title">KIM-101</h2>
+                    <p class="text-slate-500 text-sm font-medium mt-1" id="kelola-kelas-desc">Manajemen Silabus & Tugas</p>
+                </div>
+                <button onclick="openModal('modal-tambah-materi')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold shadow-md transition active:scale-95 text-sm flex items-center"><i class="fa-solid fa-plus mr-2"></i> Tambah Materi</button>
+            </div>
+
+            <!-- Daftar Materi Topik -->
+            <div class="bg-white p-6 md:p-8 rounded-[2rem] border border-paper-200 shadow-sm" id="materi-list-container">
+                <h3 class="font-black text-slate-800 text-lg mb-4">Topik 1: Pengantar & Konsep Dasar</h3>
+                <div class="space-y-3" id="materi-items">
+                    <!-- Default Materi -->
+                    <div class="flex justify-between items-center p-4 bg-paper-50 rounded-[1rem] border border-paper-200">
+                        <div class="flex items-center">
+                            <i class="fa-regular fa-file-pdf text-red-500 text-3xl mr-4"></i>
+                            <div><p class="font-bold text-slate-700 text-sm">Modul 1 - Konsep Dasar</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Dokumen PDF</p></div>
+                        </div>
+                        <button class="text-slate-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-50" onclick="hapusMateri(this)"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. MONITOR UJIAN VIEW -->
+        <div id="view-ujian" class="view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
+            <h2 class="text-2xl font-black text-slate-800 mb-2">Live Monitor Ujian</h2>
+            <p class="text-slate-500 text-sm mb-8 font-medium">Buat sesi ujian dan awasi keamanan Exam Browser mahasiswa secara real-time.</p>
+
+            <div class="bg-slate-800 p-6 rounded-[2rem] shadow-xl text-white mb-8 flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Status Sesi</p>
+                    <div class="flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse mr-3"></span>
+                        <h3 class="text-2xl font-black tracking-widest" id="display-kode-ujian">TIDAK AKTIF</h3>
+                    </div>
+                </div>
+                <button id="btn-toggle-ujian" onclick="toggleUjianSesi()" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3.5 rounded-xl font-bold shadow-lg transition active:scale-95">Buat Sesi Ujian</button>
+            </div>
+
+            <!-- Tabel Monitoring -->
+            <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-paper-100 bg-paper-50 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800"><i class="fa-solid fa-users-viewfinder text-brand-500 mr-2"></i> Mahasiswa Aktif</h3>
+                    <span class="bg-brand-100 text-brand-600 px-3 py-1 rounded-full text-xs font-bold" id="exam-student-count">0 Peserta</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-paper-50 text-xs uppercase font-bold text-slate-400 border-b border-paper-200">
+                            <tr>
+                                <th class="px-6 py-4">NIM / Nama</th>
+                                <th class="px-6 py-4">Waktu Gabung</th>
+                                <th class="px-6 py-4">Status Layar</th>
+                                <th class="px-6 py-4">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="exam-monitor-body">
+                            <tr><td colspan="4" class="px-6 py-10 text-center text-slate-400 font-medium">Sesi ujian belum dimulai.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. PRESENSI VIEW -->
+        <div id="view-presensi" class="view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-8 space-y-4 md:space-y-0">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-800 mb-2">Laporan Presensi Geofencing</h2>
+                    <p class="text-slate-500 text-sm font-medium">Daftar mahasiswa yang berhasil Check-in dalam radius 1KM.</p>
+                </div>
+                <button onclick="sinkronPresensi()" id="btn-sync" class="bg-brand-100 text-brand-600 hover:bg-brand-200 px-5 py-3 rounded-xl font-bold shadow-sm transition active:scale-95 text-sm flex items-center justify-center"><i class="fa-solid fa-rotate mr-2 transition-transform duration-500" id="icon-sync"></i> Tarik Data Geofence</button>
+            </div>
+            
+            <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-paper-50 text-xs uppercase font-bold text-slate-400 border-b border-paper-200">
+                            <tr>
+                                <th class="px-6 py-4">NIM / Nama Mahasiswa</th>
+                                <th class="px-6 py-4">Waktu Check-in</th>
+                                <th class="px-6 py-4">Status Lokasi (Jarak)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="presensi-table-body">
+                            <tr>
+                                <td colspan="3" class="px-6 py-16 text-center">
+                                    <i class="fa-solid fa-map-location-dot text-5xl text-slate-300 mb-4 block"></i>
+                                    <p class="text-slate-500 font-medium">Data belum disinkronisasi. Klik tombol Tarik Data.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL BUAT KELAS -->
+    <div id="modal-buat-kelas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl relative scale-95 transition-transform" id="modal-buat-kelas-content">
+            <button onclick="closeModal('modal-buat-kelas')" class="absolute top-5 right-5 text-slate-400 bg-paper-50 hover:bg-paper-100 transition w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="font-bold text-2xl mb-6 text-slate-800">Buat Kelas Baru</h3>
+            <div class="space-y-4">
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Kode Kelas (Singkat)</p>
+                    <input type="text" id="input-kode-kelas" placeholder="Contoh: BIO-202" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-brand-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-bold uppercase">
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Nama Mata Kuliah</p>
+                    <input type="text" id="input-nama-kelas" placeholder="Contoh: Biologi Lanjutan" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-brand-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-medium">
+                </div>
+            </div>
+            <button onclick="tambahKelas()" class="w-full bg-brand-600 hover:bg-brand-700 transition text-white py-4 rounded-xl font-bold shadow-md active:scale-95 mt-8">Simpan & Buat Kode</button>
+        </div>
+    </div>
+
+    <!-- MODAL TAMBAH MATERI -->
+    <div id="modal-tambah-materi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl relative scale-95 transition-transform" id="modal-tambah-materi-content">
+            <button onclick="closeModal('modal-tambah-materi')" class="absolute top-5 right-5 text-slate-400 bg-paper-50 hover:bg-paper-100 transition w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="font-bold text-2xl mb-6 text-slate-800">Upload Materi Baru</h3>
+            <div class="space-y-4">
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Judul Materi / Tugas</p>
+                    <input type="text" id="input-judul-materi" placeholder="Contoh: Modul 2 - Ekosistem" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-medium">
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Jenis Konten</p>
+                    <div class="relative">
+                        <select id="input-jenis-materi" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-medium appearance-none">
+                            <option value="pdf">Dokumen PDF</option>
+                            <option value="video">Video Pembelajaran</option>
+                            <option value="kuis">Kuis Evaluasi</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">File / Tautan Lampiran</p>
+                    <input type="file" class="w-full bg-paper-50 p-3 rounded-xl border border-paper-200 text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100 cursor-pointer">
+                </div>
+            </div>
+            <button onclick="simpanMateri()" class="w-full bg-indigo-500 hover:bg-indigo-600 transition text-white py-4 rounded-xl font-bold shadow-md active:scale-95 mt-8">Upload ke Kelas</button>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast">Notifikasi</div>
+
+    <script>
+        // DATA LOKAL DOSEN
+        let dosenState = JSON.parse(localStorage.getItem('ecoverse_dosen')) || {
+            isLoggedIn: false,
+            name: "Dr. Eco Susanto",
+            nidn: "",
+            kelas: []
+        };
+        let ujianAktif = false;
+        let simulasiInterval;
+
+        // AUTH & INIT
+        const initApp = () => {
+            if (dosenState.isLoggedIn) {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('dosen-name').innerText = dosenState.name;
+                document.getElementById('welcome-name').innerText = dosenState.name.split(' ')[0];
+                document.getElementById('dosen-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(dosenState.name)}&background=10b981&color=fff`;
+                renderKelas();
+            }
+        };
+
+        window.handleLogin = () => {
+            const nidn = document.getElementById('login-nidn').value.trim();
+            if(!nidn) return window.showToast('Masukkan NIDN terlebih dahulu!');
+            
+            dosenState.isLoggedIn = true;
+            dosenState.nidn = nidn;
+            localStorage.setItem('ecoverse_dosen', JSON.stringify(dosenState));
+            
+            document.getElementById('login-view').classList.add('opacity-0');
+            setTimeout(() => { document.getElementById('login-view').classList.add('hidden'); initApp(); }, 500);
+            window.showToast("Selamat datang di Dasbor Dosen!");
+        };
+
+        // NAVIGATION
+        window.switchTab = (id, el) => {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
+            document.getElementById('view-'+id).classList.remove('hidden');
+            if(el) {
+                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+                el.classList.add('active');
+            }
+        };
+
+        // MODAL & TOAST
+        window.openModal = (id) => { document.getElementById(id).classList.remove('hidden'); setTimeout(() => document.getElementById(id + '-content').classList.remove('scale-95'), 10); };
+        window.closeModal = (id) => { document.getElementById(id + '-content').classList.add('scale-95'); setTimeout(() => document.getElementById(id).classList.add('hidden'), 300); };
+        window.showToast = (m) => { 
+            const t = document.getElementById("toast"); 
+            t.innerText = m; t.classList.add("show"); 
+            setTimeout(() => t.classList.remove("show"), 3000); 
+        };
+
+        // SIDEBAR MOBILE LOGIC
+        let sidebarOpen = false;
+        window.toggleSidebar = () => {
+            sidebarOpen = !sidebarOpen;
+            const sb = document.getElementById('dosen-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if(sidebarOpen) {
+                sb.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sb.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        };
+
+        // OVERRIDE SWITCHTAB TO CLOSE SIDEBAR ON MOBILE
+        const originalSwitchTab = window.switchTab;
+        window.switchTab = (id, el) => {
+            originalSwitchTab(id, el);
+            if(window.innerWidth < 768 && sidebarOpen) {
+                toggleSidebar();
+            }
+        };
+
+        // KELAS LOGIC
+        window.tambahKelas = () => {
+            const kode = document.getElementById('input-kode-kelas').value.trim().toUpperCase();
+            const nama = document.getElementById('input-nama-kelas').value.trim();
+            if(!kode || !nama) return window.showToast('Lengkapi data kelas!');
+            
+            dosenState.kelas.push({ kode, nama, mhs: 0 });
+            localStorage.setItem('ecoverse_dosen', JSON.stringify(dosenState));
+            renderKelas();
+            closeModal('modal-buat-kelas');
+            document.getElementById('input-kode-kelas').value = '';
+            document.getElementById('input-nama-kelas').value = '';
+            window.showToast(`Kelas ${kode} berhasil dibuat!`);
+        };
+
+        function renderKelas() {
+            const list = document.getElementById('dosen-kelas-list');
+            document.getElementById('stat-kelas').innerText = dosenState.kelas.length + 1; // +1 untuk dummy default
+            
+            // Start with dummy
+            let html = `
+                <div class="bg-white border border-paper-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="h-24 bg-gradient-to-r from-teal-400 to-emerald-400 p-5 flex items-end relative overflow-hidden">
+                        <i class="fa-solid fa-flask absolute -right-2 -bottom-2 text-6xl text-white/20"></i>
+                        <h3 class="text-2xl font-black text-white relative z-10">KIM-101</h3>
+                    </div>
+                    <div class="p-5">
+                        <p class="font-bold text-slate-800 text-lg mb-1">Kimia Lingkungan</p>
+                        <p class="text-xs text-slate-500 mb-4 font-medium"><i class="fa-solid fa-users mr-1"></i> 45 Mahasiswa Bergabung</p>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-paper-100 hover:bg-paper-200 text-slate-600 font-bold py-2 rounded-lg text-xs transition" onclick="bukaKelolaMateri('KIM-101', 'Kimia Lingkungan')">Kelola Materi</button>
+                            <button class="flex-1 bg-brand-50 hover:bg-brand-100 text-brand-600 font-bold py-2 rounded-lg text-xs transition" onclick="window.showToast('Kode disalin: KIM-101')">Salin Kode</button>
+                        </div>
+                    </div>
+                </div>`;
+                
+            dosenState.kelas.forEach(k => {
+                html += `
+                <div class="bg-white border border-paper-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition fade-in">
+                    <div class="h-24 bg-gradient-to-r from-indigo-400 to-blue-500 p-5 flex items-end relative overflow-hidden">
+                        <i class="fa-solid fa-book absolute -right-2 -bottom-2 text-6xl text-white/20"></i>
+                        <h3 class="text-2xl font-black text-white relative z-10">${k.kode}</h3>
+                    </div>
+                    <div class="p-5">
+                        <p class="font-bold text-slate-800 text-lg mb-1 line-clamp-1">${k.nama}</p>
+                        <p class="text-xs text-slate-500 mb-4 font-medium"><i class="fa-solid fa-users mr-1"></i> ${k.mhs} Mahasiswa Bergabung</p>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-paper-100 hover:bg-paper-200 text-slate-600 font-bold py-2 rounded-lg text-xs transition" onclick="bukaKelolaMateri('${k.kode}', '${k.nama}')">Kelola Materi</button>
+                            <button class="flex-1 bg-brand-50 hover:bg-brand-100 text-brand-600 font-bold py-2 rounded-lg text-xs transition" onclick="window.showToast('Kode disalin: ${k.kode}')">Salin Kode</button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        // FUNGSI KELOLA MATERI & TAMBAH MATERI
+        window.bukaKelolaMateri = (kode, nama) => {
+            document.getElementById('kelola-kelas-title').innerText = kode;
+            document.getElementById('kelola-kelas-desc').innerText = nama + " - Manajemen Silabus & Tugas";
+            switchTab('kelola-materi'); // Akan menyembunyikan view-kelas dan memunculkan view-kelola-materi
+        };
+
+        window.simpanMateri = () => {
+            const judul = document.getElementById('input-judul-materi').value.trim();
+            const jenis = document.getElementById('input-jenis-materi').value;
+            if(!judul) return window.showToast('Judul materi harus diisi!');
+
+            let iconHtml = '';
+            let tipeText = '';
+            if (jenis === 'pdf') {
+                iconHtml = '<i class="fa-regular fa-file-pdf text-red-500 text-3xl mr-4"></i>';
+                tipeText = 'Dokumen PDF';
+            } else if (jenis === 'video') {
+                iconHtml = '<i class="fa-solid fa-circle-play text-blue-500 text-3xl mr-4"></i>';
+                tipeText = 'Video Pembelajaran';
+            } else {
+                iconHtml = '<i class="fa-solid fa-list-check text-amber-500 text-3xl mr-4"></i>';
+                tipeText = 'Kuis Evaluasi';
+            }
+
+            const materiList = document.getElementById('materi-items');
+            materiList.insertAdjacentHTML('beforeend', `
+                <div class="flex justify-between items-center p-4 bg-paper-50 rounded-[1rem] border border-paper-200 fade-in">
+                    <div class="flex items-center">
+                        ${iconHtml}
+                        <div><p class="font-bold text-slate-700 text-sm">${judul}</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">${tipeText}</p></div>
+                    </div>
+                    <button class="text-slate-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-50" onclick="hapusMateri(this)"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `);
+            
+            closeModal('modal-tambah-materi');
+            document.getElementById('input-judul-materi').value = '';
+            window.showToast('Materi berhasil diunggah ke kelas!');
+        };
+
+        window.hapusMateri = (btn) => {
+            btn.closest('.flex.justify-between').remove();
+            window.showToast('Materi dihapus dari silabus.');
+        };
+
+        // FUNGSI SINKRONISASI PRESENSI
+        window.sinkronPresensi = () => {
+            const btn = document.getElementById('btn-sync');
+            const icon = document.getElementById('icon-sync');
+            const tbody = document.getElementById('presensi-table-body');
+            
+            icon.classList.add('rotate-180');
+            btn.disabled = true;
+            tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-16 text-center text-brand-500"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-3 block"></i><p class="font-bold">Menarik Data GPS Mahasiswa...</p></td></tr>';
+            
+            setTimeout(() => {
+                icon.classList.remove('rotate-180');
+                btn.disabled = false;
+                
+                tbody.innerHTML = `
+                    <tr class="border-b border-paper-100 bg-white hover:bg-paper-50 transition fade-in">
+                        <td class="px-6 py-4 font-bold text-slate-800">10112 • Budi Santoso</td>
+                        <td class="px-6 py-4 text-slate-600">07:45 WIB</td>
+                        <td class="px-6 py-4"><span class="bg-brand-50 text-brand-600 px-3 py-1 rounded-full text-[10px] font-bold border border-brand-200"><i class="fa-solid fa-location-crosshairs mr-1"></i> 120m (Dalam Radius)</span></td>
+                    </tr>
+                    <tr class="border-b border-paper-100 bg-white hover:bg-paper-50 transition fade-in" style="animation-delay: 0.1s">
+                        <td class="px-6 py-4 font-bold text-slate-800">10113 • Rina Amelia</td>
+                        <td class="px-6 py-4 text-slate-600">07:50 WIB</td>
+                        <td class="px-6 py-4"><span class="bg-brand-50 text-brand-600 px-3 py-1 rounded-full text-[10px] font-bold border border-brand-200"><i class="fa-solid fa-location-crosshairs mr-1"></i> 340m (Dalam Radius)</span></td>
+                    </tr>
+                    <tr class="border-b border-paper-100 bg-white hover:bg-paper-50 transition fade-in" style="animation-delay: 0.2s">
+                        <td class="px-6 py-4 font-bold text-slate-800">10115 • Kevin Julian</td>
+                        <td class="px-6 py-4 text-slate-600">08:05 WIB</td>
+                        <td class="px-6 py-4"><span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-[10px] font-bold border border-red-200"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 1.2km (Luar Radius)</span></td>
+                    </tr>
+                `;
+                window.showToast("Data presensi berhasil diperbarui!");
+            }, 2000);
+        };
+
+        // UJIAN & MONITORING LOGIC
+        window.keluarkanPeserta = (btn) => {
+            const row = btn.closest('tr');
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+            window.showToast('Peserta telah dikeluarkan dari sesi ujian.');
+        };
+
+        window.toggleUjianSesi = () => {
+            const btn = document.getElementById('btn-toggle-ujian');
+            const disp = document.getElementById('display-kode-ujian');
+            const tBody = document.getElementById('exam-monitor-body');
+            const count = document.getElementById('exam-student-count');
+
+            if(!ujianAktif) {
+                ujianAktif = true;
+                const randomCode = 'EXAM-' + Math.floor(1000 + Math.random() * 9000);
+                disp.innerText = randomCode;
+                disp.className = "text-3xl font-black tracking-widest text-brand-400";
+                btn.innerText = "Akhiri Sesi Ujian";
+                btn.className = "bg-slate-700 hover:bg-slate-600 text-white px-8 py-3.5 rounded-xl font-bold shadow-lg transition active:scale-95";
+                
+                window.showToast("Sesi Ujian dibuka! Berikan kode " + randomCode + " ke mahasiswa.");
+                tBody.innerHTML = '<tr><td colspan="4" class="px-6 py-10 text-center text-slate-400 font-medium"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Menunggu mahasiswa bergabung...</td></tr>';
+                
+                // Simulasi mahasiswa masuk setelah 3 detik
+                simulasiInterval = setTimeout(() => {
+                    count.innerText = "2 Peserta";
+                    tBody.innerHTML = `
+                        <tr class="border-b border-paper-100 bg-white fade-in">
+                            <td class="px-6 py-4 font-bold text-slate-800">10112 • Budi Santoso</td>
+                            <td class="px-6 py-4 text-slate-500">08:14 WIB</td>
+                            <td class="px-6 py-4"><span class="bg-brand-50 text-brand-600 px-3 py-1 rounded-full text-[10px] font-bold border border-brand-200"><i class="fa-solid fa-shield-check mr-1"></i> AMAN (FULLSCREEN)</span></td>
+                            <td class="px-6 py-4"><button onclick="keluarkanPeserta(this)" class="text-red-500 hover:text-red-700 font-bold text-xs bg-red-50 px-3 py-1.5 rounded-lg transition">Keluarkan</button></td>
+                        </tr>
+                        <tr class="border-b border-paper-100 bg-red-50 fade-in" style="animation-delay: 0.2s">
+                            <td class="px-6 py-4 font-bold text-slate-800">10113 • Rina Amelia</td>
+                            <td class="px-6 py-4 text-slate-500">08:15 WIB</td>
+                            <td class="px-6 py-4"><span class="bg-red-500 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-sm animate-pulse"><i class="fa-solid fa-triangle-exclamation mr-1"></i> KELUAR LAYAR!</span></td>
+                            <td class="px-6 py-4"><button onclick="keluarkanPeserta(this)" class="text-red-500 hover:text-red-700 font-bold text-xs bg-red-100 px-3 py-1.5 rounded-lg transition">Keluarkan</button></td>
+                        </tr>
+                    `;
+                    document.getElementById('stat-pelanggaran').innerText = "1";
+                    window.showToast("Peringatan: 1 Mahasiswa terdeteksi keluar dari layar ujian!");
+                }, 3000);
+
+            } else {
+                ujianAktif = false;
+                clearTimeout(simulasiInterval);
+                disp.innerText = "TIDAK AKTIF";
+                disp.className = "text-2xl font-black tracking-widest text-white";
+                btn.innerText = "Buat Sesi Ujian";
+                btn.className = "bg-red-500 hover:bg-red-600 text-white px-8 py-3.5 rounded-xl font-bold shadow-lg transition active:scale-95";
+                
+                count.innerText = "0 Peserta";
+                tBody.innerHTML = '<tr><td colspan="4" class="px-6 py-10 text-center text-slate-400 font-medium">Sesi ujian telah ditutup.</td></tr>';
+                window.showToast("Sesi ujian berhasil ditutup.");
+            }
+        };
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
