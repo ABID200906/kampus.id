@@ -1152,7 +1152,7 @@
         
         window.openGlobalChat = () => { document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden')); document.getElementById('view-chat-detail').classList.remove('hidden'); };
 
-        // FUNGSI TUGASKU (GABUNG KELAS)
+        // FUNGSI TUGASKU (GABUNG KELAS) - DIPERBARUI DENGAN UI CARD MODERN
         window.gabungKelas = () => {
             const input = document.getElementById('kode-kelas-input');
             const code = input.value.trim().toUpperCase();
@@ -1161,18 +1161,61 @@
             const container = document.getElementById('daftar-kelas-container');
             if(container.innerText.includes('Belum ada')) container.innerHTML = '';
 
+            // Penyesuaian tema warna & ikon berdasarkan kode kelas
+            let subjectName = "Ekologi Dasar";
+            let colorFrom = "from-brand-400";
+            let colorTo = "to-brand-500";
+            let icon1 = "fa-leaf";
+            let icon2 = "fa-seedling";
+
+            if(code.includes("KIM")) {
+                subjectName = "Kimia";
+                colorFrom = "from-teal-400"; colorTo = "to-emerald-400";
+                icon1 = "fa-flask"; icon2 = "fa-atom";
+            } else if (code.includes("ING")) {
+                subjectName = "Bahasa Inggris";
+                colorFrom = "from-orange-400"; colorTo = "to-rose-400";
+                icon1 = "fa-language"; icon2 = "fa-spell-check";
+            } else if (code.includes("MAT")) {
+                subjectName = "Matematika";
+                colorFrom = "from-blue-400"; colorTo = "to-indigo-500";
+                icon1 = "fa-calculator"; icon2 = "fa-square-root-variable";
+            }
+
             container.insertAdjacentHTML('afterbegin', `
-                <div class="bg-white p-6 rounded-[2rem] border border-paper-200 shadow-sm flex items-center justify-between fade-in">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-book"></i></div>
-                        <div>
-                            <p class="font-bold text-slate-800 text-base">Kelas ${code}</p>
-                            <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-1">Dosen: Dr. Eco • 1 Tugas</p>
-                        </div>
+                <div class="bg-white rounded-[1.5rem] border border-paper-200 shadow-sm overflow-hidden fade-in relative mb-6">
+                    <!-- Header Image / Banner -->
+                    <div class="h-32 bg-gradient-to-r ${colorFrom} ${colorTo} relative overflow-hidden flex items-center px-6 md:px-8">
+                        <i class="fa-solid ${icon1} absolute -right-4 -bottom-4 text-7xl text-white opacity-20"></i>
+                        <i class="fa-solid ${icon2} absolute right-20 top-4 text-4xl text-white opacity-20"></i>
+                        <h2 class="text-3xl font-black text-white relative z-10 tracking-wide">${subjectName}</h2>
                     </div>
-                    <button class="text-indigo-500 font-bold text-sm bg-indigo-50 hover:bg-indigo-100 transition px-5 py-2.5 rounded-xl active:scale-95" onclick="window.showToast('Membuka rincian kelas...')">Buka</button>
+                    
+                    <!-- Card Body -->
+                    <div class="p-6 md:p-8">
+                        <!-- Badges -->
+                        <div class="flex space-x-2 mb-4">
+                            <span class="bg-blue-50 text-blue-500 px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center uppercase tracking-wider"><i class="fa-solid fa-clock mr-1.5 text-xs"></i> 1 hari lagi</span>
+                            <span class="bg-brand-50 text-brand-600 px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center uppercase tracking-wider"><i class="fa-solid fa-chalkboard-user mr-1.5 text-xs"></i> Sesi Offline</span>
+                        </div>
+                        
+                        <!-- Title -->
+                        <h3 class="text-xl font-black text-slate-800 mb-5 tracking-tight">${code} - ${subjectName}</h3>
+                        
+                        <!-- Details List -->
+                        <div class="space-y-3 mb-6 text-sm font-medium text-slate-600">
+                            <div class="flex items-center"><i class="fa-regular fa-calendar w-7 text-center text-slate-400 text-lg"></i> Selasa, 28 Apr 2026</div>
+                            <div class="flex items-center"><i class="fa-regular fa-clock w-7 text-center text-slate-400 text-lg"></i> 17:00 - 18:30 WIB</div>
+                            <div class="flex items-center"><i class="fa-solid fa-person-chalkboard w-7 text-center text-slate-400 text-lg"></i> Firda A.</div>
+                            <div class="flex items-center"><i class="fa-solid fa-door-open w-7 text-center text-slate-400 text-lg"></i> Ruang 302</div>
+                        </div>
+                        
+                        <!-- Action Button -->
+                        <button class="w-full border-2 border-paper-200 text-slate-700 font-bold py-3.5 rounded-2xl hover:bg-paper-50 transition active:scale-95 flex items-center justify-center text-base" onclick="window.showToast('Membuka detail kelas...')">Lihat Detail</button>
+                    </div>
                 </div>
             `);
+            
             input.value = '';
             window.showToast('Berhasil bergabung ke kelas ' + code);
         };
