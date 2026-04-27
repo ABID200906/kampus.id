@@ -38,7 +38,7 @@
         .toast {
             visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff;
             text-align: center; border-radius: 16px; padding: 16px; position: fixed;
-            z-index: 100; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; font-weight: 600;
+            z-index: 1000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; font-weight: 600;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: opacity 0.3s, bottom 0.3s;
         }
         .toast.show { visibility: visible; bottom: 120px; animation: popIn 0.3s ease-out forwards, fadeOut 0.3s ease-in forwards 2.5s; }
@@ -62,25 +62,41 @@
 
 <body class="bg-paper-50 flex flex-col md:flex-row text-slate-800 font-sans antialiased overflow-hidden" style="height: 100dvh;">
 
-    <!-- LOGIN SCREEN OVERLAY -->
-    <div id="login-view" class="fixed inset-0 z-[100] bg-login flex items-center justify-center p-6 transition-opacity duration-500">
-        <div class="bg-white/95 backdrop-blur-xl w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl flex flex-col items-center fade-in text-center border border-white/50">
-            <div class="w-20 h-20 bg-gradient-to-br from-brand-400 to-accent-500 rounded-[1.5rem] flex items-center justify-center text-white text-4xl shadow-lg mb-6 transform rotate-3">
+    <!-- LOGIN SCREEN OVERLAY (PORTAL GATEWAY) -->
+    <div id="login-view" class="fixed inset-0 z-[200] bg-login flex items-center justify-center p-6 transition-opacity duration-500">
+        <div class="bg-white/95 backdrop-blur-xl w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl flex flex-col items-center fade-in text-center border border-white/50 relative overflow-hidden">
+            <div class="w-20 h-20 bg-gradient-to-br from-brand-400 to-accent-500 rounded-[1.5rem] flex items-center justify-center text-white text-4xl shadow-lg mb-5 transform rotate-3">
                 <i class="fa-solid fa-leaf"></i>
             </div>
             <h1 class="text-3xl font-black text-slate-800 tracking-tight mb-1">EcoVerse</h1>
-            <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-6">Campus Portal</p>
+            <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-8">Integrated Campus Portal</p>
             
-            <div class="flex bg-paper-100 p-1.5 rounded-2xl w-full mb-6 border border-paper-200">
-                <button id="btn-mahasiswa" onclick="selectRole('mahasiswa')" class="flex-1 py-2 text-sm font-bold rounded-xl transition-all duration-300 bg-white text-brand-500 shadow-sm">
-                    Mahasiswa
+            <!-- Pilihan Peran -->
+            <div id="role-selection" class="w-full space-y-4 fade-in">
+                <p class="text-sm font-bold text-slate-500 mb-2">Pilih akses masuk Anda:</p>
+                
+                <button onclick="selectRole('mahasiswa')" class="w-full bg-white border-2 border-paper-200 hover:border-brand-500 p-5 rounded-2xl flex items-center space-x-4 transition-all group active:scale-95 shadow-sm">
+                    <div class="w-12 h-12 bg-brand-50 text-brand-500 rounded-xl flex items-center justify-center text-2xl group-hover:bg-brand-500 group-hover:text-white transition-colors"><i class="fa-solid fa-user-graduate"></i></div>
+                    <div class="text-left">
+                        <p class="font-black text-slate-800 text-lg">Mahasiswa</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Akses Kuliah & Tugas</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right ml-auto text-slate-300 group-hover:text-brand-500 transition-colors"></i>
                 </button>
-                <button id="btn-dosen" onclick="selectRole('dosen')" class="flex-1 py-2 text-sm font-bold rounded-xl transition-all duration-300 text-slate-500">
-                    Dosen
+
+                <button onclick="selectRole('dosen')" class="w-full bg-white border-2 border-paper-200 hover:border-indigo-500 p-5 rounded-2xl flex items-center space-x-4 transition-all group active:scale-95 shadow-sm">
+                    <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center text-2xl group-hover:bg-indigo-500 group-hover:text-white transition-colors"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <div class="text-left">
+                        <p class="font-black text-slate-800 text-lg">Dosen / Staff</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Manajemen & Monitor</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right ml-auto text-slate-300 group-hover:text-indigo-500 transition-colors"></i>
                 </button>
             </div>
-            
-            <div class="w-full space-y-4">
+
+            <!-- Form Mahasiswa (Awalnya Sembunyi) -->
+            <div id="mahasiswa-form" class="w-full space-y-4 hidden fade-in mt-2">
+                <button onclick="backToRole()" class="text-xs font-bold text-brand-600 mb-4 flex items-center hover:underline bg-brand-50 px-3 py-1.5 rounded-lg w-max mx-auto transition"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali Pilih Peran</button>
                 <div class="relative">
                     <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     <input type="text" id="login-username" placeholder="NIM Mahasiswa" class="w-full bg-paper-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-400 transition-all border border-paper-200 focus:bg-white text-slate-800">
@@ -89,9 +105,8 @@
                     <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     <input type="password" id="login-password" placeholder="Password" class="w-full bg-paper-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-400 transition-all border border-paper-200 focus:bg-white text-slate-800">
                 </div>
+                <button onclick="handleLogin()" class="w-full bg-slate-800 text-white font-bold py-4 rounded-2xl mt-6 shadow-lg shadow-slate-800/20 active:scale-95 transition-transform text-lg">Masuk ke Kampus</button>
             </div>
-            
-            <button onclick="handleLogin()" class="w-full bg-slate-800 text-white font-bold py-4 rounded-2xl mt-8 shadow-lg shadow-slate-800/20 active:scale-95 transition-transform">Masuk ke Kampus</button>
         </div>
     </div>
 
@@ -173,14 +188,6 @@
                 <div id="view-feed" class="view-section fade-in h-full w-full overflow-y-auto">
                     <div class="max-w-3xl mx-auto pt-4 md:pt-8 px-4 pb-6">
 
-                        <!-- GREETING -->
-                        <div class="mb-6 flex justify-between items-end">
-                            <div>
-                                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Halo, <span id="home-greeting-name">Mahasiswa</span>! 👋</h2>
-                                <p class="text-sm text-slate-500 font-medium mt-1">Siap untuk produktif dan menjaga bumi hari ini?</p>
-                            </div>
-                        </div>
-                        
                         <!-- NEWS SLIDER -->
                         <div class="relative w-full h-32 mb-8 rounded-[2rem] overflow-hidden shadow-sm border border-brand-100 bg-white group eco-news-glow cursor-pointer" onclick="switchTab('news', document.querySelectorAll('.nav-btn')[3])">
                             <div id="news-slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out">
@@ -189,69 +196,64 @@
                                 </div>
                             </div>
                             <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2" id="slider-dots"></div>
-                            
-                            <!-- News Badge (Miring / Italic) -->
+                            <!-- News Badge -->
                             <div class="absolute top-4 left-4 bg-brand-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md z-10 uppercase tracking-widest transform -rotate-6 italic">Hot News</div>
+                        </div>
+
+                        <!-- GREETING -->
+                        <div class="mb-6 flex justify-between items-end">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Halo, <span id="home-greeting-name">Mahasiswa</span>! 👋</h2>
+                                <p class="text-sm text-slate-500 font-medium mt-1">Siap untuk produktif dan menjaga bumi hari ini?</p>
+                            </div>
                         </div>
 
                         <!-- MENU KAMPUS (QUICK SHORTCUTS GRID) -->
                         <div class="grid grid-cols-4 gap-3 mb-10">
-                            <!-- 1. Akademik -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="switchTab('academy', document.querySelectorAll('.nav-btn')[1])">
                                 <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Akademik</span>
                             </div>
-                            <!-- 2. Tugasku -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-indigo-300 cursor-pointer transition active:scale-95" onclick="switchTab('tugasku')">
                                 <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-open text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tugasku</span>
                             </div>
-                            <!-- 3. Ujian / Exam Browser -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-red-300 cursor-pointer transition active:scale-95" onclick="switchTab('ujian')">
                                 <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-laptop-code text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Ujian</span>
                             </div>
-                            <!-- 4. Jadwal -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-accent-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Fitur Jadwal Kuliah segera hadir!')">
                                 <div class="w-12 h-12 bg-accent-50 text-accent-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-regular fa-calendar-days text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Jadwal</span>
                             </div>
-                            <!-- 5. Izin -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-amber-300 cursor-pointer transition active:scale-95" onclick="openModal('modal-izin')">
                                 <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-envelope-open-text text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Izin</span>
                             </div>
-                            <!-- 6. E-KTM -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition active:scale-95" onclick="window.showToast('E-KTM Virtual sedang diproses.')">
                                 <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-id-card text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-KTM</span>
                             </div>
-                            <!-- 7. E-Lib -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" onclick="openELibrary()">
                                 <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-journal-whills text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-Lib</span>
                             </div>
-                            <!-- 8. Al-Quran -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-emerald-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Membuka Al-Quran Digital...')">
                                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-quran text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Al-Quran</span>
                             </div>
-                            <!-- 9. Info UKM -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-rose-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Informasi Pendaftaran UKM Kampus')">
                                 <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
                             </div>
-                            <!-- 10. Obrolan -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" onclick="openGlobalChat()">
                                 <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-earth-asia text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Obrolan</span>
                             </div>
-                            <!-- 11. Tantangan -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="switchTab('challenges')">
                                 <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-medal text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tantangan</span>
                             </div>
-                            <!-- 12. Lainnya -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-slate-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Menampilkan semua menu...')">
                                 <div class="w-12 h-12 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-ellipsis text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Lainnya</span>
@@ -824,8 +826,6 @@
         } else {
             if(appState.isLoggedIn === undefined) appState.isLoggedIn = false;
             if(!appState.completedChallengeIds) appState.completedChallengeIds = [];
-            
-            // Reset Tantangan Harian jika beda hari
             if (appState.newsDate !== todayDate) {
                 appState.completedChallengeIds = [];
             }
@@ -852,6 +852,24 @@
             { id: 3, title: "Habiskan Makananmu", points: 25, desc: "Kurangi sampah makanan (food waste) hari ini.", icon: "fa-utensils" },
             { id: 4, title: "Tanam Tanaman Baru", points: 100, desc: "Tanam bibit pohon atau tanaman hias baru.", icon: "fa-seedling" }
         ];
+
+        // LOGIKA PORTAL GATEWAY
+        window.selectRole = (role) => {
+            if (role === 'mahasiswa') {
+                document.getElementById('role-selection').classList.add('hidden');
+                document.getElementById('mahasiswa-form').classList.remove('hidden');
+            } else if (role === 'dosen') {
+                window.showToast("Mengarahkan ke Dashboard Dosen...");
+                setTimeout(() => {
+                    window.location.href = 'dosen.html';
+                }, 1000);
+            }
+        };
+
+        window.backToRole = () => {
+            document.getElementById('mahasiswa-form').classList.add('hidden');
+            document.getElementById('role-selection').classList.remove('hidden');
+        };
 
         // FULLSCREEN TOGGLE API
         window.toggleFullscreen = () => {
@@ -901,14 +919,14 @@
                 document.getElementById('btn-kembali-ujian').classList.remove('hidden');
                 document.getElementById('ujian-active-area').classList.add('hidden');
                 document.getElementById('kode-ujian-input').value = '';
-                window.toggleUIForExam(false); // Munculkan kembali navbar
+                window.toggleUIForExam(false); 
             }
         });
 
-        // FUNGSI AUTH
+        // FUNGSI AUTH MAHASISWA
         window.handleLogin = () => {
             const uname = document.getElementById('login-username').value.trim();
-            if(!uname) return window.showToast('Masukkan Username/NIM!');
+            if(!uname) return window.showToast('Masukkan NIM Mahasiswa!');
             
             appState.userName = uname;
             appState.isLoggedIn = true;
@@ -1018,15 +1036,13 @@
             }, 5000);
         };
 
-        // FUNGSI BERITA PUSAKA KEMENAG (WEB SCRAPING VIA ALLORIGINS)
+        // PUSAKA KEMENAG SCRAPING
         window.fetchPusakaNews = async () => {
             const container = document.getElementById('news-container');
             if(container && container.innerHTML.trim() === '') {
                  container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium flex flex-col items-center"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4 text-brand-400"></i>Memuat berita terbaru...</div>';
             }
-            
             try {
-                // Menggunakan allorigins untuk membypass blokir CORS dari browser client
                 const url = 'https://pusaka-v3.kemenag.go.id/berita';
                 const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
                 const res = await fetch(proxyUrl);
@@ -1036,64 +1052,39 @@
                 const doc = parser.parseFromString(data.contents, 'text/html');
                 
                 let articles = [];
-                
-                // Ekstraksi artikel dari HTML Pusaka Kemenag
                 const links = doc.querySelectorAll('a');
                 links.forEach(link => {
                     const img = link.querySelector('img');
                     const textContainer = link.innerText.trim();
-                    
                     if (img && textContainer && textContainer.length > 20) {
                         let src = img.getAttribute('src') || img.getAttribute('data-src');
                         if (src && !src.includes('logo') && !src.includes('icon') && !src.includes('avatar') && !src.includes('svg')) {
                             let finalSrc = src.startsWith('http') ? src : 'https://pusaka-v3.kemenag.go.id' + (src.startsWith('/') ? src : '/' + src);
                             let finalLink = link.href.startsWith('http') ? link.href : 'https://pusaka-v3.kemenag.go.id' + link.getAttribute('href');
-                            
                             const title = textContainer.split('\n')[0].trim();
-                            // Hindari duplikat berita yang sama
                             if (title.length > 20 && !articles.find(a => a.title === title)) {
-                                articles.push({
-                                    title: title,
-                                    image: finalSrc,
-                                    link: finalLink,
-                                    source: 'Pusaka Kemenag'
-                                });
+                                articles.push({ title: title, image: finalSrc, link: finalLink, source: 'Pusaka Kemenag' });
                             }
                         }
                     }
                 });
 
-                // Jika HTML yang di-scrape kosong (karena website dirender secara client-side SPA),
-                // kita otomatis beralih menggunakan RSS resmi Kemenag sebagai Fallback yang aman.
                 if (articles.length === 0) {
                     const rssRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fkemenag.go.id%2Ffeed');
                     const rssData = await rssRes.json();
                     if (rssData.items) {
                         articles = rssData.items.map(item => {
                             let img = 'https://ui-avatars.com/api/?name=Kemenag&background=10b981&color=fff&size=256';
-                            if (item.enclosure && item.enclosure.link) {
-                                img = item.enclosure.link;
-                            } else {
-                                const match = item.description.match(/src="([^"]+)"/);
-                                if(match) img = match[1];
-                            }
-                            return {
-                                title: item.title,
-                                image: img,
-                                link: item.link,
-                                source: 'Kemenag RI'
-                            };
+                            if (item.enclosure && item.enclosure.link) img = item.enclosure.link;
+                            else { const match = item.description.match(/src="([^"]+)"/); if(match) img = match[1]; }
+                            return { title: item.title, image: img, link: item.link, source: 'Kemenag RI' };
                         });
                     }
                 }
 
-                if (articles.length > 0) {
-                    window.renderPusakaNewsFeed(articles.slice(0, 12)); // Batasi 12 berita
-                } else {
-                    throw new Error("Artikel kosong");
-                }
+                if (articles.length > 0) window.renderPusakaNewsFeed(articles.slice(0, 12));
+                else throw new Error("Artikel kosong");
             } catch (e) {
-                console.error("Fetch News Error:", e);
                 if(container) container.innerHTML = '<div class="text-center py-10 text-red-400 font-medium border-2 border-dashed border-red-100 rounded-[2rem] bg-white">Gagal memuat berita dari Kemenag. Pastikan koneksi internet stabil.</div>';
             }
         };
@@ -1101,7 +1092,6 @@
         window.renderPusakaNewsFeed = (articles) => {
             const container = document.getElementById('news-container');
             if(!container) return;
-            
             let html = '';
             articles.forEach((news, idx) => {
                 html += `
@@ -1120,7 +1110,6 @@
             container.innerHTML = html;
         };
 
-        // FETCH AI NEWS UNTUK SLIDER
         async function checkAndFetchDailyNews() {
             if (appState.newsDate !== todayDate || !appState.newsText) {
                 try {
@@ -1132,9 +1121,7 @@
                     }
                 } catch(e) {}
             }
-            if(appState.newsText) {
-                window.renderNewsSlider(appState.newsText);
-            }
+            if(appState.newsText) window.renderNewsSlider(appState.newsText);
         }
 
         // UPDATE UI KESELURUHAN
@@ -1177,15 +1164,12 @@
                 btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
             }
             
-            if(appState.newsText) {
-                window.renderNewsSlider(appState.newsText);
-            }
+            if(appState.newsText) window.renderNewsSlider(appState.newsText);
         };
 
         // FUNGSI E-LIBRARY
         window.openELibrary = () => {
             switchTab('elibrary');
-            // Langsung cari buku tanpa menunggu pengecekan teks
             window.searchBooks('lingkungan hidup ekologi sains populer'); 
         };
 
@@ -1200,7 +1184,6 @@
                 const data = await response.json();
                 window.renderBooks(data.items || []);
             } catch (e) {
-                console.error("E-Lib Error:", e);
                 container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-20 text-red-400 font-bold px-6 bg-white rounded-[2rem] border-2 border-red-50">⚠️ Gagal terhubung ke Pustaka Digital. Silakan periksa koneksi internet Anda atau coba lagi nanti.</div>';
             }
         };
@@ -1218,11 +1201,7 @@
                 const title = info.title || 'Tanpa Judul';
                 const author = info.authors ? info.authors[0] : 'Penulis Anonim';
                 let thumb = 'https://via.placeholder.com/128x192.png?text=No+Cover&bg=cbd5e1&textColor=fff';
-                
-                if (info.imageLinks) {
-                    thumb = info.imageLinks.thumbnail.replace('http:', 'https:');
-                }
-                
+                if (info.imageLinks) thumb = info.imageLinks.thumbnail.replace('http:', 'https:');
                 const link = info.previewLink || info.infoLink || '#';
 
                 html += `
@@ -1238,13 +1217,12 @@
                                 <i class="fa-brands fa-google mr-2 text-lg"></i> BACA BUKU
                             </a>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
             container.innerHTML = html;
         };
 
-        // FUNGSI MEMBUKA DETAIL KELAS (SUBTOPIK, MATERI, KUIS)
+        // FUNGSI MEMBUKA DETAIL KELAS
         window.bukaDetailKelas = (code, subjectName, colorFrom, colorTo, icon1, icon2) => {
             const header = document.getElementById('class-detail-header');
             header.className = `h-48 md:h-56 relative overflow-hidden flex items-end px-6 md:px-10 pb-8 bg-gradient-to-r ${colorFrom} ${colorTo} rounded-b-[2.5rem] shadow-sm`;
@@ -1255,8 +1233,7 @@
                 <div class="relative z-10 text-white w-full">
                     <span class="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest mb-3 inline-block shadow-sm">${code}</span>
                     <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-none">${subjectName}</h2>
-                </div>
-            `;
+                </div>`;
             switchTab('class-detail');
             window.showToast(`Membuka kelas ${subjectName}...`);
         };
@@ -1270,25 +1247,10 @@
             const container = document.getElementById('daftar-kelas-container');
             if(container.innerText.includes('Belum ada')) container.innerHTML = '';
 
-            let subjectName = "Ekologi Dasar";
-            let colorFrom = "from-brand-400";
-            let colorTo = "to-brand-500";
-            let icon1 = "fa-leaf";
-            let icon2 = "fa-seedling";
-
-            if(code.includes("KIM")) {
-                subjectName = "Kimia";
-                colorFrom = "from-teal-400"; colorTo = "to-emerald-400";
-                icon1 = "fa-flask"; icon2 = "fa-atom";
-            } else if (code.includes("ING")) {
-                subjectName = "Bahasa Inggris";
-                colorFrom = "from-orange-400"; colorTo = "to-rose-400";
-                icon1 = "fa-language"; icon2 = "fa-spell-check";
-            } else if (code.includes("MAT")) {
-                subjectName = "Matematika";
-                colorFrom = "from-blue-400"; colorTo = "to-indigo-500";
-                icon1 = "fa-calculator"; icon2 = "fa-square-root-variable";
-            }
+            let subjectName = "Ekologi Dasar"; let colorFrom = "from-brand-400"; let colorTo = "to-brand-500"; let icon1 = "fa-leaf"; let icon2 = "fa-seedling";
+            if(code.includes("KIM")) { subjectName = "Kimia"; colorFrom = "from-teal-400"; colorTo = "to-emerald-400"; icon1 = "fa-flask"; icon2 = "fa-atom"; } 
+            else if (code.includes("ING")) { subjectName = "Bahasa Inggris"; colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon1 = "fa-language"; icon2 = "fa-spell-check"; } 
+            else if (code.includes("MAT")) { subjectName = "Matematika"; colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon1 = "fa-calculator"; icon2 = "fa-square-root-variable"; }
 
             container.insertAdjacentHTML('afterbegin', `
                 <div class="bg-white rounded-[1.5rem] border border-paper-200 shadow-sm overflow-hidden fade-in relative mb-6">
@@ -1311,13 +1273,11 @@
                         </div>
                         <button class="w-full border-2 border-paper-200 text-slate-700 font-bold py-3.5 rounded-2xl hover:bg-paper-50 transition active:scale-95 flex items-center justify-center text-base" onclick="bukaDetailKelas('${code}', '${subjectName}', '${colorFrom}', '${colorTo}', '${icon1}', '${icon2}')">Lihat Detail</button>
                     </div>
-                </div>
-            `);
-            input.value = '';
-            window.showToast('Berhasil bergabung ke kelas ' + code);
+                </div>`);
+            input.value = ''; window.showToast('Berhasil bergabung ke kelas ' + code);
         };
 
-        // FUNGSI EXAM BROWSER ANTI-CONTEK
+        // FUNGSI EXAM BROWSER
         window.examModeActive = false;
         window.mulaiUjian = () => {
             const input = document.getElementById('kode-ujian-input');
@@ -1332,19 +1292,13 @@
                     document.getElementById('ujian-active-area').classList.remove('hidden');
                     window.toggleUIForExam(true);
                     window.showToast('Mode Ujian Aktif. Sistem mengunci layar Anda!');
-                }).catch(err => {
-                    window.showToast('Gagal memulai mode layar penuh! Pastikan browser Anda mendukung fitur ini.');
-                });
-            } else {
-                window.showToast('Browser Anda tidak mendukung Exam Mode.');
-            }
+                }).catch(err => { window.showToast('Gagal memulai mode layar penuh! Pastikan browser Anda mendukung fitur ini.'); });
+            } else { window.showToast('Browser Anda tidak mendukung Exam Mode.'); }
         };
 
         window.selesaiUjian = () => {
             window.examModeActive = false;
-            if (document.exitFullscreen && document.fullscreenElement) {
-                document.exitFullscreen();
-            }
+            if (document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
             window.showToast('Ujian Anda berhasil dikumpulkan!');
             switchTab('feed', document.querySelectorAll('.nav-btn')[0]);
             setTimeout(() => {
@@ -1355,6 +1309,174 @@
                 window.toggleUIForExam(false);
             }, 500);
         };
+
+        // TANTANGAN LOGIC
+        window.renderChallenges = () => {
+            const list = document.getElementById('challenge-list');
+            if(!list) return;
+            list.innerHTML = '';
+            challenges.forEach(c => {
+                const isDone = appState.completedChallengeIds && appState.completedChallengeIds.includes(c.id);
+                const btnClass = isDone ? "bg-paper-100 text-slate-400" : "bg-brand-50 text-brand-600 hover:bg-brand-500 hover:text-white";
+                list.insertAdjacentHTML('beforeend', `
+                    <div class="bg-white p-5 rounded-[1.5rem] border border-paper-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between transition hover:shadow-md">
+                        <div class="flex items-center space-x-4 mb-4 sm:mb-0">
+                            <div class="bg-paper-50 text-brand-500 w-14 h-14 rounded-full flex items-center justify-center shrink-0 shadow-inner"><i class="fa-solid ${c.icon} text-2xl"></i></div>
+                            <div><h3 class="font-bold text-slate-800 text-lg">${c.title}</h3><p class="text-xs text-slate-500 mt-1">${c.desc}</p><p class="text-[10px] font-black text-orange-500 mt-2 bg-orange-50 inline-block px-3 py-1 rounded-full tracking-widest">+${c.points} POIN</p></div>
+                        </div>
+                        <button onclick="openChallengeValidation(${c.id})" class="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-bold active:scale-95 transform ${btnClass}" ${isDone ? 'disabled' : ''}>${isDone ? 'Selesai' : 'Selesaikan'}</button>
+                    </div>`);
+            });
+        };
+
+        let currentChallengeValidationId = null;
+        window.openChallengeValidation = (id) => {
+            currentChallengeValidationId = id; const c = challenges.find(x => x.id === id);
+            document.getElementById('cv-title').innerText = c.title;
+            document.getElementById('cv-upload-area').classList.remove('hidden'); document.getElementById('cv-preview-area').classList.add('hidden'); document.getElementById('cv-result').classList.add('hidden');
+            window.openModal('modal-challenge');
+        };
+
+        window.handleChallengeImage = (e) => {
+            const f = e.target.files[0]; if(!f) return;
+            const r = new FileReader(); r.onload = (ev) => {
+                document.getElementById('cv-image').src = ev.target.result;
+                document.getElementById('cv-upload-area').classList.add('hidden'); document.getElementById('cv-preview-area').classList.remove('hidden'); document.getElementById('cv-loading').classList.remove('hidden');
+                verifyChallengeWithAI(ev.target.result);
+            }; r.readAsDataURL(f);
+        };
+
+        async function verifyChallengeWithAI(b64) {
+            const c = challenges.find(x => x.id === currentChallengeValidationId);
+            const res = await window.fetchKimiAPI("Verifikasi tantangan: " + c.title, 'challenge');
+            document.getElementById('cv-loading').classList.add('hidden');
+            const resDiv = document.getElementById('cv-result'); resDiv.classList.remove('hidden');
+            if(res && res.includes("VALID") && !res.includes("TIDAK")) {
+                resDiv.className = "p-5 rounded-2xl mb-6 text-sm font-bold text-center bg-green-50 text-green-700 border-2 border-green-200";
+                resDiv.innerHTML = `<i class="fa-solid fa-circle-check mb-2 text-3xl"></i><br>Validasi Berhasil!`;
+                setTimeout(() => {
+                    if(!appState.completedChallengeIds) appState.completedChallengeIds = [];
+                    if(!appState.completedChallengeIds.includes(c.id)) {
+                        appState.completedChallengeIds.push(c.id); addPoints(c.points); appState.aksiCount++;
+                        saveState(); window.renderChallenges(); window.closeModal('modal-challenge'); window.showToast(`+${c.points} Poin!`);
+                    }
+                }, 2000);
+            } else {
+                resDiv.className = "p-5 rounded-2xl mb-6 text-sm font-bold text-center bg-red-50 text-red-700 border-2 border-red-200";
+                resDiv.innerHTML = `<i class="fa-solid fa-circle-xmark mb-2 text-3xl"></i><br>Gagal. Coba lagi.`; document.getElementById('cv-upload-area').classList.remove('hidden');
+            }
+        }
+
+        // RENDER POSTS & INTERACTIONS
+        window.renderPosts = (posts) => {
+            const container = document.getElementById('feed-container');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            if(posts.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-slate-500 font-medium">Belum ada aksi lingkungan di kampus hari ini.</div>';
+            }
+
+            posts.forEach(p => {
+                const html = `
+                <div class="bg-white p-6 md:p-8 mb-6 shadow-sm rounded-[2rem] md:rounded-[2.5rem] border border-paper-200 fade-in">
+                    <div class="flex items-center space-x-4 mb-5">
+                        <img src="${p.authorAvatar}" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-paper-100 shadow-sm">
+                        <div><p class="font-bold text-base md:text-lg text-slate-800">${p.authorName}</p><p class="text-[10px] text-brand-500 uppercase tracking-widest font-bold">Green Feed</p></div>
+                    </div>
+                    <p class="text-sm md:text-base mb-5 text-slate-700 leading-relaxed font-medium">${p.text}</p>
+                    ${p.image ? `<img src="${p.image}" class="w-full rounded-[1.5rem] mb-5 border border-paper-100 object-cover shadow-sm">` : ''}
+                    <div class="flex space-x-6 text-slate-400 border-t border-paper-100 pt-5">
+                        <button onclick="toggleLike('${p.id}', this)" class="flex items-center space-x-2 transition hover:text-brand-500 font-bold"><i class="${p.likes > 0 ? 'fa-solid text-brand-500' : 'fa-regular'} fa-leaf text-xl"></i> <span class="text-sm">${p.likes || 0}</span></button>
+                        <button onclick="openCommentModal('${p.id}', this)" class="flex items-center space-x-2 transition hover:text-accent-500 font-bold"><i class="fa-regular fa-comment text-xl"></i> <span class="text-sm">${p.comments || 0}</span></button>
+                    </div>
+                </div>`;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        };
+
+        window.toggleLike = async (id, btn) => {
+            if(!id || !currentUser) return;
+            const icon = btn.querySelector('i');
+            const span = btn.querySelector('span');
+            let likes = parseInt(span.innerText) || 0;
+            if(icon.classList.contains('fa-regular')) { icon.classList.replace('fa-regular', 'fa-solid'); icon.classList.add('text-brand-500'); likes++; }
+            else { icon.classList.replace('fa-solid', 'fa-regular'); icon.classList.remove('text-brand-500'); likes--; }
+            span.innerText = likes;
+            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', id), { likes: likes }); } catch(e){}
+        };
+
+        let currentCommentPostId = null; let currentCommentBtn = null;
+        window.openCommentModal = (postId, btn) => {
+            currentCommentPostId = postId; currentCommentBtn = btn;
+            document.getElementById('new-comment-text').value = '';
+            const container = document.getElementById('comment-list-container');
+            container.innerHTML = '<div class="text-center text-slate-400 text-sm py-8 bg-paper-50 rounded-[1.5rem]" id="empty-comment-msg">Belum ada komentar. Jadilah yang pertama!</div>';
+            window.openModal('modal-comment');
+        };
+
+        window.submitComment = async () => {
+            const input = document.getElementById('new-comment-text');
+            const text = input.value.trim(); if(!text) return;
+            let newCommentCount = 1;
+            if(currentCommentBtn) {
+                const countSpan = currentCommentBtn.querySelector('span');
+                newCommentCount = (parseInt(countSpan.innerText) || 0) + 1;
+                countSpan.innerText = newCommentCount;
+            }
+
+            const container = document.getElementById('comment-list-container');
+            const emptyMsg = document.getElementById('empty-comment-msg');
+            if (emptyMsg) emptyMsg.style.display = 'none';
+
+            container.insertAdjacentHTML('beforeend', `
+                <div class="flex space-x-4 fade-in mb-5">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff" class="w-10 h-10 md:w-12 md:h-12 rounded-full shadow-sm">
+                    <div class="bg-white p-5 rounded-[1.5rem] rounded-tl-sm text-sm md:text-base flex-1 border border-paper-200">
+                        <p class="font-bold text-xs md:text-sm text-slate-800 mb-1.5">${appState.userName}</p>
+                        <p class="text-slate-700 leading-relaxed">${text}</p>
+                    </div>
+                </div>`);
+            container.scrollTop = container.scrollHeight;
+            input.value = ''; window.showToast("Komentar ditambahkan!");
+
+            if (currentUser && currentCommentPostId && !currentCommentPostId.startsWith('local')) {
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', currentCommentPostId), { comments: newCommentCount }); } 
+                catch (e) {}
+            }
+        };
+
+        let currentPostImageBase64 = null;
+        window.submitPost = async () => {
+            const text = document.getElementById('new-post-text').value;
+            if(!text.trim() && !currentPostImageBase64) return;
+            const newPost = { authorName: appState.userName, authorAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff`, text, image: currentPostImageBase64, timestamp: Date.now(), likes: 0, comments: 0 };
+            
+            // Add Optimistically
+            const container = document.getElementById('feed-container');
+            container.insertAdjacentHTML('afterbegin', `
+                <div class="bg-white p-6 md:p-8 mb-6 shadow-sm rounded-[2rem] md:rounded-[2.5rem] border border-paper-200 fade-in">
+                    <div class="flex items-center space-x-4 mb-5">
+                        <img src="${newPost.authorAvatar}" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-paper-100 shadow-sm">
+                        <div><p class="font-bold text-base md:text-lg text-slate-800">${newPost.authorName}</p><p class="text-[10px] text-brand-500 uppercase tracking-widest font-bold">Baru Saja</p></div>
+                    </div>
+                    <p class="text-sm md:text-base mb-5 text-slate-700 leading-relaxed font-medium">${newPost.text}</p>
+                    ${newPost.image ? `<img src="${newPost.image}" class="w-full rounded-[1.5rem] mb-5 border border-paper-100 object-cover shadow-sm">` : ''}
+                </div>`);
+
+            if(currentUser) {
+                try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'posts'), newPost); addPoints(10); } 
+                catch(e) {}
+            }
+            window.closeModal('modal-post'); document.getElementById('new-post-text').value = ''; window.removePostImage(); window.showToast("Aksi berhasil dibagikan! (+10 Pts)");
+        };
+
+        window.handleRealPostImageUpload = (e) => {
+            const r = new FileReader();
+            r.onload = (ev) => { currentPostImageBase64 = ev.target.result; document.getElementById('real-post-preview-img').src = ev.target.result; document.getElementById('post-image-preview').classList.remove('hidden'); };
+            if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
+        };
+        window.removePostImage = () => { currentPostImageBase64 = null; document.getElementById('post-image-preview').classList.add('hidden'); };
 
         // GLOBAL CHAT & KIMI AI
         window.sendGlobalMessage = async function() {
@@ -1441,7 +1563,7 @@
         const stopD = () => { if (!isDragging) return; isDragging = false; petWidget.classList.add('pet-bounce'); petWidget.style.transition = ''; if (!hasDragged) window.openModal('modal-pet'); else localStorage.setItem('petPos', JSON.stringify({ x: petWidget.getBoundingClientRect().left, y: petWidget.getBoundingClientRect().top })); };
 
         petWidget.addEventListener('mousedown', startD); document.addEventListener('mousemove', doD, { passive: false }); document.addEventListener('mouseup', stopD);
-        petWidget.addEventListener('touchstart', startD, { passive: true }); document.addEventListener('touchmove', doD, { passive: false }); document.addEventListener('touchend', stopD);
+        petWidget.addEventListener('touchstart', startD); document.addEventListener('touchmove', doD, { passive: false }); document.addEventListener('touchend', stopD);
 
         // UI UTILS
         window.switchTab = (id, el) => { document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden')); document.getElementById('view-'+id).classList.remove('hidden'); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); if(el) el.classList.add('active'); };
@@ -1449,53 +1571,7 @@
         window.closeModal = (id) => { document.getElementById(id + '-content').classList.add('translate-y-full', 'scale-95'); setTimeout(() => document.getElementById(id).classList.add('hidden'), 300); };
         window.showToast = (m) => { const t = document.getElementById("toast"); t.innerText = m; t.className = "toast show"; setTimeout(() => t.className = "toast", 3000); };
         window.saveProfile = () => { appState.userName = document.getElementById('edit-profile-name').value; appState.userBio = document.getElementById('edit-profile-bio').value; saveState(); window.closeModal('modal-edit-profile'); window.showToast("Data Akademik diperbarui!"); };
-
-        <script>
-                // Default role
-                let selectedRole = 'mahasiswa';
         
-                function selectRole(role) {
-                    selectedRole = role;
-                    const btnMhs = document.getElementById('btn-mahasiswa');
-                    const btnDosen = document.getElementById('btn-dosen');
-                    const inputUser = document.getElementById('login-username');
-        
-                    if (role === 'mahasiswa') {
-                        btnMhs.classList.add('bg-white', 'text-brand-500', 'shadow-sm');
-                        btnMhs.classList.remove('text-slate-500');
-                        btnDosen.classList.remove('bg-white', 'text-brand-500', 'shadow-sm');
-                        btnDosen.classList.add('text-slate-500');
-                        inputUser.placeholder = "NIM Mahasiswa";
-                    } else {
-                        btnDosen.classList.add('bg-white', 'text-brand-500', 'shadow-sm');
-                        btnDosen.classList.remove('text-slate-500');
-                        btnMhs.classList.remove('bg-white', 'text-brand-500', 'shadow-sm');
-                        btnMhs.classList.add('text-slate-500');
-                        inputUser.placeholder = "NIP / Username Dosen";
-                    }
-                }
-        
-                function handleLogin() {
-                    const username = document.getElementById('login-username').value;
-                    const password = document.getElementById('login-password').value;
-        
-                    // Validasi sederhana: pastikan input tidak kosong
-                    if (!username || !password) {
-                        alert("Silakan isi username dan password terlebih dahulu.");
-                        return;
-                    }
-        
-                    // Logika pengalihan halaman (Redirection)
-                    if (selectedRole === 'dosen') {
-                        // Mengarahkan ke file dosen.html
-                        window.location.href = 'dosen.html';
-                    } else {
-                        // Mengarahkan ke halaman mahasiswa (misal: index.html atau dashboard.html)
-                        window.location.href = 'index.html'; 
-                    }
-                }
-            </script>
-    
         // INIT & FIREBASE CONNECT
         const initApp = async () => {
             if (appState.isLoggedIn) {
@@ -1532,7 +1608,7 @@
                 });
             }
             checkAndFetchDailyNews();
-            window.fetchPusakaNews(); // Memanggil berita Kemenag saat aplikasi dimulai
+            window.fetchPusakaNews();
             window.renderChallenges();
         };
         window.onload = initApp;
