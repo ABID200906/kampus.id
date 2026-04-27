@@ -69,12 +69,21 @@
                 <i class="fa-solid fa-leaf"></i>
             </div>
             <h1 class="text-3xl font-black text-slate-800 tracking-tight mb-1">EcoVerse</h1>
-            <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-8">Campus Portal</p>
+            <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-6">Campus Portal</p>
+            
+            <div class="flex bg-paper-100 p-1.5 rounded-2xl w-full mb-6 border border-paper-200">
+                <button id="btn-mahasiswa" onclick="selectRole('mahasiswa')" class="flex-1 py-2 text-sm font-bold rounded-xl transition-all duration-300 bg-white text-brand-500 shadow-sm">
+                    Mahasiswa
+                </button>
+                <button id="btn-dosen" onclick="selectRole('dosen')" class="flex-1 py-2 text-sm font-bold rounded-xl transition-all duration-300 text-slate-500">
+                    Dosen
+                </button>
+            </div>
             
             <div class="w-full space-y-4">
                 <div class="relative">
                     <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                    <input type="text" id="login-username" placeholder="Username / NIM" class="w-full bg-paper-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-400 transition-all border border-paper-200 focus:bg-white text-slate-800">
+                    <input type="text" id="login-username" placeholder="NIM Mahasiswa" class="w-full bg-paper-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-400 transition-all border border-paper-200 focus:bg-white text-slate-800">
                 </div>
                 <div class="relative">
                     <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
