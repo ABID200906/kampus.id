@@ -144,6 +144,17 @@
                 <div id="view-feed" class="view-section fade-in h-full w-full overflow-y-auto">
                     <div class="max-w-2xl mx-auto pt-4 md:pt-6 px-4 pb-6">
 
+                        <!-- NEWS SLIDER (Top Position) -->
+                        <div class="relative w-full h-32 mb-8 rounded-[2rem] overflow-hidden shadow-sm border border-brand-100 bg-white group eco-news-glow cursor-pointer" onclick="switchTab('news', document.querySelectorAll('.nav-btn')[3])">
+                            <div id="news-slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out">
+                                <div class="min-w-full h-full flex items-center px-8 bg-gradient-to-r from-brand-50 to-white">
+                                    <p class="text-sm font-bold text-brand-600 animate-pulse">Memuat kabar kampus hari ini...</p>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2" id="slider-dots"></div>
+                            <div class="absolute top-4 left-4 bg-brand-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-sm z-10 uppercase tracking-widest">Hot News</div>
+                        </div>
+
                         <!-- GREETING -->
                         <div class="mb-6 flex justify-between items-end">
                             <div>
@@ -617,6 +628,40 @@
             } else window.showToast("❌ Poin kurang!");
         };
 
+        // SLIDER NEWS
+        let currentSlide = 0;
+        window.renderNewsSlider = (newsText) => {
+            const wrapper = document.getElementById('news-slider-wrapper');
+            const dots = document.getElementById('slider-dots');
+            if(!wrapper || !newsText) return;
+
+            const newsItems = newsText.split('•').map(t => t.trim()).filter(t => t.length > 5);
+            if(newsItems.length === 0) return;
+            
+            wrapper.innerHTML = ''; dots.innerHTML = '';
+
+            newsItems.forEach((news, idx) => {
+                wrapper.innerHTML += `
+                    <div class="min-w-full h-full flex items-center px-8 bg-gradient-to-br from-brand-50 via-white to-accent-50">
+                        <div class="max-w-md">
+                            <p class="text-xs font-black text-brand-600 uppercase tracking-tighter mb-1">EcoVerse Today</p>
+                            <h4 class="text-sm md:text-base font-bold text-slate-800 leading-tight">${news}</h4>
+                        </div>
+                    </div>`;
+                dots.innerHTML += `<div class="w-2 h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-brand-500 w-6' : 'bg-brand-200'}"></div>`;
+            });
+
+            clearInterval(window.newsInterval);
+            window.newsInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % newsItems.length;
+                wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+                Array.from(dots.children).forEach((dot, dIdx) => {
+                    if(dIdx === currentSlide) { dot.classList.add('bg-brand-500', 'w-6'); dot.classList.remove('bg-brand-200'); }
+                    else { dot.classList.remove('bg-brand-500', 'w-6'); dot.classList.add('bg-brand-200'); }
+                });
+            }, 5000);
+        };
+
         // RENDER BERITA AI DI TAB NEWS
         window.renderNewsFeed = (newsText) => {
             const container = document.getElementById('news-container');
@@ -653,7 +698,10 @@
                     }
                 } catch(e) {}
             }
-            if(appState.newsText) window.renderNewsFeed(appState.newsText);
+            if(appState.newsText) {
+                window.renderNewsFeed(appState.newsText);
+                window.renderNewsSlider(appState.newsText);
+            }
         }
 
         // UPDATE UI KESELURUHAN
@@ -696,7 +744,10 @@
                 btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
             }
             
-            if(appState.newsText) window.renderNewsFeed(appState.newsText);
+            if(appState.newsText) {
+                window.renderNewsFeed(appState.newsText);
+                window.renderNewsSlider(appState.newsText);
+            }
         };
 
         // TANTANGAN LOGIC
