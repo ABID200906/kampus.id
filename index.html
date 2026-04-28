@@ -87,7 +87,7 @@
                 <button onclick="backToRole()" class="text-xs font-bold text-brand-600 mb-4 flex items-center hover:underline bg-brand-50 px-3 py-1.5 rounded-lg w-max mx-auto transition"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali Pilih Peran</button>
                 <div class="relative">
                     <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                    <input type="text" id="login-username" placeholder="NIM Mahasiswa" class="w-full bg-paper-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-400 transition-all border border-paper-200 focus:bg-white text-slate-800">
+                    <input type="text" id="login-username" placeholder="Masukkan Nama / NIM" class="w-full bg-paper-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-400 transition-all border border-paper-200 focus:bg-white text-slate-800">
                 </div>
                 <div class="relative">
                     <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
@@ -363,7 +363,11 @@
                                 <div class="flex-1">
                                     <h3 class="font-black text-3xl text-slate-800 tracking-tight" id="profile-name-display">Loading...</h3>
                                     <p class="text-base text-slate-500 mt-2 font-medium" id="profile-bio-display">Mahasiswa EcoVerse</p>
-                                    <button onclick="openModal('modal-edit-profile')" class="mt-4 bg-paper-100 hover:bg-paper-200 transition px-6 py-2.5 rounded-xl font-bold text-sm text-slate-600 active:scale-95 transform"><i class="fa-solid fa-pen mr-2"></i> Edit Akun</button>
+                                    
+                                    <div class="flex justify-center sm:justify-start space-x-3 mt-4">
+                                        <button onclick="openModal('modal-edit-profile')" class="bg-paper-100 hover:bg-paper-200 transition px-6 py-2.5 rounded-xl font-bold text-sm text-slate-600 active:scale-95 transform"><i class="fa-solid fa-pen mr-2"></i> Edit Akun</button>
+                                        <button onclick="handleLogout()" class="bg-red-50 hover:bg-red-100 transition px-6 py-2.5 rounded-xl font-bold text-sm text-red-500 active:scale-95 transform"><i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Keluar</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="bg-paper-50 p-6 rounded-[2rem] border border-paper-200">
@@ -444,7 +448,7 @@
 
                 <div id="view-class-detail" class="view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-40">
                     <div id="class-detail-header" class="h-48 md:h-56 relative overflow-hidden flex items-end px-6 md:px-10 pb-8 bg-gradient-to-r from-brand-400 to-brand-500 rounded-b-[2.5rem] shadow-sm">
-                        </div>
+                    </div>
 
                     <div class="max-w-3xl mx-auto px-4 md:px-8 py-8 pb-24 relative -mt-6">
                         <div class="bg-white p-6 rounded-[2rem] border border-paper-200 shadow-sm mb-8 flex justify-between items-center relative z-10">
@@ -590,6 +594,69 @@
         </div>
     </div>
 
+    <div id="modal-challenge" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[3rem] p-8 md:p-10 shadow-2xl relative scale-95 transform transition-all duration-300" id="modal-challenge-content">
+            <button onclick="closeModal('modal-challenge')" class="absolute top-6 right-6 text-slate-400 bg-paper-50 hover:bg-paper-100 w-12 h-12 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div class="text-center mb-8 mt-2">
+                <div class="w-20 h-20 bg-brand-50 text-brand-500 rounded-full flex items-center justify-center mx-auto mb-5 text-4xl shadow-sm"><i class="fa-solid fa-shield-check"></i></div>
+                <h3 class="font-black text-2xl md:text-3xl text-slate-800 mb-3">Validasi AI</h3>
+                <p id="cv-title" class="text-brand-500 font-bold uppercase tracking-widest text-xs md:text-sm bg-brand-50 inline-block px-4 py-1.5 rounded-full shadow-inner">Judul Tantangan</p>
+            </div>
+            <div id="cv-upload-area" class="border-2 border-dashed border-brand-300 bg-brand-50 rounded-[2rem] p-10 text-center cursor-pointer hover:bg-brand-100 transition-colors mb-6 group" onclick="document.getElementById('cv-image-input').click()">
+                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 transition-transform"><i class="fa-solid fa-camera text-3xl text-brand-500"></i></div>
+                <p class="text-base font-black text-slate-800 uppercase tracking-wider">Ambil Foto Bukti</p>
+                <p class="text-xs text-slate-500 mt-2 font-bold uppercase tracking-widest">Scan otomatis oleh AI</p>
+            </div>
+            <input type="file" id="cv-image-input" accept="image/*" capture="environment" class="hidden" onchange="handleChallengeImage(event)">
+            <div id="cv-preview-area" class="hidden mb-6 relative rounded-[2rem] overflow-hidden h-64 bg-paper-100 border-4 border-white shadow-lg">
+                <img id="cv-image" src="" class="w-full h-full object-cover">
+                <div id="cv-loading" class="absolute inset-0 bg-slate-900/80 flex flex-col items-center justify-center text-white hidden backdrop-blur-sm">
+                    <i class="fa-solid fa-robot animate-spin text-5xl mb-5 text-brand-400"></i>
+                    <p class="text-sm font-black tracking-widest uppercase">Menganalisis...</p>
+                </div>
+            </div>
+            <div id="cv-result" class="hidden p-6 rounded-2xl mb-6 text-base font-bold text-center border-2"></div>
+            <button onclick="closeModal('modal-challenge')" class="w-full bg-paper-100 text-slate-600 font-black py-4 md:py-5 rounded-full transition hover:bg-paper-200 text-sm tracking-widest active:scale-95 transform">BATALKAN</button>
+        </div>
+    </div>
+
+    <div id="modal-pet" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[3rem] p-8 md:p-10 shadow-2xl relative scale-95" id="modal-pet-content">
+            <button onclick="closeModal('modal-pet')" class="absolute top-5 right-5 text-slate-400 bg-paper-50 hover:bg-paper-100 transition w-12 h-12 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div class="flex justify-between items-center mb-8 mt-2">
+                <div class="bg-brand-50 px-5 py-2.5 rounded-2xl"><p class="text-[10px] font-black text-brand-400 uppercase tracking-widest">ECO POIN</p><p class="font-bold text-brand-600 text-2xl" id="pet-points">0 <i class="fa-solid fa-leaf text-sm"></i></p></div>
+                <div class="bg-orange-50 px-5 py-2.5 rounded-2xl text-right"><p class="text-[10px] font-black text-orange-400 uppercase tracking-widest">STREAK</p><p class="font-bold text-orange-500 text-2xl"><i class="fa-solid fa-fire mr-1"></i>5x</p></div>
+            </div>
+            <div class="flex flex-col items-center justify-center text-center">
+                <h2 class="text-4xl font-bold mb-3 text-slate-800">Pipi si Pohon</h2>
+                <p class="text-sm bg-brand-500 text-white px-6 py-2 rounded-full mb-10 font-bold uppercase tracking-widest shadow-md" id="pet-status">Level 1</p>
+                <div class="bg-paper-50 w-56 h-56 rounded-[3rem] flex items-center justify-center border-4 border-white shadow-inner mb-10 relative overflow-hidden">
+                    <div id="pet-icon-modal" class="text-[6rem] pet-bounce">🌱</div>
+                </div>
+                <div class="w-full bg-paper-200 rounded-full h-5 mb-4 overflow-hidden shadow-inner border border-paper-200"><div id="pet-progress" class="bg-gradient-to-r from-brand-400 to-brand-600 h-full transition-all duration-700 rounded-full" style="width: 0%"></div></div>
+                <p class="text-xs text-slate-500 mb-10 font-bold tracking-widest uppercase"><span id="exp-text" class="text-slate-800">0</span> / 100 EXP</p>
+                <button class="w-full bg-brand-600 hover:bg-brand-700 transition text-white font-bold py-5 rounded-full shadow-lg active:scale-95 transform text-lg" onclick="feedPet()"><i class="fa-solid fa-droplet mr-2 text-blue-200"></i> SIRAM & PUPUK (50 Poin)</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-comment" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 md:p-4 transition-opacity">
+        <div class="bg-white w-full max-w-xl rounded-t-[2.5rem] sm:rounded-[2.5rem] p-6 md:p-8 transform transition-all translate-y-full sm:translate-y-0 shadow-2xl flex flex-col h-[75vh] sm:h-[80vh]" id="modal-comment-content">
+            <div class="flex justify-between items-center mb-6 border-b border-paper-100 pb-4 shrink-0">
+                <h3 class="font-bold text-2xl text-slate-800">Komentar</h3>
+                <button onclick="closeModal('modal-comment')" class="text-slate-400 bg-paper-50 hover:bg-paper-100 w-12 h-12 flex items-center justify-center rounded-full transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div id="comment-list-container" class="space-y-5 mb-4 overflow-y-auto flex-1 pr-3">
+                <div class="text-center text-slate-400 text-sm py-10 bg-paper-50 rounded-[1.5rem]" id="empty-comment-msg">Belum ada komentar. Jadilah yang pertama!</div>
+            </div>
+            <div class="flex items-center space-x-4 pt-6 border-t border-paper-100 shrink-0">
+                <img src="" class="w-12 h-12 rounded-full shadow-sm" id="my-comment-avatar">
+                <input type="text" id="new-comment-text" placeholder="Tambahkan komentar..." class="flex-1 bg-paper-50 border-none rounded-full py-4 px-6 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-300 text-base transition shadow-inner" onkeypress="if(event.key === 'Enter') submitComment()">
+                <button onclick="submitComment()" class="bg-brand-500 text-white hover:bg-brand-600 transition w-12 h-12 rounded-full flex items-center justify-center shadow-md active:scale-95 transform"><i class="fa-solid fa-paper-plane text-lg"></i></button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -613,26 +680,21 @@
         let globalClasses = [];
         window.currentActiveKelas = null;
 
+        // MULTI-USER LOCAL STORAGE MAHASISWA
+        let allStudents = JSON.parse(localStorage.getItem('ecoverse_all_students')) || {};
         let appState = JSON.parse(localStorage.getItem('ecoverse_state'));
         const todayDate = new Date().toDateString();
 
         if (!appState) {
-            const randomNum = Math.floor(1000 + Math.random() * 9000); 
-            appState = { 
-                isLoggedIn: false, points: 0, level: 1, exp: 0, aksiCount: 0,
-                completedChallengeIds: [], joinedClasses: [], lastAttendanceDate: null,
-                userName: "Student_" + randomNum, userBio: "Mahasiswa EcoVerse 🌍", newsDate: null, newsText: null
-            };
-            localStorage.setItem('ecoverse_state', JSON.stringify(appState));
-        } else {
-            if(appState.isLoggedIn === undefined) appState.isLoggedIn = false;
-            if(!appState.completedChallengeIds) appState.completedChallengeIds = [];
-            if(!appState.joinedClasses) appState.joinedClasses = [];
-            if (appState.newsDate !== todayDate) { appState.completedChallengeIds = []; }
+            appState = { isLoggedIn: false };
         }
 
         const saveState = async () => {
             localStorage.setItem('ecoverse_state', JSON.stringify(appState));
+            if(appState.userName) {
+                allStudents[appState.userName] = appState;
+                localStorage.setItem('ecoverse_all_students', JSON.stringify(allStudents));
+            }
             window.updateUI();
             if (useFirebase && currentUser && appState.isLoggedIn) {
                 try { await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'main'), appState); } 
@@ -646,6 +708,12 @@
             db = getFirestore(firebaseApp);
         } catch(e) { useFirebase = false; }
 
+        const challenges = [
+            { id: 1, title: "Bawa Botol Minum", points: 20, desc: "Kurangi penggunaan botol plastik sekali pakai.", icon: "fa-bottle-water" },
+            { id: 2, title: "Gunakan Angkutan Umum", points: 40, desc: "Gunakan bus atau kereta untuk transportasi.", icon: "fa-bus" },
+            { id: 3, title: "Habiskan Makananmu", points: 25, desc: "Kurangi sampah makanan (food waste) hari ini.", icon: "fa-utensils" }
+        ];
+
         window.selectRole = (role) => {
             if (role === 'mahasiswa') {
                 document.getElementById('role-selection').classList.add('hidden');
@@ -655,9 +723,17 @@
                 setTimeout(() => { window.location.href = 'dosen.html'; }, 1000);
             }
         };
+        
         window.backToRole = () => {
             document.getElementById('mahasiswa-form').classList.add('hidden');
             document.getElementById('role-selection').classList.remove('hidden');
+        };
+
+        // FUNGSI LOGOUT MAHASISWA
+        window.handleLogout = () => {
+            appState.isLoggedIn = false;
+            saveState();
+            window.location.reload(); 
         };
 
         window.toggleFullscreen = () => {
@@ -669,12 +745,15 @@
         window.toggleUIForExam = (hide) => {
             const navbar = document.getElementById('main-navbar');
             const header = document.getElementById('mobile-header');
+            const pet = document.getElementById('floating-pet-widget');
             if (hide) {
                 if(navbar) navbar.style.display = 'none';
                 if(header) header.style.display = 'none';
+                if(pet) pet.style.display = 'none';
             } else {
                 if(navbar) navbar.style.display = '';
                 if(header) header.style.display = '';
+                if(pet) pet.style.display = '';
             }
         };
 
@@ -700,12 +779,27 @@
             }
         });
 
+        // LOGIN MAHASISWA MULTI-USER
         window.handleLogin = () => {
             const uname = document.getElementById('login-username').value.trim();
             if(!uname) return window.showToast('Masukkan NIM Mahasiswa!');
-            appState.userName = uname;
+            
+            if(allStudents[uname]) {
+                appState = allStudents[uname]; // Load data pengguna jika sudah pernah login
+            } else {
+                // Inisialisasi profil baru jika belum pernah login
+                appState = { 
+                    isLoggedIn: false, points: 0, level: 1, exp: 0, aksiCount: 0,
+                    completedChallengeIds: [], joinedClasses: [], lastAttendanceDate: null,
+                    userName: uname, userBio: "Mahasiswa EcoVerse 🌍", newsDate: null, newsText: null
+                };
+            }
+
+            if (appState.newsDate !== todayDate) { appState.completedChallengeIds = []; }
+
             appState.isLoggedIn = true;
             saveState();
+            
             document.getElementById('login-view').classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => {
                 document.getElementById('login-view').classList.add('hidden');
@@ -716,7 +810,50 @@
             window.showToast("Selamat datang di Kampus EcoVerse!");
         };
 
-        // KELAS DAN MATERI LOGIC
+        window.submitIzin = async () => {
+            const type = document.getElementById('izin-type').value;
+            const date = document.getElementById('izin-date').value;
+            const reason = document.getElementById('izin-reason').value.trim();
+            if (!date) return window.showToast('Silakan pilih tanggal ketidakhadiran!');
+            if (!reason) return window.showToast('Silakan isi alasan izin!');
+            if (currentUser && useFirebase) {
+                try { await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'izin_akademik'), { type, date, reason, timestamp: Date.now() }); } 
+                catch (e) {}
+            }
+            window.closeModal('modal-izin');
+            document.getElementById('izin-date').value = '';
+            document.getElementById('izin-reason').value = '';
+            document.getElementById('izin-file').value = '';
+            document.getElementById('izin-file-name').innerText = 'Tidak ada file';
+            window.showToast("Form izin berhasil dikirim ke akademik!");
+        };
+
+        window.handleCheckIn = () => {
+            if (appState.lastAttendanceDate === todayDate) { window.showToast("Anda sudah melakukan presensi hari ini!"); return; }
+            appState.lastAttendanceDate = todayDate;
+            addPoints(50);
+            const btn = document.getElementById('btn-checkin');
+            btn.classList.replace('bg-slate-800', 'bg-brand-500');
+            btn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> Presensi Tercatat! (+50 Pts)`;
+            window.showToast("Presensi berhasil! Data terkirim ke server Akademik.");
+        };
+
+        function addPoints(amount) {
+            appState.points += amount;
+            if (appState.points >= 2500) { appState.points -= 2500; appState.level++; window.showToast(`🎉 SELAMAT! Anda naik ke LEVEL ${appState.level}!`); }
+            saveState();
+        }
+
+        window.feedPet = () => {
+            if(appState.points >= 50) {
+                appState.points -= 50; appState.exp = (appState.exp || 0) + 40;
+                if(appState.exp >= 100) { appState.exp -= 100; appState.level++; window.showToast("🌟 LEVEL UP!"); }
+                else { window.showToast("💧 Segarrr!"); }
+                saveState();
+            } else window.showToast("❌ Poin kurang!");
+        };
+
+        // RENDER KELAS MAHASISWA
         window.renderJoinedClasses = () => {
             const container = document.getElementById('daftar-kelas-container');
             if(!container) return;
@@ -736,7 +873,7 @@
                 
                 if(codeSearch.includes("KIM") || subjectName.toLowerCase().includes("kimia")) { colorFrom = "from-teal-400"; colorTo = "to-emerald-400"; icon1 = "fa-flask"; icon2 = "fa-atom"; } 
                 else if (codeSearch.includes("ING") || subjectName.toLowerCase().includes("inggris")) { colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon1 = "fa-language"; icon2 = "fa-spell-check"; } 
-                else if (codeSearch.includes("MAT") || subjectName.toLowerCase().includes("matematika")) { colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon1 = "fa-calculator"; icon2 = "fa-square-root-variable"; }
+                else if (codeSearch.includes("MAT") || subjectName.toLowerCase().includes("matematika") || subjectName.toLowerCase().includes("kalkulus")) { colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon1 = "fa-calculator"; icon2 = "fa-square-root-variable"; }
 
                 html += `
                 <div class="bg-white rounded-[1.5rem] border border-paper-200 shadow-sm overflow-hidden fade-in relative mb-6">
@@ -860,7 +997,7 @@
             }, 500);
         };
 
-        // GLOBAL CHAT & KIMI AI
+        // GLOBAL CHAT
         window.sendGlobalMessage = async function() {
             const input = document.getElementById('dm-input');
             const text = input.value.trim(); if(!text) return;
@@ -886,6 +1023,7 @@
             dmBox.scrollTop = dmBox.scrollHeight;
         };
 
+        // KIMI AI
         window.fetchKimiAPI = async function(promptText, imageType = false, customSystemPrompt = null) {
             const url = `https://konektika.web.id/v1/chat/completions`; 
             let messages = [{ role: "system", content: customSystemPrompt || "Kamu adalah Eco-Neo, asisten AI akademik dan lingkungan di kampus EcoVerse. Jawab dengan cerdas, solutif, dan ramah ala mahasiswa modern." }];
@@ -934,6 +1072,7 @@
             }; r.readAsDataURL(f);
         };
 
+        // DRAG & DROP PET WIDGET
         const petWidget = document.getElementById('floating-pet-widget');
         let isDragging = false, dragX, dragY, initL, initT, hasDragged;
         const savedPos = JSON.parse(localStorage.getItem('petPos'));
