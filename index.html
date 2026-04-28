@@ -1795,4 +1795,47 @@
                             ps.sort((a,b) => b.timestamp - a.timestamp); window.renderPosts(ps); 
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'global_chat'), (s) => { 
-                            const ms = []; s.forEach(d => ms.push({
+                            const ms = []; s.forEach(d => ms.push({id: d.id, ...d.data()})); 
+                            ms.sort((a,b) => a.timestamp - b.timestamp); window.renderGlobalChat(ms); 
+                        });
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'classes'), (s) => { 
+                            globalClasses = [];
+                            s.forEach(d => globalClasses.push({id: d.id, ...d.data()})); 
+                            
+                            if (appState.isLoggedIn) {
+                                window.renderJoinedClasses();
+                                if(window.currentActiveKelasMhs) window.renderMateriMahasiswa();
+                            }
+                            if (dosenState.isLoggedIn) {
+                                window.renderDosenKelas();
+                                if(window.currentActiveKelasDsn) window.renderMateriDosen();
+                            }
+                        });
+
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'exams'), (s) => { 
+                            window.activeExams = [];
+                            s.forEach(d => window.activeExams.push({id: d.id, ...d.data()})); 
+                            
+                            if (dosenState.isLoggedIn && window.ujianAktifDsn && window.currentExamId) {
+                                window.renderExamMonitorDsn();
+                            }
+                            
+                            // Auto-close exam for mahasiswa if dosen ends it
+                            if (appState.isLoggedIn && window.examModeActive && window.currentMhsExamId) {
+                                const activeMhsExam = window.activeExams.find(e => e.id === window.currentMhsExamId);
+                                if (activeMhsExam && activeMhsExam.status === 'closed') {
+                                    window.showToast('Sesi Ujian telah ditutup secara resmi oleh Dosen.');
+                                    window.keluarDariUjianSelesai();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        window.onload = initApp;
+
+    </script>
+</body>
+</html>
