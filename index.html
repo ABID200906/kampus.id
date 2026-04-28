@@ -1040,17 +1040,38 @@
         } catch(e) { useFirebase = false; }
 
         // ========================== ATTACH EVENT LISTENERS ==========================
-        document.getElementById('btn-login-mhs').onclick = () => window.handleLoginMahasiswa();
-        document.getElementById('btn-login-dsn').onclick = () => window.handleLoginDosen();
-        document.getElementById('btn-submit-izin').onclick = () => window.submitIzin();
-        document.getElementById('btn-feed-pet').onclick = () => window.feedPet();
-        document.getElementById('btn-save-profile').onclick = () => window.saveProfile();
-        document.getElementById('btn-buat-kelas-dsn').onclick = () => window.tambahKelasDosen();
-        document.getElementById('btn-simpan-materi-dsn').onclick = () => window.simpanMateriDosen();
-        document.getElementById('btn-toggle-ujian-dsn').onclick = () => window.toggleUjianSesiDosen();
-        document.getElementById('btn-tambah-soal').onclick = () => window.tambahSoalDraft();
-        document.getElementById('btn-simpan-ujian').onclick = () => window.simpanDanMulaiUjian();
-        document.getElementById('btn-mulai-ujian-mhs').onclick = () => window.mulaiUjian();
+        const bindEvent = (id, fn) => { document.querySelectorAll('#' + id).forEach(el => el.onclick = fn); };
+        
+        bindEvent('btn-login-mhs', () => window.handleLoginMahasiswa());
+        bindEvent('btn-login-dsn', () => window.handleLoginDosen());
+        bindEvent('btn-logout-mhs', () => window.handleLogoutMahasiswa());
+        bindEvent('btn-logout-dsn', () => window.handleLogoutDosen());
+        
+        bindEvent('btn-submit-izin', () => window.submitIzin());
+        bindEvent('btn-feed-pet', () => window.feedPet());
+        bindEvent('btn-save-profile', () => window.saveProfile());
+        
+        bindEvent('btn-buat-kelas-dsn', () => window.tambahKelasDosen());
+        bindEvent('btn-simpan-materi-dsn', () => window.simpanMateriDosen());
+        bindEvent('btn-gabung-kelas', () => window.gabungKelas());
+        
+        bindEvent('btn-toggle-ujian-dsn', () => window.toggleUjianSesiDosen());
+        bindEvent('btn-tambah-soal', () => window.tambahSoalDraft());
+        bindEvent('btn-simpan-ujian', () => window.simpanDanMulaiUjian());
+        bindEvent('btn-mulai-ujian-mhs', () => window.mulaiUjian());
+        bindEvent('btn-selesai-ujian-mhs', () => window.selesaiUjian());
+        
+        bindEvent('btn-search-book', () => { const input = document.getElementById('elib-search-input'); if(input) window.searchBooks(input.value); });
+        bindEvent('btn-bot-send', () => window.sendBotMessage());
+        bindEvent('btn-dm-send', () => window.sendGlobalMessage());
+        bindEvent('btn-sync', () => window.sinkronPresensiDosen());
+        
+        bindEvent('btn-submit-post', () => window.submitPost());
+        bindEvent('btn-remove-img', () => window.removePostImage());
+        bindEvent('btn-submit-comment', () => window.submitComment());
+        
+        bindEvent('btn-menu-dsn', () => window.toggleSidebarDosen());
+        bindEvent('btn-fs-mobile', () => window.toggleFullscreen());
 
         // ========================== LOGIC MAHASISWA ==========================
         const saveState = async () => {
