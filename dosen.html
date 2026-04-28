@@ -64,7 +64,7 @@
             </div>
             
             <button onclick="handleLogin()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 rounded-xl mt-8 shadow-lg shadow-brand-500/30 active:scale-95 transition-all text-lg">Masuk Dashboard</button>
-            <button onclick="window.location.href='index.html'" class="w-full bg-transparent hover:bg-paper-100 text-slate-500 font-bold py-4 rounded-xl mt-2 transition-all text-sm">Kembali ke Portal</button>
+            <button onclick="window.location.href='index.html'" class="w-full bg-transparent hover:bg-paper-100 text-slate-500 font-bold py-4 rounded-xl mt-2 transition-all text-sm">Kembali ke Portal Mahasiswa</button>
         </div>
     </div>
 
@@ -95,13 +95,13 @@
         </nav>
 
         <div class="p-4 border-t border-paper-200">
-            <div class="flex items-center space-x-3 p-2 bg-paper-50 rounded-xl border border-paper-200 cursor-pointer hover:bg-paper-100 transition" onclick="window.location.href='index.html'">
+            <div class="flex items-center space-x-3 p-2 bg-paper-50 rounded-xl border border-paper-200 cursor-pointer hover:bg-red-50 transition group" onclick="handleLogout()">
                 <img id="dosen-avatar" src="" class="w-10 h-10 rounded-lg">
                 <div class="overflow-hidden flex-1">
-                    <p class="text-sm font-bold text-slate-800 truncate" id="dosen-name">Dosen</p>
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Fakultas Sains</p>
+                    <p class="text-sm font-bold text-slate-800 truncate group-hover:text-red-600 transition-colors" id="dosen-name">Dosen</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider group-hover:text-red-400 transition-colors">Keluar Akun</p>
                 </div>
-                <i class="fa-solid fa-arrow-right-from-bracket text-slate-400 hover:text-red-500 transition-colors"></i>
+                <i class="fa-solid fa-arrow-right-from-bracket text-slate-400 group-hover:text-red-500 transition-colors"></i>
             </div>
         </div>
     </aside>
@@ -332,13 +332,13 @@
 
         let dosenState = JSON.parse(localStorage.getItem('ecoverse_dosen')) || { isLoggedIn: false, name: "", nidn: "" };
         let globalClasses = [];
-        window.currentActiveKelas = null; // Menyimpan ID Firebase kelas yang sedang diedit
+        window.currentActiveKelas = null;
 
         try {
             firebaseApp = initializeApp(myFirebaseConfig);
             auth = getAuth(firebaseApp);
             db = getFirestore(firebaseApp);
-        } catch(e) { useFirebase = false; console.error("Firebase Dosen Error", e); }
+        } catch(e) { useFirebase = false; }
 
         window.handleLogin = () => {
             const nidn = document.getElementById('login-nidn').value.trim();
@@ -348,6 +348,12 @@
             document.getElementById('login-view').classList.add('opacity-0');
             setTimeout(() => { document.getElementById('login-view').classList.add('hidden'); setupDashboard(); }, 500);
             window.showToast("Selamat datang di Dasbor Dosen!");
+        };
+
+        window.handleLogout = () => {
+            dosenState.isLoggedIn = false;
+            localStorage.setItem('ecoverse_dosen', JSON.stringify(dosenState));
+            window.location.reload();
         };
 
         const setupDashboard = () => {
@@ -383,7 +389,6 @@
             const nama = document.getElementById('input-nama-kelas').value.trim();
             if(!kode || !nama) return window.showToast('Lengkapi data kelas!');
             
-            // Tambah array materi kosong saat kelas baru dibuat
             const newClass = { kode: kode, nama: nama, dosen: dosenState.name, mhs: 0, materi: [], timestamp: Date.now() };
 
             if (useFirebase && currentUser) {
@@ -417,7 +422,6 @@
                 else if (k.kode.includes("ING")) { colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon = "fa-language"; }
                 else if (k.kode.includes("MAT")) { colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon = "fa-calculator"; }
 
-                // PASSING ID FIREBASE KE FUNGSI BUKA KELOLA MATERI
                 html += `
                 <div class="bg-white border border-paper-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition fade-in">
                     <div class="h-24 bg-gradient-to-r ${colorFrom} ${colorTo} p-5 flex items-end relative overflow-hidden">
@@ -437,7 +441,7 @@
             list.innerHTML = html;
         };
 
-        // MATERI LOGIC (READ/WRITE KE FIREBASE)
+        // MATERI LOGIC
         window.bukaKelolaMateri = (kode, nama, id) => {
             window.currentActiveKelas = id;
             document.getElementById('kelola-kelas-title').innerText = kode;
@@ -548,7 +552,6 @@
             }
         };
 
-        // FIREBASE INIT DOSEN
         const initFirebase = async () => {
             if (auth) {
                 const checkAuth = async () => {
