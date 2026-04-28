@@ -184,15 +184,9 @@
             </div>
 
             <div class="bg-white p-6 md:p-8 rounded-[2rem] border border-paper-200 shadow-sm" id="materi-list-container">
-                <h3 class="font-black text-slate-800 text-lg mb-4">Topik 1: Pengantar & Konsep Dasar</h3>
+                <h3 class="font-black text-slate-800 text-lg mb-4">Daftar Materi Kuliah</h3>
                 <div class="space-y-3" id="materi-items">
-                    <div class="flex justify-between items-center p-4 bg-paper-50 rounded-[1rem] border border-paper-200">
-                        <div class="flex items-center">
-                            <i class="fa-regular fa-file-pdf text-red-500 text-3xl mr-4"></i>
-                            <div><p class="font-bold text-slate-700 text-sm">Modul 1 - Konsep Dasar</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Dokumen PDF</p></div>
-                        </div>
-                        <button class="text-slate-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-50" onclick="hapusMateri(this)"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+                    <p class="text-slate-500 text-sm text-center py-4">Memuat data silabus...</p>
                 </div>
             </div>
         </div>
@@ -320,7 +314,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const myFirebaseConfig = {
             apiKey: "AIzaSyD2vM1dU_YuLGPYtPqN8DqM_qxq4CqDLLU",
@@ -336,11 +330,9 @@
         let firebaseApp, auth, db, currentUser = null;
         let useFirebase = true;
 
-        let dosenState = JSON.parse(localStorage.getItem('ecoverse_dosen')) || {
-            isLoggedIn: false, name: "", nidn: ""
-        };
-
+        let dosenState = JSON.parse(localStorage.getItem('ecoverse_dosen')) || { isLoggedIn: false, name: "", nidn: "" };
         let globalClasses = [];
+        window.currentActiveKelas = null; // Menyimpan ID Firebase kelas yang sedang diedit
 
         try {
             firebaseApp = initializeApp(myFirebaseConfig);
@@ -351,12 +343,8 @@
         window.handleLogin = () => {
             const nidn = document.getElementById('login-nidn').value.trim();
             if(!nidn) return window.showToast('Masukkan NIDN Dosen!');
-            
-            dosenState.isLoggedIn = true;
-            dosenState.name = nidn; 
-            dosenState.nidn = nidn;
+            dosenState.isLoggedIn = true; dosenState.name = nidn; dosenState.nidn = nidn;
             localStorage.setItem('ecoverse_dosen', JSON.stringify(dosenState));
-            
             document.getElementById('login-view').classList.add('opacity-0');
             setTimeout(() => { document.getElementById('login-view').classList.add('hidden'); setupDashboard(); }, 500);
             window.showToast("Selamat datang di Dasbor Dosen!");
@@ -366,16 +354,13 @@
             document.getElementById('dosen-name').innerText = dosenState.name;
             document.getElementById('welcome-name').innerText = dosenState.name.split(' ')[0];
             document.getElementById('dosen-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(dosenState.name)}&background=10b981&color=fff`;
-            renderKelas();
+            window.renderKelas();
         };
 
         window.switchTab = (id, el) => {
             document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
             document.getElementById('view-'+id).classList.remove('hidden');
-            if(el) {
-                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-                el.classList.add('active');
-            }
+            if(el) { document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
             if(window.innerWidth < 768 && window.sidebarOpen) window.toggleSidebar();
         };
 
@@ -392,23 +377,20 @@
             else { sb.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
         };
 
-        // KELAS LOGIC (SYNC)
+        // KELAS LOGIC
         window.tambahKelas = async () => {
             const kode = document.getElementById('input-kode-kelas').value.trim().toUpperCase();
             const nama = document.getElementById('input-nama-kelas').value.trim();
             if(!kode || !nama) return window.showToast('Lengkapi data kelas!');
             
-            const newClass = { kode: kode, nama: nama, dosen: dosenState.name, mhs: 0, timestamp: Date.now() };
+            // Tambah array materi kosong saat kelas baru dibuat
+            const newClass = { kode: kode, nama: nama, dosen: dosenState.name, mhs: 0, materi: [], timestamp: Date.now() };
 
             if (useFirebase && currentUser) {
                 try {
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'classes'), newClass);
                     window.showToast(`Kelas ${kode} berhasil dibuat dan online!`);
                 } catch(e) { window.showToast("Gagal menyimpan ke server"); }
-            } else {
-                window.showToast("Menyimpan ke lokal...");
-                globalClasses.push(newClass);
-                window.renderKelas();
             }
             
             closeModal('modal-buat-kelas');
@@ -435,6 +417,7 @@
                 else if (k.kode.includes("ING")) { colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon = "fa-language"; }
                 else if (k.kode.includes("MAT")) { colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon = "fa-calculator"; }
 
+                // PASSING ID FIREBASE KE FUNGSI BUKA KELOLA MATERI
                 html += `
                 <div class="bg-white border border-paper-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition fade-in">
                     <div class="h-24 bg-gradient-to-r ${colorFrom} ${colorTo} p-5 flex items-end relative overflow-hidden">
@@ -445,7 +428,7 @@
                         <p class="font-bold text-slate-800 text-lg mb-1 line-clamp-1">${k.nama}</p>
                         <p class="text-xs text-slate-500 mb-4 font-medium"><i class="fa-solid fa-users mr-1"></i> ${k.mhs || 0} Mahasiswa Bergabung</p>
                         <div class="flex space-x-2">
-                            <button class="flex-1 bg-paper-100 hover:bg-paper-200 text-slate-600 font-bold py-2 rounded-lg text-xs transition" onclick="bukaKelolaMateri('${k.kode}', '${k.nama}')">Kelola Materi</button>
+                            <button class="flex-1 bg-paper-100 hover:bg-paper-200 text-slate-600 font-bold py-2 rounded-lg text-xs transition" onclick="bukaKelolaMateri('${k.kode}', '${k.nama.replace(/'/g, "\\'")}', '${k.id}')">Kelola Materi</button>
                             <button class="flex-1 bg-brand-50 hover:bg-brand-100 text-brand-600 font-bold py-2 rounded-lg text-xs transition" onclick="window.showToast('Kode disalin: ${k.kode}')">Salin Kode</button>
                         </div>
                     </div>
@@ -454,32 +437,73 @@
             list.innerHTML = html;
         };
 
-        // MATERI LOGIC
-        window.bukaKelolaMateri = (kode, nama) => {
+        // MATERI LOGIC (READ/WRITE KE FIREBASE)
+        window.bukaKelolaMateri = (kode, nama, id) => {
+            window.currentActiveKelas = id;
             document.getElementById('kelola-kelas-title').innerText = kode;
             document.getElementById('kelola-kelas-desc').innerText = nama + " - Manajemen Silabus & Tugas";
             switchTab('kelola-materi'); 
+            window.renderMateriDosen();
         };
 
-        window.simpanMateri = () => {
+        window.renderMateriDosen = () => {
+            const classDoc = globalClasses.find(c => c.id === window.currentActiveKelas);
+            const container = document.getElementById('materi-items');
+            if(!classDoc || !classDoc.materi || classDoc.materi.length === 0) {
+                 container.innerHTML = '<p class="text-slate-500 text-sm text-center py-6 border-2 border-dashed border-paper-200 rounded-[1.5rem]">Belum ada materi di kelas ini.</p>';
+                 return;
+            }
+            let html = '';
+            classDoc.materi.forEach(m => {
+                let iconHtml = '';
+                if (m.jenis === 'pdf') iconHtml = '<i class="fa-regular fa-file-pdf text-red-500 text-3xl mr-4"></i>';
+                else if (m.jenis === 'video') iconHtml = '<i class="fa-solid fa-circle-play text-blue-500 text-3xl mr-4"></i>';
+                else iconHtml = '<i class="fa-solid fa-list-check text-amber-500 text-3xl mr-4"></i>';
+
+                html += `<div class="flex justify-between items-center p-4 bg-paper-50 rounded-[1rem] border border-paper-200 fade-in">
+                    <div class="flex items-center">${iconHtml}<div><p class="font-bold text-slate-700 text-sm">${m.judul}</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">${m.tipeText}</p></div></div>
+                    <button class="text-slate-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-50" onclick="hapusMateri('${m.id}')"><i class="fa-solid fa-trash"></i></button>
+                </div>`;
+            });
+            container.innerHTML = html;
+        };
+
+        window.simpanMateri = async () => {
             const judul = document.getElementById('input-judul-materi').value.trim();
             const jenis = document.getElementById('input-jenis-materi').value;
             if(!judul) return window.showToast('Judul materi harus diisi!');
-            let iconHtml = ''; let tipeText = '';
-            if (jenis === 'pdf') { iconHtml = '<i class="fa-regular fa-file-pdf text-red-500 text-3xl mr-4"></i>'; tipeText = 'Dokumen PDF'; } 
-            else if (jenis === 'video') { iconHtml = '<i class="fa-solid fa-circle-play text-blue-500 text-3xl mr-4"></i>'; tipeText = 'Video Pembelajaran'; } 
-            else { iconHtml = '<i class="fa-solid fa-list-check text-amber-500 text-3xl mr-4"></i>'; tipeText = 'Kuis Evaluasi'; }
-            document.getElementById('materi-items').insertAdjacentHTML('beforeend', `
-                <div class="flex justify-between items-center p-4 bg-paper-50 rounded-[1rem] border border-paper-200 fade-in">
-                    <div class="flex items-center">${iconHtml}<div><p class="font-bold text-slate-700 text-sm">${judul}</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">${tipeText}</p></div></div>
-                    <button class="text-slate-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-50" onclick="hapusMateri(this)"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            `);
+            if(!window.currentActiveKelas) return window.showToast('Error: Kelas tidak ditemukan!');
+
+            let tipeText = '';
+            if (jenis === 'pdf') tipeText = 'Dokumen PDF'; 
+            else if (jenis === 'video') tipeText = 'Video Pembelajaran'; 
+            else tipeText = 'Kuis Evaluasi';
+
+            const newMateri = { id: Date.now().toString(), judul: judul, jenis: jenis, tipeText: tipeText, timestamp: Date.now() };
+            const classDoc = globalClasses.find(c => c.id === window.currentActiveKelas);
+            
+            if(classDoc && useFirebase && currentUser) {
+                const updatedMateri = classDoc.materi ? [...classDoc.materi, newMateri] : [newMateri];
+                try {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', window.currentActiveKelas), { materi: updatedMateri });
+                    window.showToast('Materi berhasil diunggah ke kelas!');
+                } catch(e) { window.showToast('Gagal mengunggah materi ke server.'); }
+            }
+            
             closeModal('modal-tambah-materi');
             document.getElementById('input-judul-materi').value = '';
-            window.showToast('Materi berhasil diunggah ke kelas!');
         };
-        window.hapusMateri = (btn) => { btn.closest('.flex.justify-between').remove(); window.showToast('Materi dihapus dari silabus.'); };
+
+        window.hapusMateri = async (materiId) => {
+            const classDoc = globalClasses.find(c => c.id === window.currentActiveKelas);
+            if(classDoc && classDoc.materi && useFirebase && currentUser) {
+                const updatedMateri = classDoc.materi.filter(m => m.id !== materiId);
+                try {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', window.currentActiveKelas), { materi: updatedMateri });
+                    window.showToast('Materi dihapus dari silabus.');
+                } catch(e) { window.showToast('Gagal menghapus materi.'); }
+            }
+        };
 
         // PRESENSI & UJIAN
         window.sinkronPresensi = () => {
@@ -524,7 +548,7 @@
             }
         };
 
-        // FIREBASE INIT
+        // FIREBASE INIT DOSEN
         const initFirebase = async () => {
             if (auth) {
                 const checkAuth = async () => {
@@ -538,11 +562,13 @@
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         currentUser = user;
-                        // SINKRONISASI DAFTAR KELAS
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'classes'), (s) => { 
                             globalClasses = [];
                             s.forEach(d => globalClasses.push({id: d.id, ...d.data()})); 
-                            if(dosenState.isLoggedIn) window.renderKelas();
+                            if(dosenState.isLoggedIn) {
+                                window.renderKelas();
+                                if(window.currentActiveKelas) window.renderMateriDosen();
+                            }
                         });
                     }
                 });
