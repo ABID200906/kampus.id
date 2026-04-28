@@ -696,8 +696,8 @@
                 localStorage.setItem('ecoverse_all_students', JSON.stringify(allStudents));
             }
             window.updateUI();
-            if (useFirebase && currentUser && appState.isLoggedIn) {
-                try { await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'main'), appState); } 
+            if (useFirebase && currentUser && appState.isLoggedIn && appState.userName) {
+                try { await setDoc(doc(db, 'artifacts', appId, 'users', appState.userName, 'profile', 'main'), appState); } 
                 catch(e) {}
             }
         };
@@ -729,10 +729,14 @@
             document.getElementById('role-selection').classList.remove('hidden');
         };
 
-        // FUNGSI LOGOUT MAHASISWA
+        // FUNGSI LOGOUT MAHASISWA YANG TEPAT
         window.handleLogout = () => {
             appState.isLoggedIn = false;
-            saveState();
+            if(appState.userName) {
+                allStudents[appState.userName] = appState;
+                localStorage.setItem('ecoverse_all_students', JSON.stringify(allStudents));
+            }
+            localStorage.removeItem('ecoverse_state'); // Hapus state aktif agar tampil form login
             window.location.reload(); 
         };
 
@@ -779,6 +783,22 @@
             }
         });
 
+        // SYNC PROFILE KHUSUS USER
+        let profileUnsubscribe = null;
+        window.startProfileSync = () => {
+            if (useFirebase && appState.isLoggedIn && appState.userName) {
+                if (profileUnsubscribe) profileUnsubscribe();
+                profileUnsubscribe = onSnapshot(doc(db, 'artifacts', appId, 'users', appState.userName, 'profile', 'main'), (s) => { 
+                    if(s.exists()){ 
+                        appState = {...appState, ...s.data()}; 
+                        localStorage.setItem('ecoverse_state', JSON.stringify(appState)); 
+                        window.updateUI(); 
+                        window.renderJoinedClasses(); // PASTIKAN RENDER KELAS SAAT DATA DITARIK
+                    } 
+                });
+            }
+        };
+
         // LOGIN MAHASISWA MULTI-USER
         window.handleLogin = () => {
             const uname = document.getElementById('login-username').value.trim();
@@ -799,6 +819,7 @@
 
             appState.isLoggedIn = true;
             saveState();
+            window.startProfileSync();
             
             document.getElementById('login-view').classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => {
@@ -806,6 +827,7 @@
                 const mainApp = document.getElementById('main-app');
                 mainApp.classList.remove('hidden');
                 setTimeout(() => mainApp.classList.remove('opacity-0'), 50);
+                window.renderJoinedClasses(); // PASTI TAMPIL KELAS SETELAH LOGIN
             }, 500);
             window.showToast("Selamat datang di Kampus EcoVerse!");
         };
@@ -1072,7 +1094,6 @@
             }; r.readAsDataURL(f);
         };
 
-        // DRAG & DROP PET WIDGET
         const petWidget = document.getElementById('floating-pet-widget');
         let isDragging = false, dragX, dragY, initL, initT, hasDragged;
         const savedPos = JSON.parse(localStorage.getItem('petPos'));
@@ -1096,6 +1117,7 @@
                 const mainApp = document.getElementById('main-app');
                 mainApp.classList.remove('hidden');
                 mainApp.classList.remove('opacity-0');
+                window.renderJoinedClasses();
             }
             window.updateUI();
             if (auth) {
@@ -1110,9 +1132,8 @@
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         currentUser = user;
-                        onSnapshot(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'main'), (s) => { 
-                            if(s.exists()){ appState = {...appState, ...s.data()}; localStorage.setItem('ecoverse_state', JSON.stringify(appState)); window.updateUI(); } 
-                        });
+                        if(appState.isLoggedIn) window.startProfileSync();
+                        
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'posts'), (s) => { 
                             const ps = []; s.forEach(d => ps.push({id: d.id, ...d.data()})); 
                             ps.sort((a,b) => b.timestamp - a.timestamp); window.renderPosts(ps); 
