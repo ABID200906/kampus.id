@@ -2310,6 +2310,100 @@
                 }
             };
 
+                        // ========================== OBROLAN GLOBAL ==========================
+                
+                // 1. Fungsi untuk membuka halaman Obrolan
+                window.openGlobalChat = () => {
+                    window.switchTabMhs('chat-detail');
+                    
+                    // Otomatis gulir ke pesan paling bawah saat baru dibuka
+                    setTimeout(() => {
+                        const box = document.getElementById('dm-messages');
+                        if(box) box.scrollTop = box.scrollHeight;
+                    }, 100);
+                };
+                
+                // 2. Fungsi untuk menyusun tampilan riwayat chat di layar
+                window.renderGlobalChat = (messages) => {
+                    const container = document.getElementById('dm-messages');
+                    if(!container) return;
+                
+                    if(!messages || messages.length === 0) {
+                        container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium bg-white rounded-[1.5rem] border border-paper-200">Belum ada obrolan. Jadilah yang pertama menyapa komunitas!</div>';
+                        return;
+                    }
+                
+                    let html = '';
+                    messages.forEach(msg => {
+                        // Cek apakah pesan ini dikirim oleh kita sendiri
+                        const isMe = msg.nim === appState.nim; 
+                        const time = new Date(msg.timestamp).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+                        
+                        // Buat avatar otomatis berdasarkan nama pengirim
+                        const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(msg.sender)}&background=${isMe ? '10b981' : 'cbd5e1'}&color=fff`;
+                
+                        if(isMe) {
+                            // Desain balon chat milik kita (warna hijau, di kanan)
+                            html += `
+                            <div class="flex justify-end mb-4 fade-in">
+                                <div class="max-w-[80%] flex flex-col items-end">
+                                    <span class="text-[10px] text-slate-400 font-bold mb-1 mr-1">${time}</span>
+                                    <div class="bg-brand-500 text-white p-3 md:p-4 rounded-2xl rounded-tr-sm shadow-sm inline-block text-sm md:text-base">
+                                        ${msg.text}
+                                    </div>
+                                </div>
+                            </div>`;
+                        } else {
+                            // Desain balon chat orang lain (warna putih, di kiri)
+                            html += `
+                            <div class="flex items-end space-x-2 md:space-x-3 mb-4 fade-in">
+                                <img src="${avatar}" class="w-8 h-8 md:w-10 md:h-10 rounded-full shadow-sm mb-1">
+                                <div class="max-w-[80%] flex flex-col items-start">
+                                    <span class="text-[10px] text-slate-400 font-bold mb-1 ml-1">${msg.sender} • ${time}</span>
+                                    <div class="bg-white border border-paper-200 text-slate-700 p-3 md:p-4 rounded-2xl rounded-tl-sm shadow-sm inline-block text-sm md:text-base">
+                                        ${msg.text}
+                                    </div>
+                                </div>
+                            </div>`;
+                        }
+                    });
+                
+                    container.innerHTML = html;
+                    
+                    // Otomatis gulir ke bawah setiap ada pesan baru
+                    setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
+                };
+                
+                // 3. Fungsi untuk mengirim pesan ke Server Firebase
+                window.sendGlobalMessage = async () => {
+                    const input = document.getElementById('dm-input');
+                    const text = input.value.trim();
+                    if(!text) return; // Jangan kirim kalau inputnya kosong
+                
+                    // Siapkan data pesan yang akan dikirim
+                    const newMsg = {
+                        text: text,
+                        sender: appState.userName || 'Mahasiswa',
+                        nim: appState.nim || '00000',
+                        timestamp: Date.now()
+                    };
+                
+                    // Kosongkan kotak ketik langsung
+                    input.value = '';
+                
+                    // Kirim ke database Firebase
+                    if (typeof useFirebase !== 'undefined' && useFirebase && typeof currentUser !== 'undefined' && currentUser) {
+                        try {
+                            const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'global_chat'), newMsg);
+                        } catch(e) {
+                            window.showToast("Koneksi gagal. Pesan tidak terkirim.");
+                        }
+                    } else {
+                        window.showToast("Fitur chat real-time membutuhkan koneksi server (Firebase) yang aktif.");
+                    }
+                };
+
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
             setupAllEventListeners();
