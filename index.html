@@ -85,7 +85,7 @@
 
 <body class="bg-paper-50 text-slate-800 font-sans antialiased overflow-hidden w-full h-[100dvh] flex flex-col md:flex-row relative">
 
-    <div id="login-view" class="fixed inset-0 z-[500] bg-login flex items-center justify-center p-4 md:p-6 transition-opacity duration-500 overflow-y-auto">
+    <div id="login-view" class="fixed inset-0 z-[500] bg-login flex items-center justify-center p-4 md:p-6 transition-opacity duration-500 overflow-y-auto pt-10 pb-10">
         <div class="bg-white/95 backdrop-blur-xl w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl flex flex-col items-center fade-in text-center border border-white/50 relative overflow-hidden my-auto">
             <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-brand-400 to-accent-500 rounded-[1.5rem] flex items-center justify-center text-white text-3xl md:text-4xl shadow-lg mb-5 transform rotate-3 shrink-0">
                 <i class="fa-solid fa-leaf"></i>
@@ -236,7 +236,7 @@
                                 <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-laptop-code text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Ujian</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-accent-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Fitur Jadwal Kuliah segera hadir!')">
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-accent-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('jadwal')">
                                 <div class="w-12 h-12 bg-accent-50 text-accent-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-regular fa-calendar-days text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Jadwal</span>
                             </div>
@@ -290,6 +290,7 @@
                 <div id="mhs-view-academy" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto">
                     <div class="max-w-3xl mx-auto pt-4 md:pt-8 px-4 pb-20">
                         <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center"><i class="fa-solid fa-graduation-cap mr-3 text-accent-500"></i>Akademik & Presensi</h2>
+                        
                         <div class="bg-white rounded-[2rem] p-6 md:p-8 border border-accent-100 shadow-sm mb-8 relative overflow-hidden">
                             <div class="absolute -right-10 -top-10 text-accent-50 opacity-50 pointer-events-none"><i class="fa-solid fa-map-location-dot text-[10rem]"></i></div>
                             <div class="relative z-10">
@@ -315,7 +316,7 @@
                                         <p class="text-sm font-bold text-brand-500">Dalam Radius (1KM)</p>
                                     </div>
                                 </div>
-                                <button id="btn-checkin" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition active:scale-95 flex items-center justify-center text-lg">
+                                <button onclick="window.handleCheckIn()" id="btn-checkin" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition active:scale-95 flex items-center justify-center text-lg">
                                     <i class="fa-solid fa-fingerprint mr-2 text-brand-400"></i> Presensi Kehadiran Sekarang
                                 </button>
                             </div>
@@ -332,6 +333,40 @@
                                     </div>
                                 </div>
                                 <span class="text-xs font-bold text-red-500 bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg">Besok</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="mhs-view-jadwal" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
+                    <div class="max-w-3xl mx-auto pt-6 md:pt-10 px-4 pb-20">
+                        <div class="flex items-center mb-8">
+                            <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-600 hover:bg-paper-100 shadow-sm mr-4 transition"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                            <h2 class="text-3xl font-black text-slate-800 flex items-center"><i class="fa-regular fa-calendar-days text-accent-500 mr-3"></i>Jadwal Kuliah</h2>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">
+                                <div class="bg-accent-50 px-6 py-4 border-b border-paper-100"><h3 class="font-black text-accent-600">Senin</h3></div>
+                                <div class="p-6 space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <div><p class="font-bold text-slate-800">Biologi Dasar (BIO-101)</p><p class="text-xs text-slate-500">Ruang 102 • Dr. Budi</p></div>
+                                        <div class="text-right"><p class="text-sm font-black text-slate-700">08:00</p><p class="text-[10px] text-slate-400 font-bold uppercase">10:30</p></div>
+                                    </div>
+                                    <hr class="border-paper-100">
+                                    <div class="flex items-center justify-between">
+                                        <div><p class="font-bold text-slate-800">Kimia Lingkungan (KIM-101)</p><p class="text-xs text-slate-500">Lab C • Prof. Rina</p></div>
+                                        <div class="text-right"><p class="text-sm font-black text-slate-700">11:00</p><p class="text-[10px] text-slate-400 font-bold uppercase">13:30</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">
+                                <div class="bg-brand-50 px-6 py-4 border-b border-paper-100"><h3 class="font-black text-brand-600">Selasa</h3></div>
+                                <div class="p-6 space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <div><p class="font-bold text-slate-800">Fisika Terapan (FIS-201)</p><p class="text-xs text-slate-500">Ruang 304 • Dr. Agus</p></div>
+                                        <div class="text-right"><p class="text-sm font-black text-slate-700">09:00</p><p class="text-[10px] text-slate-400 font-bold uppercase">11:30</p></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -381,7 +416,7 @@
 
                 <div id="mhs-view-chat-detail" class="mhs-view-section hidden fade-in h-full flex flex-col bg-white rounded-b-[2rem] md:rounded-[2rem] md:my-4 md:mx-auto md:max-w-4xl border border-paper-200 overflow-hidden shadow-md">
                     <div class="p-5 md:p-6 border-b border-paper-100 flex items-center space-x-4 bg-white shrink-0 rounded-t-[2rem]">
-                        <button onclick="window.switchTabMhs('feed')" class="text-slate-500 hover:text-brand-600 p-2 rounded-full hover:bg-paper-50 transition w-12 h-12 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xl"></i></button>
+                        <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="text-slate-500 hover:text-brand-600 p-2 rounded-full hover:bg-paper-50 transition w-12 h-12 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xl"></i></button>
                         <div class="w-12 h-12 bg-brand-500 text-white rounded-full flex items-center justify-center shadow-md"><i class="fa-solid fa-earth-asia text-xl"></i></div>
                         <h2 class="font-bold text-slate-800 text-xl">Obrolan Global</h2>
                     </div>
@@ -550,7 +585,7 @@
 
     <div id="dosen-app" class="w-full h-full flex flex-col md:flex-row hidden opacity-0 transition-opacity duration-500 absolute inset-0 bg-paper-100">
         
-        <div id="sidebar-overlay-dosen" class="fixed inset-0 bg-slate-900/50 z-20 hidden md:hidden backdrop-blur-sm" id="btn-menu-overlay-dsn"></div>
+        <div id="sidebar-overlay-dosen" class="fixed inset-0 bg-slate-900/50 z-20 hidden md:hidden backdrop-blur-sm"></div>
 
         <aside id="dosen-sidebar" class="w-64 bg-white border-r border-paper-200 flex flex-col h-full shrink-0 z-30 fixed md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300">
             <div class="p-6 flex items-center space-x-3 mb-4">
@@ -1002,6 +1037,7 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // FIREBASE SETUP
         const myFirebaseConfig = {
             apiKey: "AIzaSyD2vM1dU_YuLGPYtPqN8DqM_qxq4CqDLLU",
             authDomain: "ecopulse-f8b26.firebaseapp.com",
@@ -1018,21 +1054,18 @@
         let firebaseApp, auth, db, currentUser = null;
         let useFirebase = true;
         
-        // SHARED STATE UNTUK SINKRONISASI
+        // GLOBAL DATA SHARED (Sinkronisasi Dosen <-> Mahasiswa)
         let globalClasses = [];
         window.activeExams = [];
-        
         window.currentActiveKelasMhs = null;
         window.currentActiveKelasDsn = null;
-        
         window.currentMhsExamId = null;
         window.currentMhsExamData = null;
-
         window.ujianAktifDsn = false;
         window.currentExamId = null;
         window.draftSoalUjian = [];
 
-        // LOCAL STORAGE STATE INITIALIZATION SAFE-CATCH
+        // LOCAL STORAGE STATE 
         let allStudents = {};
         let appState = null;
         let dosenState = { isLoggedIn: false, name: "", nidn: "" };
@@ -1042,11 +1075,10 @@
             allStudents = JSON.parse(localStorage.getItem('ecoverse_all_students')) || {};
             appState = JSON.parse(localStorage.getItem('ecoverse_state'));
             dosenState = JSON.parse(localStorage.getItem('ecoverse_dosen')) || dosenState;
-        } catch (e) { console.warn("Local storage disabled or restricted."); }
+        } catch (e) { console.warn("Local storage issue."); }
 
         if (!appState) { appState = { isLoggedIn: false }; }
 
-        // FIREBASE INIT
         try {
             firebaseApp = initializeApp(myFirebaseConfig);
             auth = getAuth(firebaseApp);
@@ -1054,61 +1086,66 @@
         } catch(e) { useFirebase = false; }
 
 
-        // ========================== ATTACH SEMUA EVENT LISTENER AMAN ==========================
+        // ========================== ATTACH SEMUA EVENT LISTENER ==========================
         const bindEvent = (id, fn) => { 
             const el = document.getElementById(id);
             if(el) {
-                el.replaceWith(el.cloneNode(true));
+                el.replaceWith(el.cloneNode(true)); // Hapus listener lama
                 document.getElementById(id).addEventListener('click', fn);
             }
         };
 
         const setupAllEventListeners = () => {
+            // Login & Logout
             bindEvent('btn-login-mhs', window.handleLoginMahasiswa);
             bindEvent('btn-login-dsn', window.handleLoginDosen);
             bindEvent('btn-logout-mhs', window.handleLogoutMahasiswa);
             bindEvent('btn-logout-dsn', window.handleLogoutDosen);
             
+            // Profil & Interaksi
             bindEvent('btn-submit-izin', window.submitIzin);
             bindEvent('btn-feed-pet', window.feedPet);
             bindEvent('btn-save-profile', window.saveProfile);
             
+            // Dosen - Manajemen
             bindEvent('btn-buat-kelas-dsn', window.tambahKelasDosen);
             bindEvent('btn-simpan-materi-dsn', window.simpanMateriDosen);
-            bindEvent('btn-gabung-kelas', window.gabungKelas);
-            
             bindEvent('btn-toggle-ujian-dsn', window.toggleUjianSesiDosen);
             bindEvent('btn-tambah-soal', window.tambahSoalDraft);
             bindEvent('btn-simpan-ujian', window.simpanDanMulaiUjian);
+            bindEvent('btn-menu-dsn', window.toggleSidebarDosen);
+            bindEvent('btn-sync', window.sinkronPresensiDosen);
+
+            // Mahasiswa - Manajemen
+            bindEvent('btn-gabung-kelas', window.gabungKelas);
             bindEvent('btn-mulai-ujian-mhs', window.mulaiUjian);
             bindEvent('btn-selesai-ujian-mhs', window.selesaiUjian);
-            
-            bindEvent('btn-search-book', () => { const input = document.getElementById('elib-search-input'); if(input) window.searchBooks(input.value); });
             bindEvent('btn-elib', window.openELibrary);
             
+            // Pencarian & Chat
+            bindEvent('btn-search-book', () => { const input = document.getElementById('elib-search-input'); if(input) window.searchBooks(input.value); });
             bindEvent('btn-bot-send', window.sendBotMessage);
             bindEvent('btn-dm-send', window.sendGlobalMessage);
-            bindEvent('btn-sync', window.sinkronPresensiDosen);
-            
             bindEvent('btn-submit-post', window.submitPost);
             bindEvent('btn-remove-img', window.removePostImage);
             bindEvent('btn-submit-comment', window.submitComment);
-            
-            bindEvent('btn-menu-dsn', window.toggleSidebarDosen);
-            
+
             const cvInput = document.getElementById('cv-image-input');
             if(cvInput) cvInput.addEventListener('change', window.handleChallengeImage);
             const rpiInput = document.getElementById('real-post-image-input');
             if(rpiInput) rpiInput.addEventListener('change', window.handleRealPostImageUpload);
+            const botInputImg = document.getElementById('bot-image-input');
+            if(botInputImg) botInputImg.addEventListener('change', window.handleBotImageUpload);
             
             const dmInput = document.getElementById('dm-input');
             if(dmInput) dmInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') window.sendGlobalMessage(); });
             const botInput = document.getElementById('bot-input');
             if(botInput) botInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') window.sendBotMessage(); });
+            const searchInput = document.getElementById('elib-search-input');
+            if(searchInput) searchInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') window.searchBooks(searchInput.value); });
         };
 
-
-        // ========================== LOGIC MAHASISWA ==========================
+        // ========================== FUNGSI MAHASISWA ==========================
         window.saveState = async () => {
             try {
                 localStorage.setItem('ecoverse_state', JSON.stringify(appState));
@@ -1466,8 +1503,7 @@
                     <div id="mhs-exam-questions-container" class="space-y-6 mb-8"></div>
                     <button id="btn-selesai-ujian-mhs" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-5 rounded-2xl active:scale-95 transition shadow-lg text-lg">Selesai & Kumpulkan Ujian</button>
                 `;
-                // Re-bind listener for recreated element
-                document.getElementById('btn-selesai-ujian-mhs').addEventListener('click', window.selesaiUjian);
+                bindEvent('btn-selesai-ujian-mhs', window.selesaiUjian);
             }, 500);
         };
 
@@ -1806,9 +1842,208 @@
             }
         };
 
-        // ========================== GLOBAL INIT ==========================
+        // ========================== UTILS & FITUR BERSAMA ==========================
+        window.submitIzin = async () => {
+            const date = document.getElementById('izin-date').value;
+            const reason = document.getElementById('izin-reason').value.trim();
+            if (!date) return window.showToast('Silakan pilih tanggal ketidakhadiran!');
+            if (!reason) return window.showToast('Silakan isi alasan izin!');
+            window.closeModal('modal-izin');
+            document.getElementById('izin-date').value = '';
+            document.getElementById('izin-reason').value = '';
+            window.showToast("Form izin berhasil dikirim ke akademik!");
+        };
+
+        window.handleCheckIn = () => {
+            if (appState.lastAttendanceDate === todayDate) { window.showToast("Anda sudah melakukan presensi hari ini!"); return; }
+            appState.lastAttendanceDate = todayDate;
+            window.addPoints(50);
+            const btn = document.getElementById('btn-checkin');
+            btn.classList.replace('bg-slate-800', 'bg-brand-500');
+            btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai (+50 Pts)`;
+            window.showToast("Presensi berhasil!");
+        };
+
+        window.addPoints = (amount) => {
+            appState.points += amount;
+            if (appState.points >= 2500) { appState.points -= 2500; appState.level++; window.showToast(`🎉 SELAMAT! Anda naik ke LEVEL ${appState.level}!`); }
+            window.saveState();
+        };
+
+        window.feedPet = () => {
+            if(appState.points >= 50) {
+                appState.points -= 50; appState.exp = (appState.exp || 0) + 40;
+                if(appState.exp >= 100) { appState.exp -= 100; appState.level++; window.showToast("🌟 LEVEL UP!"); }
+                else { window.showToast("💧 Segarrr!"); }
+                window.saveState();
+            } else window.showToast("❌ Poin kurang!");
+        };
+
+        window.openGlobalChat = () => { document.querySelectorAll('.mhs-view-section').forEach(v => v.classList.add('hidden')); document.getElementById('mhs-view-chat-detail').classList.remove('hidden'); };
+        
+        window.saveProfile = () => { 
+            appState.userName = document.getElementById('edit-profile-name').value; 
+            appState.userBio = document.getElementById('edit-profile-bio').value; 
+            window.saveState(); 
+            window.closeModal('modal-edit-profile'); 
+            window.showToast("Data Akademik diperbarui!"); 
+        };
+
+        window.submitPost = async () => {
+            const text = document.getElementById('new-post-text').value;
+            if(!text.trim() && !window.currentPostImageBase64) return;
+            const newPost = { authorName: appState.userName, authorAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff`, text, image: window.currentPostImageBase64, timestamp: Date.now(), likes: 0, comments: 0 };
+            
+            if(currentUser) {
+                try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'posts'), newPost); window.addPoints(10); } 
+                catch(e) {}
+            }
+            window.closeModal('modal-post'); document.getElementById('new-post-text').value = ''; window.removePostImage(); window.showToast("Aksi berhasil dibagikan! (+10 Pts)");
+        };
+
+        window.handleRealPostImageUpload = (e) => {
+            const r = new FileReader();
+            r.onload = (ev) => { window.currentPostImageBase64 = ev.target.result; document.getElementById('real-post-preview-img').src = ev.target.result; document.getElementById('post-image-preview').classList.remove('hidden'); };
+            if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
+        };
+        window.removePostImage = () => { window.currentPostImageBase64 = null; document.getElementById('post-image-preview').classList.add('hidden'); };
+
+        window.submitComment = async () => {
+            const input = document.getElementById('new-comment-text');
+            const text = input.value.trim(); if(!text) return;
+            let newCommentCount = 1;
+            if(window.currentCommentBtn) {
+                const countSpan = window.currentCommentBtn.querySelector('span');
+                newCommentCount = (parseInt(countSpan.innerText) || 0) + 1;
+            }
+            input.value = ''; window.showToast("Komentar ditambahkan!");
+            if (currentUser && window.currentCommentPostId) {
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', window.currentCommentPostId), { comments: newCommentCount }); } catch (e) {}
+            }
+        };
+
+        window.searchBooks = async (query) => {
+            if(!query || !query.trim()) return window.showToast("Masukkan kata kunci judul buku!");
+            const container = document.getElementById('elibrary-container');
+            container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-24 text-teal-500 flex flex-col items-center"><i class="fa-solid fa-circle-notch fa-spin text-5xl mb-6"></i><span class="font-black tracking-widest uppercase text-xs">Menjelajahi Pustaka Digital...</span></div>';
+            try {
+                const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=15&orderBy=relevance`);
+                if (!response.ok) throw new Error("Gagal mengambil data");
+                const data = await response.json();
+                window.renderBooks(data.items || []);
+            } catch (e) {
+                container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-20 text-red-400 font-bold px-6 bg-white rounded-[2rem] border-2 border-red-50">⚠️ Gagal terhubung ke Pustaka Digital. Silakan periksa koneksi internet Anda atau coba lagi nanti.</div>';
+            }
+        };
+
+        window.renderBooks = (books) => {
+            const container = document.getElementById('elibrary-container');
+            if (!books || books.length === 0) {
+                container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-16 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[2rem] bg-white">Maaf, tidak ada buku yang cocok dengan pencarian Anda.</div>';
+                return;
+            }
+            let html = '';
+            books.forEach((book, idx) => {
+                const info = book.volumeInfo;
+                const title = info.title || 'Tanpa Judul';
+                const author = info.authors ? info.authors[0] : 'Penulis Anonim';
+                let thumb = 'https://via.placeholder.com/128x192.png?text=No+Cover&bg=cbd5e1&textColor=fff';
+                if (info.imageLinks) thumb = info.imageLinks.thumbnail.replace('http:', 'https:');
+                const link = info.previewLink || info.infoLink || '#';
+                html += `
+                    <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-xl hover:border-teal-200 transition-all duration-300 group fade-in" style="animation-delay: ${idx * 0.05}s">
+                        <div class="h-48 md:h-64 bg-paper-100 flex items-center justify-center overflow-hidden p-4 relative">
+                            <div class="absolute inset-0 bg-teal-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                            <img src="${thumb}" alt="${title}" class="h-full object-contain shadow-lg group-hover:scale-110 transition-transform duration-500 rounded-sm">
+                        </div>
+                        <div class="p-5 md:p-6 flex flex-col flex-1">
+                            <h4 class="font-black text-slate-800 text-sm md:text-base line-clamp-2 mb-2 leading-snug group-hover:text-teal-600 transition-colors">${title}</h4>
+                            <p class="text-[10px] md:text-xs text-slate-500 font-bold uppercase tracking-wider mb-5 line-clamp-1">${author}</p>
+                            <a href="${link}" target="_blank" class="mt-auto w-full bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white transition-all font-black py-3 rounded-2xl text-xs md:text-sm text-center border border-teal-100 shadow-sm active:scale-95 flex items-center justify-center"><i class="fa-brands fa-google mr-2 text-lg"></i> BACA BUKU</a>
+                        </div>
+                    </div>`;
+            });
+            container.innerHTML = html;
+        };
+
+        window.openELibrary = () => { 
+            window.switchTabMhs('elibrary'); 
+            window.searchBooks('lingkungan hidup ekologi sains populer'); 
+        };
+
+        window.sendGlobalMessage = async function() {
+            const input = document.getElementById('dm-input');
+            const text = input.value.trim(); if(!text) return;
+            input.value = ''; 
+            if (currentUser) {
+                try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'global_chat'), { text: text, userId: currentUser.uid, authorName: appState.userName, timestamp: Date.now() }); } 
+                catch(e) {}
+            }
+        };
+
+        window.renderGlobalChat = function(messages) {
+            const dmBox = document.getElementById('dm-messages');
+            if(!dmBox) return;
+            dmBox.innerHTML = '<div class="flex justify-center mb-8"><span class="text-[10px] text-slate-500 bg-paper-200 px-5 py-2 rounded-full font-bold uppercase tracking-widest shadow-inner">Ruang Obrolan Kampus</span></div>';
+            messages.forEach(msg => {
+                const isMe = msg.userId === (currentUser ? currentUser.uid : '');
+                if (isMe) { dmBox.innerHTML += `<div class="flex justify-end mb-4 fade-in"><div class="bg-slate-800 text-white rounded-2xl rounded-tr-sm py-3 px-5 text-sm md:text-base max-w-[80%] shadow-sm">${msg.text}</div></div>`; } 
+                else { dmBox.innerHTML += `<div class="flex justify-start mb-4 fade-in"><div class="flex flex-col max-w-[80%]"><span class="text-xs text-slate-500 ml-2 mb-1.5 font-bold">${msg.authorName}</span><div class="bg-white border border-paper-200 text-slate-800 rounded-2xl rounded-tl-sm py-3 px-5 text-sm md:text-base shadow-sm">${msg.text}</div></div></div>`; }
+            });
+            dmBox.scrollTop = dmBox.scrollHeight;
+        };
+
+        window.fetchKimiAPI = async function(promptText, imageType = false, customSystemPrompt = null) {
+            const url = `https://konektika.web.id/v1/chat/completions`; 
+            let messages = [{ role: "system", content: customSystemPrompt || "Kamu adalah Eco-Neo, asisten AI akademik dan lingkungan di kampus EcoVerse. Jawab dengan cerdas, solutif, dan ramah ala mahasiswa modern." }];
+            if (imageType === 'food') messages.push({ role: "system", content: "Beraktinglah seolah kamu melihat gambar makanan. Berikan gizi umum (Kalori, Protein) dan ingatkan untuk dihabiskan." });
+            else if (imageType === 'challenge') messages.push({ role: "system", content: "PENTING: Jawab persis: STATUS: VALID\nALASAN: [apresiasi singkat]." });
+            messages.push({ role: "user", content: promptText });
+            const payload = { model: "kimi-pro", messages, stream: false };
+            try {
+                const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kimiApiKey}` }, body: JSON.stringify(payload) });
+                const result = await response.json();
+                return result.choices[0].message.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            } catch (error) { return "Koneksi ke server pusat kampus terganggu 📡"; }
+        };
+
+        window.sendBotMessage = function() {
+            const input = document.getElementById('bot-input');
+            const text = input.value.trim(); if(!text) return;
+            const chatBox = document.getElementById('bot-messages');
+            chatBox.innerHTML += `<div class="flex justify-end mb-5 fade-in"><div class="bg-slate-800 text-white rounded-[1.5rem] rounded-tr-sm py-4 px-6 text-sm md:text-base max-w-[85%] shadow-md">${text}</div></div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+            input.value = '';
+            const tid = 'typing-' + Date.now();
+            chatBox.innerHTML += `<div id="${tid}" class="flex justify-start mb-5 fade-in text-brand-500 font-bold"><i class="fa-solid fa-robot mr-3"></i> Neo berpikir...</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+            window.fetchKimiAPI(text).then(res => {
+                const typingEl = document.getElementById(tid); if(typingEl) typingEl.remove();
+                chatBox.innerHTML += `<div class="flex justify-start mb-5 fade-in"><div class="bg-white border border-paper-200 text-slate-800 rounded-[1.5rem] rounded-tl-sm py-5 px-6 md:px-8 text-sm md:text-base max-w-[85%] shadow-sm leading-relaxed">${res}</div></div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        };
+
+        window.handleBotImageUpload = (e) => {
+            const f = e.target.files[0]; if (!f) return;
+            const r = new FileReader(); r.onload = (ev) => {
+                const chatBox = document.getElementById('bot-messages');
+                chatBox.innerHTML += `<div class="flex justify-end mb-5 fade-in"><div class="bg-slate-800 text-white rounded-[1.5rem] p-2 max-w-[75%] shadow-md"><img src="${ev.target.result}" class="w-full rounded-[1.2rem]"></div></div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                const tid = 'typing-' + Date.now();
+                chatBox.innerHTML += `<div id="${tid}" class="flex justify-start mb-5 fade-in text-brand-500 font-bold"><i class="fa-solid fa-robot mr-3"></i> Neo menganalisis foto...</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                window.fetchKimiAPI("Berapa gizi makanan di foto ini?", 'food').then(res => {
+                    const typingEl = document.getElementById(tid); if(typingEl) typingEl.remove();
+                    chatBox.innerHTML += `<div class="flex justify-start mb-5 fade-in"><div class="bg-white border border-paper-200 text-slate-800 rounded-[1.5rem] rounded-tl-sm py-5 px-6 md:px-8 text-sm md:text-base max-w-[85%] shadow-sm leading-relaxed">${res}</div></div>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+            }; r.readAsDataURL(f);
+        };
+
+        // GLOBAL INIT
         const initApp = async () => {
-            setupAllEventListeners(); // Mengikat semua event JS agar super aman
+            setupAllEventListeners();
 
             if (appState.isLoggedIn && appState.nim) {
                 document.getElementById('login-view').classList.add('hidden');
@@ -1866,7 +2101,6 @@
                                 window.renderExamMonitorDsn();
                             }
                             
-                            // Auto-close exam for mahasiswa if dosen ends it
                             if (appState.isLoggedIn && window.examModeActive && window.currentMhsExamId) {
                                 const activeMhsExam = window.activeExams.find(e => e.id === window.currentMhsExamId);
                                 if (activeMhsExam && activeMhsExam.status === 'closed') {
