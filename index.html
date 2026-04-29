@@ -2207,6 +2207,55 @@
             container.innerHTML = html;
         };
 
+                    // FUNGSI MENCARI BUKU DARI GOOGLE BOOKS API (E-LIBRARY)
+            window.searchBooks = async (query) => {
+                const container = document.getElementById('elibrary-container');
+                
+                // Jika kotak pencarian kosong (seperti saat E-Lib baru dibuka otomatis), gunakan kata "ekologi"
+                if (!query) query = "ekologi"; 
+                
+                // Tampilkan animasi loading memutar selagi menunggu data dari internet
+                container.innerHTML = '<div class="col-span-2 md:col-span-3 text-center py-10 text-teal-500"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-3 block"></i><p class="font-bold">Menarik data dari perpustakaan...</p></div>';
+                
+                try {
+                    // Meminta data buku ke server Google Books
+                    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=6`);
+                    const data = await response.json();
+                    
+                    // Jika Google tidak menemukan bukunya sama sekali
+                    if (!data.items) {
+                        container.innerHTML = '<p class="col-span-2 md:col-span-3 text-center py-10 text-slate-400 font-medium">Buku tidak ditemukan. Coba kata kunci lain.</p>';
+                        return;
+                    }
+            
+                    // Jika buku ditemukan, rakit desain "kartu" HTML untuk masing-masing buku
+                    let html = '';
+                    data.items.forEach(item => {
+                        const info = item.volumeInfo;
+                        // Gunakan gambar dari Google, jika tidak ada, beri gambar abu-abu "No Cover"
+                        const img = info.imageLinks ? info.imageLinks.thumbnail : 'https://via.placeholder.com/128x192.png?text=No+Cover';
+                        
+                        html += `
+                        <div class="bg-white p-4 rounded-2xl border border-paper-200 shadow-sm flex flex-col h-full hover:shadow-md transition">
+                            <div class="h-40 mb-3 overflow-hidden rounded-xl bg-paper-100 flex items-center justify-center shrink-0">
+                                <img src="${img}" class="h-full object-cover">
+                            </div>
+                            <div class="flex-1 flex flex-col">
+                                <h4 class="font-bold text-slate-800 text-sm line-clamp-2 mb-1">${info.title}</h4>
+                                <p class="text-[11px] text-slate-500 font-bold uppercase mb-3">${info.authors ? info.authors[0] : 'Anonim'}</p>
+                                <a href="${info.infoLink}" target="_blank" class="mt-auto bg-teal-50 text-teal-600 text-center py-2.5 rounded-xl text-xs font-bold transition hover:bg-teal-100">Lihat Detail</a>
+                            </div>
+                        </div>`;
+                    });
+                    
+                    // Tampilkan kumpulan desain kartu buku tadi ke layar utama E-Library
+                    container.innerHTML = html;
+                    
+                } catch (error) {
+                    // Jika internet putus atau terjadi error lain
+                    container.innerHTML = '<p class="col-span-2 md:col-span-3 text-center py-10 text-red-400 font-bold">Gagal memuat buku. Periksa koneksi internet.</p>';
+                }
+            };
 
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
