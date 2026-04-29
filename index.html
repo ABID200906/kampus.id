@@ -814,41 +814,7 @@
         <div id="floating-pet-icon" class="text-4xl pointer-events-none">🌱</div>
         <span class="hidden group-hover:block text-sm font-bold text-brand-600 px-3 pointer-events-none">Level <span id="pet-level-float">1</span></span>
     </div>
-        <div id="modal-tutorial" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[5000] hidden flex items-center justify-center p-4">
-            <div class="bg-white w-full max-w-md rounded-[3rem] p-8 text-center shadow-2xl relative scale-95 transition-transform duration-300" id="modal-tutorial-content">
-            
-            <div id="tutorial-step-1" class="tutorial-step fade-in">
-                <div class="w-24 h-24 bg-brand-50 text-brand-500 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl shadow-inner"><i class="fa-solid fa-leaf"></i></div>
-                <h3 class="font-black text-2xl text-slate-800 mb-2">Selamat Datang!</h3>
-                <p class="text-slate-500 text-sm font-medium mb-8 leading-relaxed">Ini adalah <b>EcoVerse</b>, portal kampus terintegrasi yang tidak hanya mengurus akademik, tapi juga mengajakmu peduli lingkungan.</p>
-                <button onclick="window.gantiTutorial(2)" class="w-full bg-brand-500 hover:bg-brand-600 text-white py-4 rounded-2xl font-bold shadow-md transition active:scale-95 text-lg">Mulai Tur Singkat</button>
-            </div>
-    
-            <div id="tutorial-step-2" class="tutorial-step hidden fade-in">
-                <div class="w-24 h-24 bg-accent-50 text-accent-500 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl shadow-inner"><i class="fa-solid fa-location-crosshairs"></i></div>
-                <h3 class="font-black text-2xl text-slate-800 mb-2">Presensi Canggih</h3>
-                <p class="text-slate-500 text-sm font-medium mb-8 leading-relaxed">Lakukan absensi langsung dari HP-mu. Sistem GPS (Geofencing) kami akan memastikan kamu benar-benar berada di area kampus!</p>
-                <div class="flex space-x-3">
-                    <button onclick="window.gantiTutorial(1)" class="w-1/3 bg-paper-100 text-slate-600 hover:bg-paper-200 py-4 rounded-2xl font-bold transition active:scale-95">Kembali</button>
-                    <button onclick="window.gantiTutorial(3)" class="w-2/3 bg-brand-500 text-white hover:bg-brand-600 py-4 rounded-2xl font-bold transition active:scale-95 shadow-md">Lanjut</button>
-                </div>
-            </div>
-    
-            <div id="tutorial-step-3" class="tutorial-step hidden fade-in">
-                <div class="w-24 h-24 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl shadow-inner"><i class="fa-solid fa-medal"></i></div>
-                <h3 class="font-black text-2xl text-slate-800 mb-2">Selesaikan Tantangan</h3>
-                <p class="text-slate-500 text-sm font-medium mb-8 leading-relaxed">Kumpulkan poin dengan menyelesaikan tantangan ramah lingkungan. AI kami akan memvalidasi buktimu dari foto kamera!</p>
-                <button onclick="window.tutupTutorial()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-bold transition active:scale-95 shadow-lg text-lg"><i class="fa-solid fa-rocket mr-2"></i>Mulai Gunakan EcoVerse</button>
-            </div>
-    
-            <div class="flex justify-center space-x-2 mt-6" id="tutorial-dots">
-                <div class="w-8 h-2.5 bg-brand-500 rounded-full transition-all"></div>
-                <div class="w-2.5 h-2.5 bg-paper-200 rounded-full transition-all"></div>
-                <div class="w-2.5 h-2.5 bg-paper-200 rounded-full transition-all"></div>
-            </div>
-        </div>
-    </div>
-    
+
     <div id="toast" class="toast">Notifikasi</div>
 
     <div id="modal-materi-viewer" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[4000] hidden flex flex-col transition-opacity">
@@ -1317,19 +1283,11 @@
             
             document.getElementById('login-view').classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => {
-document.getElementById('login-view').classList.add('hidden');
-            document.getElementById('mahasiswa-app').classList.remove('hidden');
-            setTimeout(() => {
-                document.getElementById('mahasiswa-app').classList.remove('opacity-0');
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('mahasiswa-app').classList.remove('hidden');
+                setTimeout(() => document.getElementById('mahasiswa-app').classList.remove('opacity-0'), 50);
                 window.renderJoinedClasses(); 
                 window.renderJadwalMahasiswa();
-                
-                // --- PENAMBAHAN KODE TUTORIAL DI SINI ---
-                // Cek apakah user sudah pernah melihat tutorial
-                if (!appState.hasSeenTutorial) {
-                    window.bukaTutorial();
-                }
-                // ----------------------------------------   
             }, 500);
             window.showToast("Selamat datang di Kampus EcoVerse!");
         };
@@ -2738,40 +2696,6 @@ document.getElementById('login-view').classList.add('hidden');
                         window.showToast("Gagal akses lokasi. Aktifkan GPS Anda.");
                     }, { enableHighAccuracy: true });
                 };
-
-                    // ========================== ONBOARDING TUTORIAL ==========================
-            
-            // Memunculkan pop-up tutorial
-            window.bukaTutorial = () => {
-                window.openModal('modal-tutorial');
-                window.gantiTutorial(1); // Pastikan mulai dari halaman 1
-            };
-            
-            // Mengganti halaman (step) tutorial
-            window.gantiTutorial = (step) => {
-                // Sembunyikan semua halaman
-                document.querySelectorAll('.tutorial-step').forEach(el => el.classList.add('hidden'));
-                // Tampilkan halaman yang dituju
-                document.getElementById(`tutorial-step-${step}`).classList.remove('hidden');
-            
-                // Update titik-titik indikator di bawah
-                const dots = document.getElementById('tutorial-dots').children;
-                for(let i = 0; i < dots.length; i++) {
-                    if(i === (step - 1)) {
-                        dots[i].className = "w-8 h-2.5 bg-brand-500 rounded-full transition-all duration-300";
-                    } else {
-                        dots[i].className = "w-2.5 h-2.5 bg-paper-200 rounded-full transition-all duration-300";
-                    }
-                }
-            };
-            
-            // Menutup tutorial dan mencatat bahwa user sudah melihatnya
-            window.tutupTutorial = () => {
-                window.closeModal('modal-tutorial');
-                appState.hasSeenTutorial = true; // Tandai bahwa user sudah lihat
-                window.saveState(); // Simpan ke dalam memori/Firebase
-                window.showToast("Selamat menjelajahi EcoVerse!");
-            };
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
             setupAllEventListeners();
