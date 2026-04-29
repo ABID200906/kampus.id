@@ -260,7 +260,7 @@
                                 <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" onclick="window.openGlobalChat()">
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" id="btn-obrolan">
                                 <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-earth-asia text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Obrolan</span>
                             </div>
@@ -316,7 +316,7 @@
                                         <p class="text-sm font-bold text-brand-500">Dalam Radius (1KM)</p>
                                     </div>
                                 </div>
-                                <button onclick="window.handleCheckIn()" id="btn-checkin" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition active:scale-95 flex items-center justify-center text-lg">
+                                <button id="btn-checkin" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition active:scale-95 flex items-center justify-center text-lg">
                                     <i class="fa-solid fa-fingerprint mr-2 text-brand-400"></i> Presensi Kehadiran Sekarang
                                 </button>
                             </div>
@@ -391,7 +391,7 @@
                     <div class="flex-1 p-5 md:p-8 space-y-6 overflow-y-auto bg-paper-50 pb-24" id="bot-messages"></div>
                     <div class="p-4 md:p-6 bg-white border-t border-paper-200 flex items-center space-x-3 shrink-0 rounded-b-[2rem]">
                         <button onclick="document.getElementById('bot-image-input').click()" class="text-brand-500 hover:bg-brand-50 transition p-3 rounded-xl w-14 h-14 flex items-center justify-center"><i class="fa-solid fa-camera text-2xl"></i></button>
-                        <input type="file" id="bot-image-input" accept="image/*" class="hidden" id="btn-bot-img">
+                        <input type="file" id="bot-image-input" accept="image/*" class="hidden">
                         <input type="text" id="bot-input" placeholder="Tanya soal kampus atau lingkungan..." class="flex-1 bg-paper-100 rounded-xl py-4 px-6 outline-none border-none text-sm md:text-base focus:ring-2 focus:ring-accent-300 transition text-slate-700">
                         <button id="btn-bot-send" class="bg-slate-800 text-white hover:bg-slate-700 transition p-3 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg active:scale-95"><i class="fa-solid fa-paper-plane text-xl"></i></button>
                     </div>
@@ -806,8 +806,7 @@
             <button onclick="window.closeModal('modal-materi-viewer')" class="text-slate-400 hover:text-white bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <div class="flex-1 w-full px-4 md:px-10 pb-6 md:pb-10 relative">
-            <div class="w-full h-full bg-white rounded-2xl overflow-hidden shadow-2xl relative flex items-center justify-center" id="viewer-content">
-            </div>
+            <div class="w-full h-full bg-white rounded-2xl overflow-hidden shadow-2xl relative flex items-center justify-center" id="viewer-content"></div>
         </div>
     </div>
 
@@ -1058,7 +1057,7 @@
                         <img id="real-berita-preview-img" src="" class="w-full h-full object-cover">
                         <button onclick="window.removeBeritaImage()" class="absolute top-2 right-2 bg-slate-900/60 text-white rounded-full w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-opacity-80"><i class="fa-solid fa-times"></i></button>
                     </div>
-                    <input type="file" id="input-foto-berita" accept="image/*" class="hidden" onchange="window.handleBeritaImageUpload(event)">
+                    <input type="file" id="input-foto-berita" accept="image/*" class="hidden">
                     <button onclick="document.getElementById('input-foto-berita').click()" class="bg-paper-100 hover:bg-paper-200 text-slate-600 px-5 py-3 rounded-xl font-bold text-xs transition flex items-center w-max"><i class="fa-solid fa-camera mr-2"></i> Pilih Foto</button>
                 </div>
             </div>
@@ -1075,7 +1074,7 @@
                     <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Pilih Kelas</p>
                     <div class="relative">
                         <select id="input-jadwal-kelas" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-accent-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-bold appearance-none">
-                        </select>
+                            </select>
                         <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
                     </div>
                 </div>
@@ -1109,7 +1108,6 @@
         </div>
     </div>
 
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1132,7 +1130,7 @@
         let firebaseApp, auth, db, currentUser = null;
         let useFirebase = true;
         
-        // GLOBAL DATA SHARED (Sinkronisasi Dosen <-> Mahasiswa)
+        // GLOBAL DATA SHARED
         let globalClasses = [];
         window.activeExams = [];
         window.globalNews = [];
@@ -1171,7 +1169,7 @@
         const bindEvent = (id, fn) => { 
             const el = document.getElementById(id);
             if(el) {
-                el.replaceWith(el.cloneNode(true)); // Hapus listener lama
+                el.replaceWith(el.cloneNode(true)); 
                 document.getElementById(id).addEventListener('click', fn);
             }
         };
@@ -1214,6 +1212,8 @@
             if(rpiInput) rpiInput.addEventListener('change', window.handleRealPostImageUpload);
             const botInputImg = document.getElementById('bot-image-input');
             if(botInputImg) botInputImg.addEventListener('change', window.handleBotImageUpload);
+            const fotoBeritaInput = document.getElementById('input-foto-berita');
+            if(fotoBeritaInput) fotoBeritaInput.addEventListener('change', window.handleBeritaImageUpload);
             
             const dmInput = document.getElementById('dm-input');
             if(dmInput) dmInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') window.sendGlobalMessage(); });
@@ -2265,6 +2265,7 @@
                                 window.renderExamMonitorDsn();
                             }
                             
+                            // Auto-close exam for mahasiswa if dosen ends it
                             if (appState.isLoggedIn && window.examModeActive && window.currentMhsExamId) {
                                 const activeMhsExam = window.activeExams.find(e => e.id === window.currentMhsExamId);
                                 if (activeMhsExam && activeMhsExam.status === 'closed') {
