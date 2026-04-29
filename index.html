@@ -306,19 +306,19 @@
                                         <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse mr-2"></span> Terhubung
                                     </div>
                                 </div>
-                                <div class="bg-paper-50 p-5 rounded-2xl border border-paper-200 flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-4 md:space-y-0">
-                                    <div class="flex items-center space-x-4">
-                                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-accent-500 text-xl"><i class="fa-solid fa-location-crosshairs"></i></div>
-                                        <div>
-                                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Jarak dari Pusat</p>
-                                            <p class="text-lg font-black text-slate-800">0.12 KM <span class="text-xs font-medium text-slate-500">(120 meter)</span></p>
+                                    <div class="bg-paper-50 p-5 rounded-2xl border border-paper-200 flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-4 md:space-y-0">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-accent-500 text-xl"><i class="fa-solid fa-location-crosshairs"></i></div>
+                                            <div>
+                                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Jarak dari Pusat</p>
+                                                <p class="text-lg font-black text-slate-800" id="display-jarak-mhs">0.12 KM <span class="text-xs font-medium text-slate-500">(120 meter)</span></p>
+                                            </div>
+                                        </div>
+                                        <div class="md:text-right">
+                                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Status Area</p>
+                                            <p class="text-sm font-bold text-brand-500" id="display-status-radius">Dalam Radius (1KM)</p>
                                         </div>
                                     </div>
-                                    <div class="md:text-right">
-                                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Status Area</p>
-                                        <p class="text-sm font-bold text-brand-500">Dalam Radius (1KM)</p>
-                                    </div>
-                                </div>
                                 <button onclick="window.handleCheckIn()" id="btn-checkin" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition active:scale-95 flex items-center justify-center text-lg">
                                     <i class="fa-solid fa-fingerprint mr-2 text-brand-400"></i> Presensi Kehadiran Sekarang
                                 </button>
@@ -2621,74 +2621,81 @@
                 return R * c; 
             };
             
-            // Fungsi saat Mahasiswa memencet tombol Presensi
-            window.handleCheckIn = () => {
-                // 1. Cek apakah sudah absen hari ini
-                const todayDate = new Date().toDateString();
-                if (appState.lastAttendanceDate === todayDate) {
-                    return window.showToast("Anda sudah melakukan presensi hari ini!");
-                }
-            
-                // 2. Cek apakah perangkat mendukung GPS
-                if (!navigator.geolocation) {
-                    return window.showToast("Browser Anda tidak mendukung fitur lokasi GPS.");
-                }
-            
-                window.showToast("Meminta akses lokasi... Harap izinkan popup browser.");
-            
-                // 3. Minta posisi saat ini
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const userLat = position.coords.latitude;
-                    const userLng = position.coords.longitude;
-                    
-                    // PENTING: Ganti koordinat ini dengan lokasi Kampus/Rumah kamu untuk dites!
-                    // Saat ini diatur ke area Jakarta Pusat (-6.200000, 106.816666)
-                    const campusLat =  -6.0852; 
-                    const campusLng = 106.4234;
-            
-                    // Hitung jarak
-                    const distanceKm = window.calculateDistance(userLat, userLng, campusLat, campusLng);
-                    const distanceMeters = Math.round(distanceKm * 1000);
-            
-                    // Jika jarak kurang dari atau sama dengan 1 KM (1.0)
-                    if (distanceKm <= 1.0) { 
-                        // Catat absen berhasil
-                        appState.lastAttendanceDate = todayDate;
-                        appState.points += 20; // Kasih bonus 20 poin
-                        window.saveState();
-            
-                        // Ubah tampilan tombol jadi hijau
-                        const btn = document.getElementById('btn-checkin');
-                        if(btn) {
-                            btn.classList.replace('bg-slate-800', 'bg-brand-500');
-                            btn.classList.replace('hover:bg-slate-700', 'cursor-default');
-                            btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
-                        }
-                        window.showToast(`Berhasil absen! Jarak Anda: ${distanceMeters} meter dari pusat kampus.`);
-            
-                        // Kirim data presensi ke Firebase Dosen
-                        if (typeof useFirebase !== 'undefined' && useFirebase && typeof currentUser !== 'undefined' && currentUser) {
-                            try {
-                                const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-                                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'presensi'), {
-                                    nim: appState.nim,
-                                    nama: appState.userName,
-                                    jarak: distanceMeters,
-                                    status: "Dalam Radius (Sah)",
-                                    waktu: new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) + " WIB",
-                                    timestamp: Date.now()
-                                });
-                            } catch(e) { console.error("Gagal kirim ke dosen."); }
-                        }
-                    } else {
-                        // Tolak absen jika terlalu jauh
-                        window.showToast(`GAGAL! Anda di luar radius kampus. Jarak Anda: ${(distanceKm).toFixed(2)} KM.`);
+                window.handleCheckIn = () => {
+                    const todayDate = new Date().toDateString();
+                    if (appState.lastAttendanceDate === todayDate) {
+                        return window.showToast("Anda sudah melakukan presensi hari ini!");
                     }
-                }, (error) => {
-                    window.showToast("Gagal mendapatkan lokasi. Pastikan GPS HP/Laptop aktif dan izin diberikan.");
-                }, { enableHighAccuracy: true });
-            };
-
+                
+                    if (!navigator.geolocation) {
+                        return window.showToast("Browser tidak mendukung GPS.");
+                    }
+                
+                    window.showToast("Mengambil koordinat presensi...");
+                
+                    navigator.geolocation.getCurrentPosition(async (position) => {
+                        const userLat = position.coords.latitude;
+                        const userLng = position.coords.longitude;
+                        
+                        // PENTING: Ganti dengan koordinat lokasi tes Anda!
+                        const campusLat = -6.200000; 
+                        const campusLng = 106.816666;
+                
+                        const distanceKm = window.calculateDistance(userLat, userLng, campusLat, campusLng);
+                        const distanceMeters = Math.round(distanceKm * 1000);
+                
+                        // --- MENGUBAH TAMPILAN DI LAYAR (SESUAI ID HTML) ---
+                        const displayJarak = document.getElementById('display-jarak-mhs');
+                        const displayStatus = document.getElementById('display-status-radius');
+                
+                        if (displayJarak) {
+                            displayJarak.innerHTML = `${distanceKm.toFixed(2)} KM <span class="text-xs font-medium text-slate-500">(${distanceMeters} meter)</span>`;
+                        }
+                
+                        if (displayStatus) {
+                            if (distanceKm <= 1.0) {
+                                displayStatus.innerText = "Dalam Radius (Sah)";
+                                displayStatus.className = "text-sm font-bold text-brand-500";
+                            } else {
+                                displayStatus.innerText = "Luar Radius (Tidak Sah)";
+                                displayStatus.className = "text-sm font-bold text-red-500";
+                            }
+                        }
+                        // ---------------------------------------------------
+                
+                        if (distanceKm <= 1.0) { 
+                            appState.lastAttendanceDate = todayDate;
+                            appState.points += 20;
+                            window.saveState();
+                
+                            const btn = document.getElementById('btn-checkin');
+                            if(btn) {
+                                btn.classList.replace('bg-slate-800', 'bg-brand-500');
+                                btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
+                            }
+                            window.showToast(`Presensi berhasil diterima! Jarak: ${distanceMeters} meter.`);
+                
+                            // Kirim ke Firebase Dosen
+                            if (typeof useFirebase !== 'undefined' && useFirebase) {
+                                try {
+                                    const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'presensi'), {
+                                        nim: appState.nim,
+                                        nama: appState.userName,
+                                        jarak: distanceMeters,
+                                        status: "Dalam Radius",
+                                        waktu: new Date().toLocaleTimeString('id-ID'),
+                                        timestamp: Date.now()
+                                    });
+                                } catch(e) {}
+                            }
+                        } else {
+                            window.showToast(`Gagal! Anda berada ${distanceMeters} meter di luar kampus.`);
+                        }
+                    }, (error) => {
+                        window.showToast("Gagal akses lokasi. Aktifkan GPS Anda.");
+                    }, { enableHighAccuracy: true });
+                };
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
             setupAllEventListeners();
