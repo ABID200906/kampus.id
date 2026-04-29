@@ -2006,17 +2006,59 @@
             }
         };
 
-        window.sinkronPresensiDosen = () => {
-            const btn = document.getElementById('btn-sync'); const icon = document.getElementById('icon-sync'); const tbody = document.getElementById('presensi-table-body-dsn');
+        window.sinkronPresensiDosen = async () => {
+            const btn = document.getElementById('btn-sync'); 
+            const icon = document.getElementById('icon-sync'); 
+            const tbody = document.getElementById('presensi-table-body-dsn');
+            
             icon.classList.add('rotate-180'); btn.disabled = true;
             tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-16 text-center text-brand-500"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-3 block"></i><p class="font-bold">Menarik Data GPS Mahasiswa...</p></td></tr>';
-            setTimeout(() => {
-                icon.classList.remove('rotate-180'); btn.disabled = false;
-                tbody.innerHTML = `<tr class="border-b border-paper-100 bg-white hover:bg-paper-50 transition fade-in"><td class="px-6 py-4 font-bold text-slate-800">10112 • Budi Santoso</td><td class="px-6 py-4 text-slate-600">07:45 WIB</td><td class="px-6 py-4"><span class="bg-brand-50 text-brand-600 px-3 py-1 rounded-full text-[10px] font-bold border border-brand-200"><i class="fa-solid fa-location-crosshairs mr-1"></i> 120m (Dalam Radius)</span></td></tr>
-                                   <tr class="border-b border-paper-100 bg-white hover:bg-paper-50 transition fade-in" style="animation-delay: 0.1s"><td class="px-6 py-4 font-bold text-slate-800">10113 • Rina Amelia</td><td class="px-6 py-4 text-slate-600">07:50 WIB</td><td class="px-6 py-4"><span class="bg-brand-50 text-brand-600 px-3 py-1 rounded-full text-[10px] font-bold border border-brand-200"><i class="fa-solid fa-location-crosshairs mr-1"></i> 340m (Dalam Radius)</span></td></tr>
-                                   <tr class="border-b border-paper-100 bg-white hover:bg-paper-50 transition fade-in" style="animation-delay: 0.2s"><td class="px-6 py-4 font-bold text-slate-800">10115 • Kevin Julian</td><td class="px-6 py-4 text-slate-600">08:05 WIB</td><td class="px-6 py-4"><span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-[10px] font-bold border border-red-200"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 1.2km (Luar Radius)</span></td></tr>`;
-                window.showToast("Data presensi berhasil diperbarui!");
-            }, 2000);
+            
+            if (typeof useFirebase !== 'undefined' && useFirebase && typeof currentUser !== 'undefined' && currentUser) {
+                try {
+                    const { collection, getDocs, query, orderBy } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                    // Menarik tabel presensi dari Firebase
+                    const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'presensi'), orderBy('timestamp', 'desc'));
+                    const querySnapshot = await getDocs(q);
+        
+                    let html = '';
+                    let jumlahAbsen = 0;
+                    
+                    // Batasi agar dosen hanya melihat absen hari ini saja
+                    const todayStart = new Date().setHours(0,0,0,0);
+        
+                    querySnapshot.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        if(data.timestamp >= todayStart) {
+                            html += `
+                                <tr class="border-b border-paper-100 bg-white hover:bg-paper-50 transition fade-in" style="animation-delay: ${jumlahAbsen * 0.05}s">
+                                    <td class="px-6 py-4 font-bold text-slate-800">${data.nim} • ${data.nama}</td>
+                                    <td class="px-6 py-4 text-slate-600">${data.waktu}</td>
+                                    <td class="px-6 py-4"><span class="bg-brand-50 text-brand-600 px-3 py-1 rounded-full text-[10px] font-bold border border-brand-200"><i class="fa-solid fa-location-crosshairs mr-1"></i> ${data.jarak}m (${data.status})</span></td>
+                                </tr>
+                            `;
+                            jumlahAbsen++;
+                        }
+                    });
+        
+                    // Animasi Loading selesai
+                    setTimeout(() => {
+                        icon.classList.remove('rotate-180'); btn.disabled = false;
+                        if(html === '') {
+                            tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-16 text-center text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[1.5rem] bg-white">Belum ada mahasiswa yang presensi hari ini.</td></tr>';
+                        } else {
+                            tbody.innerHTML = html;
+                            const statPresensi = document.getElementById('stat-presensi');
+                            if(statPresensi) statPresensi.innerText = jumlahAbsen; // Update angka di Dashboard dosen
+                        }
+                        window.showToast("Data presensi terbaru berhasil ditarik!");
+                    }, 1000);
+        
+                } catch (e) {
+                    icon.classList.remove('rotate-180'); btn.disabled = false;
+                    tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-16 text-center text-red-500">Gagal menarik data dari server.</td></tr>';
+                }
+            }
         };
 
         // ========================== UJIAN REAL-TIME (DOSEN) ==========================
@@ -2564,6 +2606,88 @@
                         window.showToast("Sistem belum terhubung ke server Firebase.");
                     }
                 };
+
+                    // ========================== PRESENSI GEOFENCING (GPS) ==========================
+            
+            // Rumus matematika (Haversine) untuk menghitung jarak antara 2 koordinat (dalam Kilometer)
+            window.calculateDistance = (lat1, lon1, lat2, lon2) => {
+                const R = 6371; // Radius bumi dalam KM
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                          Math.sin(dLon/2) * Math.sin(dLon/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                return R * c; 
+            };
+            
+            // Fungsi saat Mahasiswa memencet tombol Presensi
+            window.handleCheckIn = () => {
+                // 1. Cek apakah sudah absen hari ini
+                const todayDate = new Date().toDateString();
+                if (appState.lastAttendanceDate === todayDate) {
+                    return window.showToast("Anda sudah melakukan presensi hari ini!");
+                }
+            
+                // 2. Cek apakah perangkat mendukung GPS
+                if (!navigator.geolocation) {
+                    return window.showToast("Browser Anda tidak mendukung fitur lokasi GPS.");
+                }
+            
+                window.showToast("Meminta akses lokasi... Harap izinkan popup browser.");
+            
+                // 3. Minta posisi saat ini
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    
+                    // PENTING: Ganti koordinat ini dengan lokasi Kampus/Rumah kamu untuk dites!
+                    // Saat ini diatur ke area Jakarta Pusat (-6.200000, 106.816666)
+                    const campusLat =  -6.0852; 
+                    const campusLng = 106.4234;
+            
+                    // Hitung jarak
+                    const distanceKm = window.calculateDistance(userLat, userLng, campusLat, campusLng);
+                    const distanceMeters = Math.round(distanceKm * 1000);
+            
+                    // Jika jarak kurang dari atau sama dengan 1 KM (1.0)
+                    if (distanceKm <= 1.0) { 
+                        // Catat absen berhasil
+                        appState.lastAttendanceDate = todayDate;
+                        appState.points += 20; // Kasih bonus 20 poin
+                        window.saveState();
+            
+                        // Ubah tampilan tombol jadi hijau
+                        const btn = document.getElementById('btn-checkin');
+                        if(btn) {
+                            btn.classList.replace('bg-slate-800', 'bg-brand-500');
+                            btn.classList.replace('hover:bg-slate-700', 'cursor-default');
+                            btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
+                        }
+                        window.showToast(`Berhasil absen! Jarak Anda: ${distanceMeters} meter dari pusat kampus.`);
+            
+                        // Kirim data presensi ke Firebase Dosen
+                        if (typeof useFirebase !== 'undefined' && useFirebase && typeof currentUser !== 'undefined' && currentUser) {
+                            try {
+                                const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'presensi'), {
+                                    nim: appState.nim,
+                                    nama: appState.userName,
+                                    jarak: distanceMeters,
+                                    status: "Dalam Radius (Sah)",
+                                    waktu: new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) + " WIB",
+                                    timestamp: Date.now()
+                                });
+                            } catch(e) { console.error("Gagal kirim ke dosen."); }
+                        }
+                    } else {
+                        // Tolak absen jika terlalu jauh
+                        window.showToast(`GAGAL! Anda di luar radius kampus. Jarak Anda: ${(distanceKm).toFixed(2)} KM.`);
+                    }
+                }, (error) => {
+                    window.showToast("Gagal mendapatkan lokasi. Pastikan GPS HP/Laptop aktif dan izin diberikan.");
+                }, { enableHighAccuracy: true });
+            };
 
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
