@@ -1199,7 +1199,7 @@
             bindEvent('btn-gabung-kelas', window.gabungKelas);
             bindEvent('btn-mulai-ujian-mhs', window.mulaiUjian);
             bindEvent('btn-selesai-ujian-mhs', window.selesaiUjian);
-            bindEvent('btn-elib', window.openELibrary);
+            bindEvent('btn-elib', () => { window.switchTabMhs('elibrary'); });
             
             bindEvent('btn-search-book', () => { const input = document.getElementById('elib-search-input'); if(input) window.searchBooks(input.value); });
             bindEvent('btn-bot-send', window.sendBotMessage);
