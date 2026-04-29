@@ -680,6 +680,13 @@
                             <p class="font-bold text-slate-700 text-sm">Tulis Berita Kampus</p>
                         </button>
                     </div>
+                    
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 mt-10 border-t border-paper-200 pt-8"><i class="fa-solid fa-list text-brand-500 mr-2"></i>Berita yang Anda Publikasikan</h3>
+                    <div id="dsn-berita-list" class="space-y-4 pb-10">
+                        <p class="text-slate-500 text-sm py-4">Memuat data berita...</p>
+                    </div>
+
+                </div>
                 </div>
 
                 <div id="dsn-view-kelas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
@@ -2499,6 +2506,65 @@
                         reader.readAsDataURL(file);
                     };
 
+                        // ========================== MANAJEMEN BERITA DOSEN ==========================
+                
+                window.renderBeritaDosen = () => {
+                    const container = document.getElementById('dsn-berita-list');
+                    if (!container) return;
+                
+                    // Filter hanya menampilkan berita yang di-upload oleh dosen yang sedang login
+                    const myNews = window.globalNews.filter(n => n.dosen === dosenState.name);
+                
+                    if (myNews.length === 0) {
+                        container.innerHTML = '<div class="text-center py-8 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[1.5rem] bg-white">Belum ada berita yang Anda publikasikan.</div>';
+                        return;
+                    }
+                
+                    let html = '';
+                    // Urutkan dari yang paling baru
+                    myNews.sort((a,b) => b.timestamp - a.timestamp).forEach(n => {
+                        const dateStr = new Date(n.timestamp).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+                        
+                        html += `
+                        <div class="bg-white p-5 rounded-2xl border border-paper-200 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-orange-300 transition fade-in">
+                            <div class="flex items-center space-x-4 overflow-hidden">
+                                <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center shrink-0 shadow-inner">
+                                    <i class="fa-solid fa-newspaper text-xl"></i>
+                                </div>
+                                <div class="truncate">
+                                    <h4 class="font-bold text-slate-800 text-base truncate">${n.judul}</h4>
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">${dateStr}</p>
+                                </div>
+                            </div>
+                            <button onclick="window.hapusBeritaDosen('${n.id}')" class="bg-red-50 text-red-500 hover:bg-red-500 hover:text-white px-5 py-3 sm:py-2.5 rounded-xl font-bold text-xs transition border border-red-100 shrink-0 shadow-sm flex items-center justify-center active:scale-95">
+                                <i class="fa-solid fa-trash mr-2"></i>Hapus
+                            </button>
+                        </div>`;
+                    });
+                    
+                    container.innerHTML = html;
+                };
+                
+                // Fungsi menghapus dari Database Firebase
+                window.hapusBeritaDosen = async (idBerita) => {
+                    if (!confirm("Apakah Anda yakin ingin menghapus berita ini secara permanen?")) return;
+                
+                    if (typeof useFirebase !== 'undefined' && useFirebase && typeof currentUser !== 'undefined' && currentUser) {
+                        try {
+                            // Impor fungsi hapus (deleteDoc) langsung dari server Google
+                            const { doc, deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                            
+                            // Eksekusi penghapusan berdasarkan ID
+                            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'news', idBerita));
+                            window.showToast("Berita berhasil dihapus!");
+                        } catch (e) {
+                            window.showToast("Terjadi kesalahan, gagal menghapus berita.");
+                        }
+                    } else {
+                        window.showToast("Sistem belum terhubung ke server Firebase.");
+                    }
+                };
+
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
             setupAllEventListeners();
@@ -2572,6 +2638,15 @@
                             s.forEach(d => window.globalNews.push({id: d.id, ...d.data()})); 
                             window.renderNewsSliderCustom();
                             window.renderCustomNewsPage();
+                        });
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'news'), (s) => { 
+                            window.globalNews = [];
+                            s.forEach(d => window.globalNews.push({id: d.id, ...d.data()})); 
+                            window.renderNewsSliderCustom();
+                            window.renderCustomNewsPage();
+                            
+                            // BARIS YANG DITAMBAHKAN: Update juga tampilan di Dosen
+                            if (typeof window.renderBeritaDosen === 'function') window.renderBeritaDosen();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), (s) => { 
                             window.globalSchedules = [];
