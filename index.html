@@ -1805,7 +1805,10 @@
         // DOSEN: JADWAL KULIAH
         window.bukaModalJadwal = () => {
             const selectEl = document.getElementById('input-jadwal-kelas');
-            const myClasses = window.globalClasses.filter(c => c.dosen === dosenState.name);
+            
+            // PERBAIKAN: Menghapus "window." di depan globalClasses
+            const myClasses = globalClasses.filter(c => c.dosen === dosenState.name);
+            
             if(myClasses.length === 0) {
                 window.showToast("Buat kelas terlebih dahulu sebelum mengatur jadwal!");
                 return;
@@ -1813,23 +1816,24 @@
             selectEl.innerHTML = myClasses.map(c => `<option value="${c.kode}">${c.kode} - ${c.nama}</option>`).join('');
             window.openModal('modal-tambah-jadwal');
         };
-
+        
         window.simpanJadwalDosen = async () => {
             const kode = document.getElementById('input-jadwal-kelas').value;
             const hari = document.getElementById('input-jadwal-hari').value;
             const ruang = document.getElementById('input-jadwal-ruang').value.trim();
             const mulai = document.getElementById('input-jadwal-mulai').value;
             const selesai = document.getElementById('input-jadwal-selesai').value;
-
+        
             if(!kode || !hari || !ruang || !mulai || !selesai) return window.showToast('Semua kolom jadwal wajib diisi!');
-
-            const kelasData = window.globalClasses.find(c => c.kode === kode);
-
+        
+            // PERBAIKAN: Menghapus "window." di depan globalClasses
+            const kelasData = globalClasses.find(c => c.kode === kode);
+        
             const newSchedule = {
                 kode: kode, nama: kelasData.nama, dosen: dosenState.name,
                 hari: hari, ruang: ruang, mulai: mulai, selesai: selesai, timestamp: Date.now()
             };
-
+        
             if (useFirebase && currentUser) {
                 try {
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), newSchedule);
