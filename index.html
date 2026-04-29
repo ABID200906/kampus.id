@@ -537,6 +537,16 @@
                         <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-600 hover:bg-paper-100 shadow-sm mr-4 transition"><i class="fa-solid fa-arrow-left text-lg"></i></button>
                         <h2 class="text-3xl font-black text-slate-800 flex items-center"><i class="fa-solid fa-book-quran text-emerald-500 mr-3"></i>Al-Quran Digital</h2>
                     </div>
+                                        <div id="mhs-view-quran-detail" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-[40]">
+                        <div class="max-w-3xl mx-auto pt-6 md:pt-10 px-4 pb-24">
+                            <div class="flex items-center mb-6">
+                                <button onclick="window.switchTabMhs('quran')" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-600 hover:bg-paper-100 shadow-sm mr-4 transition active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                                <h2 class="text-2xl md:text-3xl font-black text-slate-800 flex items-center" id="quran-detail-title">Surah</h2>
+                            </div>
+                            
+                            <div id="quran-detail-container" class="space-y-4"></div>
+                        </div>
+                    </div>
                     
                     <div id="quran-container"></div>
                 </div>
@@ -2285,7 +2295,7 @@
                     // Merakit desain untuk setiap surah
                     surahs.forEach(surah => {
                         html += `
-                        <div class="bg-white p-4 md:p-5 rounded-2xl border border-paper-200 shadow-sm flex items-center justify-between hover:border-emerald-300 hover:shadow-md transition cursor-pointer active:scale-95" onclick="window.showToast('Fitur baca ayat surah ${surah.namaLatin} sedang dikembangkan!')">
+                        <div class="bg-white p-4 md:p-5 rounded-2xl border border-paper-200 shadow-sm flex items-center justify-between hover:border-emerald-300 hover:shadow-md transition cursor-pointer active:scale-95" onclick="window.bacaSurah(${surah.nomor}, '${surah.namaLatin}')"
                             <div class="flex items-center space-x-4">
                                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-[1rem] flex items-center justify-center font-black shadow-inner text-lg shrink-0">
                                     ${surah.nomor}
@@ -2309,6 +2319,46 @@
                     container.innerHTML = '<div class="text-center py-10 text-red-400 font-medium bg-white rounded-2xl border border-red-100">Gagal memuat Al-Quran. Periksa koneksi internet Anda.</div>';
                 }
             };
+
+                        // FUNGSI MENGAMBIL AYAT SURAH DARI EQURAN.ID
+                window.bacaSurah = async (nomor, namaLatin) => {
+                    // 1. Pindah tampilan ke halaman detail quran
+                    window.switchTabMhs('quran-detail');
+                    document.getElementById('quran-detail-title').innerText = "Surah " + namaLatin;
+                    
+                    const container = document.getElementById('quran-detail-container');
+                    
+                    // Tampilkan loading
+                    container.innerHTML = '<div class="text-center py-10 text-emerald-500"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-3 block"></i><p class="font-bold">Memuat ayat suci...</p></div>';
+                
+                    try {
+                        // 2. Mengambil data ayat ke server berdasarkan nomor surah
+                        const response = await fetch(`https://equran.id/api/v2/surat/${nomor}`);
+                        const result = await response.json();
+                        const ayatList = result.data.ayat; // Ini adalah daftar seluruh ayat di surah tersebut
+                
+                        let html = '';
+                        
+                        // 3. Merakit desain untuk setiap ayat
+                        ayatList.forEach(ayat => {
+                            html += `
+                            <div class="bg-white p-5 md:p-6 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md transition">
+                                <div class="flex justify-between items-start mb-5">
+                                    <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center font-bold text-sm shrink-0 border border-emerald-100 shadow-inner">${ayat.nomorAyat}</div>
+                                    <p class="text-2xl md:text-3xl text-slate-800 text-right" style="font-family: 'Amiri', 'Traditional Arabic', serif; line-height: 2.5; direction: rtl;">${ayat.teksArab}</p>
+                                </div>
+                                <p class="text-xs font-bold text-emerald-600 mb-2 leading-relaxed tracking-wide">${ayat.teksLatin}</p>
+                                <p class="text-sm text-slate-600 font-medium leading-relaxed">${ayat.teksIndonesia}</p>
+                            </div>`;
+                        });
+                
+                        // 4. Tampilkan semua ayat ke layar
+                        container.innerHTML = html;
+                        
+                    } catch (error) {
+                        container.innerHTML = '<div class="text-center py-10 text-red-400 font-medium bg-white rounded-2xl border border-red-100 shadow-sm">Gagal memuat ayat. Periksa koneksi internet Anda.</div>';
+                    }
+                };
 
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
