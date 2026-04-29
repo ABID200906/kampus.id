@@ -85,7 +85,7 @@
 
 <body class="bg-paper-50 text-slate-800 font-sans antialiased overflow-hidden w-full h-[100dvh] flex flex-col md:flex-row relative">
 
-    <div id="login-view" class="fixed inset-0 z-[500] bg-login flex items-center justify-center p-4 md:p-6 transition-opacity duration-500 overflow-y-auto pt-10 pb-10">
+    <div id="login-view" class="fixed inset-0 z-[500] bg-login flex items-center justify-center p-4 md:p-6 transition-opacity duration-500 overflow-y-auto">
         <div class="bg-white/95 backdrop-blur-xl w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl flex flex-col items-center fade-in text-center border border-white/50 relative overflow-hidden my-auto">
             <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-brand-400 to-accent-500 rounded-[1.5rem] flex items-center justify-center text-white text-3xl md:text-4xl shadow-lg mb-5 transform rotate-3 shrink-0">
                 <i class="fa-solid fa-leaf"></i>
@@ -248,7 +248,7 @@
                                 <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-id-card text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-KTM</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" id="btn-elib">
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" onclick="window.openELibrary()">
                                 <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-journal-whills text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-Lib</span>
                             </div>
@@ -260,7 +260,7 @@
                                 <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" id="btn-obrolan">
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" onclick="window.openGlobalChat()">
                                 <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-earth-asia text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Obrolan</span>
                             </div>
@@ -316,7 +316,7 @@
                                         <p class="text-sm font-bold text-brand-500">Dalam Radius (1KM)</p>
                                     </div>
                                 </div>
-                                <button id="btn-checkin" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition active:scale-95 flex items-center justify-center text-lg">
+                                <button onclick="window.handleCheckIn()" id="btn-checkin" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition active:scale-95 flex items-center justify-center text-lg">
                                     <i class="fa-solid fa-fingerprint mr-2 text-brand-400"></i> Presensi Kehadiran Sekarang
                                 </button>
                             </div>
@@ -806,7 +806,8 @@
             <button onclick="window.closeModal('modal-materi-viewer')" class="text-slate-400 hover:text-white bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <div class="flex-1 w-full px-4 md:px-10 pb-6 md:pb-10 relative">
-            <div class="w-full h-full bg-white rounded-2xl overflow-hidden shadow-2xl relative flex items-center justify-center" id="viewer-content"></div>
+            <div class="w-full h-full bg-white rounded-2xl overflow-hidden shadow-2xl relative flex items-center justify-center" id="viewer-content">
+            </div>
         </div>
     </div>
 
@@ -1108,6 +1109,7 @@
         </div>
     </div>
 
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1197,7 +1199,10 @@
             bindEvent('btn-gabung-kelas', window.gabungKelas);
             bindEvent('btn-mulai-ujian-mhs', window.mulaiUjian);
             bindEvent('btn-selesai-ujian-mhs', window.selesaiUjian);
+            
+            // FUNGSI MENU YANG DIPERBAIKI (E-LIB & OBROLAN)
             bindEvent('btn-elib', window.openELibrary);
+            bindEvent('btn-obrolan', window.openGlobalChat);
             
             bindEvent('btn-search-book', () => { const input = document.getElementById('elib-search-input'); if(input) window.searchBooks(input.value); });
             bindEvent('btn-bot-send', window.sendBotMessage);
@@ -1405,7 +1410,7 @@
 
             window.showToast('Berhasil bergabung ke kelas ' + code);
             window.renderJoinedClasses();
-            window.renderJadwalMahasiswa(); // Update jadwal
+            window.renderJadwalMahasiswa();
             input.value = '';
         };
 
@@ -1508,7 +1513,7 @@
                 if(hari === 'Jumat') themeColor = 'teal';
 
                 html += `
-                <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden fade-in">
+                <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden fade-in mb-6">
                     <div class="bg-${themeColor}-50 px-6 py-4 border-b border-paper-100">
                         <h3 class="font-black text-${themeColor}-600">${hari}</h3>
                     </div>
@@ -2213,6 +2218,11 @@
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('mahasiswa-app').classList.remove('hidden');
                 document.getElementById('mahasiswa-app').classList.remove('opacity-0');
+                if(window.renderJoinedClasses) window.renderJoinedClasses();
+                if(window.renderJadwalMahasiswa) window.renderJadwalMahasiswa();
+                // Buka Search E-lib pertama kali
+                setTimeout(() => { if(document.getElementById('elibrary-container') && document.getElementById('elibrary-container').innerHTML.includes('Mencari')) window.searchBooks('Inovasi Hijau'); }, 1000);
+                window.renderChallenges();
             } else if (dosenState.isLoggedIn) {
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('dosen-app').classList.remove('hidden');
@@ -2265,7 +2275,6 @@
                                 window.renderExamMonitorDsn();
                             }
                             
-                            // Auto-close exam for mahasiswa if dosen ends it
                             if (appState.isLoggedIn && window.examModeActive && window.currentMhsExamId) {
                                 const activeMhsExam = window.activeExams.find(e => e.id === window.currentMhsExamId);
                                 if (activeMhsExam && activeMhsExam.status === 'closed') {
@@ -2292,7 +2301,6 @@
 
             window.checkAndFetchDailyNews();
             window.fetchGlobalNewsAI();
-            window.renderChallenges();
         };
 
         window.onload = initApp;
