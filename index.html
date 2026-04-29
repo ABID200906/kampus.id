@@ -145,6 +145,7 @@
 
 
     <div id="mahasiswa-app" class="w-full h-full flex flex-col md:flex-row hidden opacity-0 transition-opacity duration-500 absolute inset-0">
+        
         <nav id="mhs-navbar" class="glass-header z-40 flex flex-row md:flex-col justify-around items-center h-[4.5rem] md:h-full w-[calc(100%-1.5rem)] md:w-24 lg:w-64 border border-paper-200 md:border-y-0 md:border-l-0 px-2 md:px-0 md:pt-8 shrink-0 transition-all bg-white/95 order-2 md:order-1 rounded-[2rem] md:rounded-none shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:shadow-none mb-3 md:mb-0 mx-auto md:mx-0">
             <div class="hidden md:flex items-center justify-center lg:justify-start px-0 lg:px-8 mb-10 text-brand-600 w-full">
                 <i class="fa-solid fa-leaf text-3xl lg:mr-3"></i>
@@ -190,6 +191,7 @@
         </nav>
 
         <div class="flex-1 flex flex-col relative overflow-hidden bg-paper-50 w-full order-1 md:order-2 h-full min-h-0">
+            
             <header id="mhs-mobile-header" class="px-4 pt-4 pb-3 z-20 md:hidden shrink-0 flex justify-between items-center relative glass-header">
                 <button id="btn-fs-mobile" class="text-slate-500 hover:text-brand-500 transition w-10 h-10 flex items-center justify-center rounded-full hover:bg-paper-100">
                     <i class="fa-solid fa-expand text-lg" id="fs-icon-mobile-mhs"></i>
@@ -201,6 +203,7 @@
             </header>
 
             <main class="flex-1 relative w-full overflow-hidden">
+                
                 <div id="mhs-view-feed" class="mhs-view-section fade-in h-full w-full overflow-y-auto">
                     <div class="max-w-3xl mx-auto pt-4 md:pt-8 px-4 pb-6">
                         <div class="relative w-full h-32 mb-8 rounded-[2rem] overflow-hidden shadow-sm border border-brand-100 bg-white group eco-news-glow cursor-pointer" onclick="window.switchTabMhs('news', document.querySelectorAll('.nav-btn')[3])">
@@ -318,6 +321,20 @@
                                 </button>
                             </div>
                         </div>
+
+                        <h3 class="font-bold text-slate-800 text-lg mb-4 mt-8">Tugas Paperless Aktif</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-5 md:p-6 rounded-2xl border border-paper-200 flex items-center justify-between hover:shadow-md transition cursor-pointer">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-regular fa-file-pdf"></i></div>
+                                    <div>
+                                        <p class="font-bold text-slate-800 text-sm md:text-base">Esai Pengantar Ekologi</p>
+                                        <p class="text-xs text-slate-500 mt-0.5">Dikumpulkan via Cloud • 12MB Max</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold text-red-500 bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg">Besok</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -341,11 +358,11 @@
                             <div class="text-center py-6 text-slate-400 text-sm">Belum ada berita kampus.</div>
                         </div>
 
-                        <h2 class="text-2xl font-black mb-2 text-slate-800 flex items-center"><i class="fa-solid fa-newspaper text-accent-500 mr-3"></i>Berita Kemenag</h2>
+                        <h2 class="text-2xl font-black mb-2 text-slate-800 flex items-center"><i class="fa-solid fa-globe text-accent-500 mr-3"></i>Berita Global Harian (AI)</h2>
                         <div id="news-container" class="space-y-4">
                             <div class="text-center py-10 text-brand-500 font-medium flex flex-col items-center">
                                 <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4"></i>
-                                Memuat berita dari Pusaka...
+                                Memuat berita global dari Kimi AI...
                             </div>
                         </div>
                     </div>
@@ -789,7 +806,8 @@
             <button onclick="window.closeModal('modal-materi-viewer')" class="text-slate-400 hover:text-white bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <div class="flex-1 w-full px-4 md:px-10 pb-6 md:pb-10 relative">
-            <div class="w-full h-full bg-white rounded-2xl overflow-hidden shadow-2xl relative flex items-center justify-center" id="viewer-content"></div>
+            <div class="w-full h-full bg-white rounded-2xl overflow-hidden shadow-2xl relative flex items-center justify-center" id="viewer-content">
+            </div>
         </div>
     </div>
 
@@ -1030,6 +1048,19 @@
                     <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Headline / Judul Singkat</p>
                     <input type="text" id="input-judul-berita" placeholder="Contoh: Pendaftaran UKM Dibuka!" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-orange-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-bold">
                 </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Deskripsi Berita</p>
+                    <textarea id="input-desc-berita" rows="3" placeholder="Tulis isi berita..." class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-orange-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-medium resize-none"></textarea>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Foto Utama (Opsional)</p>
+                    <div id="berita-image-preview" class="hidden mb-3 rounded-xl overflow-hidden h-40 border border-paper-200 relative group">
+                        <img id="real-berita-preview-img" src="" class="w-full h-full object-cover">
+                        <button onclick="window.removeBeritaImage()" class="absolute top-2 right-2 bg-slate-900/60 text-white rounded-full w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-opacity-80"><i class="fa-solid fa-times"></i></button>
+                    </div>
+                    <input type="file" id="input-foto-berita" accept="image/*" class="hidden" onchange="window.handleBeritaImageUpload(event)">
+                    <button onclick="document.getElementById('input-foto-berita').click()" class="bg-paper-100 hover:bg-paper-200 text-slate-600 px-5 py-3 rounded-xl font-bold text-xs transition flex items-center w-max"><i class="fa-solid fa-camera mr-2"></i> Pilih Foto</button>
+                </div>
             </div>
             <button id="btn-simpan-berita-dsn" class="w-full bg-orange-500 hover:bg-orange-600 transition text-white py-4 rounded-xl font-bold shadow-md active:scale-95 mt-8">Siarkan Berita</button>
         </div>
@@ -1044,7 +1075,7 @@
                     <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Pilih Kelas</p>
                     <div class="relative">
                         <select id="input-jadwal-kelas" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-accent-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-bold appearance-none">
-                            </select>
+                        </select>
                         <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
                     </div>
                 </div>
@@ -1146,18 +1177,15 @@
         };
 
         const setupAllEventListeners = () => {
-            // Login & Logout
             bindEvent('btn-login-mhs', window.handleLoginMahasiswa);
             bindEvent('btn-login-dsn', window.handleLoginDosen);
             bindEvent('btn-logout-mhs', window.handleLogoutMahasiswa);
             bindEvent('btn-logout-dsn', window.handleLogoutDosen);
             
-            // Profil & Interaksi
             bindEvent('btn-submit-izin', window.submitIzin);
             bindEvent('btn-feed-pet', window.feedPet);
             bindEvent('btn-save-profile', window.saveProfile);
             
-            // Dosen - Manajemen
             bindEvent('btn-buat-kelas-dsn', window.tambahKelasDosen);
             bindEvent('btn-simpan-materi-dsn', window.simpanMateriDosen);
             bindEvent('btn-toggle-ujian-dsn', window.toggleUjianSesiDosen);
@@ -1168,12 +1196,11 @@
             bindEvent('btn-simpan-berita-dsn', window.simpanBeritaDosen);
             bindEvent('btn-simpan-jadwal-dsn', window.simpanJadwalDosen);
 
-            // Mahasiswa - Manajemen
             bindEvent('btn-gabung-kelas', window.gabungKelas);
             bindEvent('btn-mulai-ujian-mhs', window.mulaiUjian);
+            bindEvent('btn-selesai-ujian-mhs', window.selesaiUjian);
             bindEvent('btn-elib', window.openELibrary);
             
-            // Pencarian & Chat
             bindEvent('btn-search-book', () => { const input = document.getElementById('elib-search-input'); if(input) window.searchBooks(input.value); });
             bindEvent('btn-bot-send', window.sendBotMessage);
             bindEvent('btn-dm-send', window.sendGlobalMessage);
@@ -1188,19 +1215,12 @@
             const botInputImg = document.getElementById('bot-image-input');
             if(botInputImg) botInputImg.addEventListener('change', window.handleBotImageUpload);
             
-            // Pasang untuk enter press chat
             const dmInput = document.getElementById('dm-input');
             if(dmInput) dmInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') window.sendGlobalMessage(); });
             const botInput = document.getElementById('bot-input');
             if(botInput) botInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') window.sendBotMessage(); });
             const searchInput = document.getElementById('elib-search-input');
             if(searchInput) searchInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') window.searchBooks(searchInput.value); });
-
-            // Penggantian tipe input jam
-            const jamMulai = document.getElementById('input-jadwal-mulai');
-            if(jamMulai) jamMulai.type = 'time';
-            const jamSelesai = document.getElementById('input-jadwal-selesai');
-            if(jamSelesai) jamSelesai.type = 'time';
         };
 
         // ========================== FUNGSI MAHASISWA ==========================
@@ -1385,7 +1405,7 @@
 
             window.showToast('Berhasil bergabung ke kelas ' + code);
             window.renderJoinedClasses();
-            window.renderJadwalMahasiswa(); // Update jadwal jika ada mapel baru
+            window.renderJadwalMahasiswa(); // Update jadwal
             input.value = '';
         };
 
@@ -1465,7 +1485,6 @@
                 return;
             }
 
-            // Filter jadwal hanya untuk kelas yang diikuti mahasiswa
             const mhsSchedules = window.globalSchedules.filter(s => appState.joinedClasses.includes(s.kode));
 
             if(mhsSchedules.length === 0) {
@@ -1473,7 +1492,6 @@
                 return;
             }
 
-            // Group by Hari
             const grouped = { 'Senin':[], 'Selasa':[], 'Rabu':[], 'Kamis':[], 'Jumat':[] };
             mhsSchedules.forEach(s => { if(grouped[s.hari]) grouped[s.hari].push(s); });
 
@@ -1481,7 +1499,6 @@
             for (const [hari, jadwalHari] of Object.entries(grouped)) {
                 if(jadwalHari.length === 0) continue;
                 
-                // Sort by time
                 jadwalHari.sort((a,b) => a.mulai.localeCompare(b.mulai));
 
                 let themeColor = 'brand';
@@ -1680,16 +1697,30 @@
         };
 
         // DOSEN: BERITA KAMPUS
+        window.currentBeritaImageBase64 = null;
+        window.handleBeritaImageUpload = (e) => {
+            const r = new FileReader();
+            r.onload = (ev) => { window.currentBeritaImageBase64 = ev.target.result; document.getElementById('real-berita-preview-img').src = ev.target.result; document.getElementById('berita-image-preview').classList.remove('hidden'); };
+            if(e.target.files[0]) r.readAsDataURL(e.target.files[0]);
+        };
+        window.removeBeritaImage = () => { window.currentBeritaImageBase64 = null; document.getElementById('berita-image-preview').classList.add('hidden'); };
+
         window.simpanBeritaDosen = async () => {
             const judul = document.getElementById('input-judul-berita').value.trim();
+            const desc = document.getElementById('input-desc-berita').value.trim();
             if(!judul) return window.showToast('Judul berita tidak boleh kosong!');
             
             if (useFirebase && currentUser) {
                 try {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'news'), { judul: judul, dosen: dosenState.name, timestamp: Date.now() });
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'news'), { 
+                        judul: judul, deskripsi: desc, image: window.currentBeritaImageBase64,
+                        dosen: dosenState.name, timestamp: Date.now() 
+                    });
                     window.showToast(`Berita kampus berhasil disiarkan!`);
                     window.closeModal('modal-tambah-berita');
                     document.getElementById('input-judul-berita').value = '';
+                    document.getElementById('input-desc-berita').value = '';
+                    window.removeBeritaImage();
                 } catch(e) { window.showToast("Gagal menyimpan ke server"); }
             }
         };
@@ -1699,19 +1730,24 @@
             if(!container) return;
 
             if(window.globalNews.length === 0) {
-                container.innerHTML = '<div class="text-center py-6 text-slate-400 text-sm">Belum ada berita kampus.</div>';
+                container.innerHTML = '<div class="text-center py-6 text-slate-400 text-sm border-2 border-dashed border-paper-200 rounded-[2rem] bg-white">Belum ada berita dari pihak kampus.</div>';
                 return;
             }
 
             let html = '';
             window.globalNews.sort((a,b) => b.timestamp - a.timestamp).forEach((n, idx) => {
+                const imgHtml = n.image ? `<img src="${n.image}" class="w-full h-48 object-cover mt-4 rounded-xl border border-paper-100 shadow-sm">` : '';
                 html += `
-                    <div class="bg-white p-4 rounded-xl border border-paper-200 shadow-sm flex items-center space-x-4 fade-in" style="animation-delay: ${idx * 0.05}s">
-                        <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-lg flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-bullhorn"></i></div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm md:text-base">${n.judul}</h4>
-                            <p class="text-[10px] text-slate-500 uppercase font-bold mt-1">Oleh: ${n.dosen}</p>
+                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] border border-paper-200 shadow-sm fade-in" style="animation-delay: ${idx * 0.05}s">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center shrink-0 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
+                            <div>
+                                <h4 class="font-black text-slate-800 text-base md:text-lg leading-tight">${n.judul}</h4>
+                                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mt-1">Oleh: ${n.dosen}</p>
+                            </div>
                         </div>
+                        ${n.deskripsi ? `<p class="text-sm text-slate-600 font-medium leading-relaxed bg-paper-50 p-4 rounded-xl">${n.deskripsi}</p>` : ''}
+                        ${imgHtml}
                     </div>
                 `;
             });
@@ -1719,14 +1755,15 @@
         };
 
         window.renderNewsSliderCustom = () => {
-            // Gabungkan berita lokal Kimi dengan berita dosen
             const defaultNews = appState.newsText ? appState.newsText.split('•').map(t => t.trim()).filter(t => t.length > 5) : [];
             const dsnNews = window.globalNews.map(n => n.judul);
             const combinedNews = [...dsnNews, ...defaultNews];
+            
+            if(combinedNews.length === 0) combinedNews.push("Selamat datang di EcoVerse Campus!");
 
             const wrapper = document.getElementById('news-slider-wrapper');
             const dots = document.getElementById('slider-dots');
-            if(!wrapper || combinedNews.length === 0) return;
+            if(!wrapper) return;
             
             wrapper.innerHTML = ''; dots.innerHTML = '';
             combinedNews.forEach((news, idx) => {
@@ -1734,7 +1771,7 @@
                     <div class="min-w-full h-full flex items-center px-8 md:px-12 bg-gradient-to-br from-brand-50 via-white to-accent-50">
                         <div class="max-w-md">
                             <p class="text-[10px] md:text-xs font-black text-brand-600 uppercase tracking-tighter mb-1">EcoVerse Today</p>
-                            <h4 class="text-sm md:text-lg font-bold text-slate-800 leading-tight">${news}</h4>
+                            <h4 class="text-sm md:text-lg font-bold text-slate-800 leading-tight line-clamp-2">${news}</h4>
                         </div>
                     </div>`;
                 dots.innerHTML += `<div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-brand-500 w-6 md:w-8' : 'bg-brand-200'}"></div>`;
@@ -1750,6 +1787,7 @@
                 });
             }, 5000);
         };
+
 
         // DOSEN: JADWAL KULIAH
         window.bukaModalJadwal = () => {
@@ -2108,11 +2146,64 @@
             }
         };
 
-        // ========================== UTILS LAINNYA ==========================
-        window.openELibrary = () => { 
-            window.switchTabMhs('elibrary'); 
-            window.searchBooks('inovasi hijau'); 
+        // ========================== BERITA GLOBAL & AI ==========================
+        window.fetchGlobalNewsAI = async () => {
+            const container = document.getElementById('news-container');
+            if(!container) return;
+            
+            if (appState.globalNewsDate === todayDate && appState.globalNewsData) {
+                window.renderGlobalNewsFeed(appState.globalNewsData);
+                return;
+            }
+
+            if(container.innerHTML.trim() === '') {
+                 container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium flex flex-col items-center"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4 text-brand-400"></i>Memuat berita global hari ini...</div>';
+            }
+
+            try {
+                const prompt = "Buatkan 3 ringkasan berita global hari ini (fokus pada inovasi, teknologi, atau lingkungan hidup). Formatkan HANYA sebagai JSON Array of Objects dengan properti: 'title' (judul berita), 'snippet' (ringkasan 2 kalimat), dan 'keyword' (1 kata kunci bahasa inggris untuk gambar). Jangan tambahkan teks lain selain JSON murni.";
+                const responseText = await window.fetchKimiAPI(prompt, 'json_only', "Kamu adalah AI. Hanya keluarkan format JSON valid.");
+                
+                let cleanJson = responseText.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                const articles = JSON.parse(cleanJson);
+                
+                const formattedArticles = articles.map(item => {
+                    const safeKeyword = encodeURIComponent(item.keyword || 'news');
+                    return { title: item.title, snippet: item.snippet, image: `https://image.pollinations.io/prompt/latest%20${safeKeyword}%20news%20realistic?width=400&height=300&nologo=true`, source: 'Kimi AI Global News' };
+                });
+
+                appState.globalNewsDate = todayDate;
+                appState.globalNewsData = formattedArticles;
+                window.saveState();
+
+                window.renderGlobalNewsFeed(formattedArticles);
+            } catch (e) {
+                container.innerHTML = '<div class="text-center py-10 text-red-400 font-medium border-2 border-dashed border-red-100 rounded-[2rem] bg-white">Gagal memuat berita dari AI. Pastikan koneksi stabil.</div>';
+            }
         };
+
+        window.renderGlobalNewsFeed = (articles) => {
+            const container = document.getElementById('news-container');
+            if(!container) return;
+            let html = '';
+            articles.forEach((news, idx) => {
+                html += `
+                    <div class="block bg-white p-4 md:p-5 rounded-[1.5rem] border border-paper-200 shadow-sm transition hover:shadow-md hover:border-brand-300 fade-in" style="animation-delay: ${idx * 0.05}s">
+                        <div class="flex items-start space-x-4 md:space-x-5">
+                            <div class="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-paper-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                                <img src="${news.image}" alt="News Image" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 flex flex-col justify-center">
+                                <span class="text-[10px] md:text-[11px] font-black text-brand-600 uppercase tracking-widest mb-1.5 flex items-center"><i class="fa-solid fa-robot mr-1.5 text-brand-500"></i>${news.source}</span>
+                                <h4 class="text-sm md:text-base font-bold text-slate-800 leading-snug mb-2">${news.title}</h4>
+                                <p class="text-xs text-slate-500 font-medium line-clamp-3 leading-relaxed">${news.snippet}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+            container.innerHTML = html;
+        };
+
 
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
@@ -2165,6 +2256,7 @@
                                 if(window.currentActiveKelasDsn) window.renderMateriDosen();
                             }
                         });
+
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'exams'), (s) => { 
                             window.activeExams = [];
                             s.forEach(d => window.activeExams.push({id: d.id, ...d.data()})); 
@@ -2172,6 +2264,7 @@
                             if (dosenState.isLoggedIn && window.ujianAktifDsn && window.currentExamId) {
                                 window.renderExamMonitorDsn();
                             }
+                            
                             if (appState.isLoggedIn && window.examModeActive && window.currentMhsExamId) {
                                 const activeMhsExam = window.activeExams.find(e => e.id === window.currentMhsExamId);
                                 if (activeMhsExam && activeMhsExam.status === 'closed') {
@@ -2197,7 +2290,7 @@
             }
 
             window.checkAndFetchDailyNews();
-            window.fetchPusakaNews();
+            window.fetchGlobalNewsAI();
             window.renderChallenges();
         };
 
