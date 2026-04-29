@@ -1239,7 +1239,9 @@
                 try { await setDoc(doc(db, 'artifacts', appId, 'users', appState.nim, 'profile', 'main'), appState); } 
                 catch(e) {}
             }
-        };
+                        window.openELibrary = () => {
+                window.switchTabMhs('elibrary');
+            };
 
         window.handleLoginMahasiswa = () => {
             const nim = document.getElementById('login-nim').value.trim();
