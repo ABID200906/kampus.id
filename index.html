@@ -332,7 +332,7 @@
 
                         <h3 class="font-bold text-slate-800 text-lg mb-4 mt-8">Tugas Paperless Aktif</h3>
                         <div class="space-y-4">
-                            <div class="bg-white p-5 md:p-6 rounded-2xl border border-paper-200 flex items-center justify-between hover:shadow-md transition cursor-pointer">
+                            <div onclick="window.bukaMateriMahasiswa('tugas', 'Esai Pengantar Ekologi', 'BIO-202')" class="bg-white p-5 md:p-6 rounded-2xl border border-paper-200 flex items-center justify-between hover:shadow-md transition hover:border-indigo-300 cursor-pointer active:scale-95">
                                 <div class="flex items-center space-x-4">
                                     <div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-regular fa-file-pdf"></i></div>
                                     <div>
@@ -4203,9 +4203,20 @@ window.simpanMateriDosen = async () => {
 
         
 // ========================== GLOBAL INIT ==========================
+        // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
-            setupAllEventListeners();
+            
+            // 🧹 SCRIPT PEMBERSIH DUPLIKAT OTOMATIS (MAGIC CLEANER)
+            const allElements = document.querySelectorAll('[id]');
+            const seenIds = {};
+            for (let i = allElements.length - 1; i >= 0; i--) {
+                const el = allElements[i];
+                if (seenIds[el.id]) el.remove(); else seenIds[el.id] = true;
+            }
+            // =======================================================
 
+            setupAllEventListeners();
+            
             // Memanggil fungsi Drag Pet (jika sudah ditambahkan sebelumnya)
             if (typeof window.setupPetWidgetDrag === 'function') {
                 window.setupPetWidgetDrag();
