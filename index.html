@@ -933,88 +933,75 @@
         </div>
     </div>
 
-    <!-- MODAL MAHASISWA: KUMPULKAN TUGAS (PREMIUM UI) -->
-    <div id="modal-kumpul-tugas" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl relative scale-95 transform transition-all duration-300 overflow-hidden flex flex-col" id="modal-kumpul-tugas-content">
-            
-            <!-- Header -->
-            <div class="bg-gradient-to-br from-indigo-500 to-violet-600 p-8 text-center relative overflow-hidden shrink-0">
-                <button onclick="window.closeModal('modal-kumpul-tugas')" class="absolute top-5 right-5 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition backdrop-blur-sm active:scale-95"><i class="fa-solid fa-xmark text-lg"></i></button>
-                <i class="fa-solid fa-cloud-arrow-up absolute -left-4 -bottom-4 text-white/10 text-8xl transform -rotate-12 pointer-events-none"></i>
-                <div class="w-16 h-16 bg-white/20 backdrop-blur-md text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner"><i class="fa-solid fa-file-arrow-up"></i></div>
-                <h3 class="font-black text-2xl text-white tracking-tight" id="kumpul-tugas-title">Judul Tugas</h3>
-                <p class="text-indigo-100 text-xs mt-1 font-bold uppercase tracking-widest" id="kumpul-tugas-subtitle">Mata Kuliah: BIO-202</p>
+<!-- HALAMAN PENILAIAN TUGAS 2.0 (IN-LINE SPLIT PANEL) -->
+        <div id="dsn-view-tugas" class="dsn-view-section hidden fade-in h-full flex flex-col p-4 md:p-8 w-full max-w-6xl mx-auto overflow-hidden">
+            <div class="flex justify-between items-end mb-6 shrink-0">
+                <div>
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tight mb-1">Meja Penilaian 2.0</h2>
+                    <p class="text-slate-500 text-sm font-medium flex items-center"><i class="fa-solid fa-bolt text-amber-500 mr-2"></i> Mode Panel In-Line Cepat</p>
+                </div>
+                <button onclick="window.renderDaftarTugasMasuk()" class="bg-white border border-paper-200 text-slate-600 hover:bg-paper-50 px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm"><i class="fa-solid fa-rotate-right mr-1"></i> Segarkan</button>
             </div>
 
-            <!-- Area Upload -->
-            <div class="p-6 md:p-8 space-y-4 bg-paper-50 border-b border-paper-100">
-                <div class="bg-white p-5 rounded-[1.5rem] border border-paper-200 shadow-sm mb-2">
-                    <p class="text-xs font-bold text-slate-500 flex items-center"><i class="fa-solid fa-circle-info text-indigo-400 mr-2"></i> Kumpulkan jawaban Anda dalam format PDF, Word, atau Gambar (Max. 10MB).</p>
+            <!-- Area Split Screen (Kiri: Tabel, Kanan: Form Nilai) -->
+            <div class="flex-1 flex gap-4 md:gap-6 relative overflow-hidden min-h-0">
+                
+                <!-- KOLOM KIRI: TABEL TUGAS -->
+                <div class="flex-1 bg-white rounded-[2rem] border border-paper-200 shadow-sm flex flex-col overflow-hidden relative z-10 transition-all duration-300 h-full">
+                    <div class="overflow-y-auto flex-1 h-full no-scrollbar">
+                        <table class="w-full text-left text-sm text-slate-600 relative">
+                            <thead class="bg-paper-50 sticky top-0 text-[10px] uppercase font-black text-slate-400 border-b border-paper-200 tracking-wider shadow-sm z-20">
+                                <tr>
+                                    <th class="px-6 py-4">Mahasiswa</th>
+                                    <th class="px-6 py-4">Tugas & Kelas</th>
+                                    <th class="px-6 py-4 text-center">Status</th>
+                                    <th class="px-6 py-4 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tugas-masuk-body">
+                                <tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium">Memuat data tugas...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- Drag & Drop Zone -->
-                <input type="file" id="tugas-file" class="hidden" accept=".pdf,.doc,.docx,image/*" onchange="window.handleFileTugasMhs(event)">
-                <div onclick="document.getElementById('tugas-file').click()" class="border-2 border-dashed border-indigo-300 bg-indigo-50 hover:bg-indigo-100 text-center p-8 rounded-[2rem] cursor-pointer transition-colors group">
-                    <div class="w-14 h-14 bg-white text-indigo-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm group-hover:-translate-y-1 transition-transform"><i class="fa-solid fa-file-import"></i></div>
-                    <p class="text-sm font-bold text-slate-700 mb-1" id="tugas-file-name">Ketuk untuk pilih file PDF / Dokumen</p>
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Penyimpanan Cloud Aman</p>
-                </div>
-            </div>
+                <!-- KOLOM KANAN: PANEL PENILAIAN MUNCUL DARI SAMPING -->
+                <div id="panel-kanan-nilai" class="w-0 opacity-0 overflow-hidden bg-white rounded-[2rem] border-paper-200 shadow-xl flex flex-col shrink-0 transition-all duration-500 h-full relative z-20">
+                    <div class="w-80 md:w-96 flex flex-col h-full">
+                        <div class="bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-5 flex justify-between items-center shrink-0">
+                            <div class="text-white overflow-hidden">
+                                <h3 class="font-black text-base tracking-tight truncate" id="inline-nilai-title">Judul Tugas</h3>
+                                <p class="text-indigo-200 text-[10px] font-medium uppercase tracking-widest mt-0.5" id="inline-nilai-subtitle">Oleh: Mahasiswa</p>
+                            </div>
+                            <button onclick="window.tutupPanelNilai()" class="bg-white/20 hover:bg-white/40 text-white w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 ml-2"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        
+                        <div class="p-6 flex-1 overflow-y-auto space-y-6 bg-paper-50">
+                            <!-- Simulasi Tombol Buka Dokumen -->
+                            <div class="bg-white border border-paper-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                                <div class="flex items-center">
+                                    <i class="fa-solid fa-file-pdf text-red-500 text-2xl mr-3"></i>
+                                    <div><p class="text-xs font-bold text-slate-800">Dokumen Tugas</p><p class="text-[9px] text-slate-400">PDF / Word</p></div>
+                                </div>
+                                <button onclick="window.showToast('Membuka file jawaban mahasiswa...')" class="text-indigo-500 bg-indigo-50 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-indigo-500 hover:text-white transition"><i class="fa-solid fa-download"></i></button>
+                            </div>
 
-            <!-- Footer Tombol -->
-            <div class="p-5 md:p-6 bg-white flex space-x-3 shrink-0 rounded-b-[2.5rem]">
-                <button onclick="window.closeModal('modal-kumpul-tugas')" class="flex-1 bg-paper-100 hover:bg-paper-200 text-slate-600 py-4 rounded-xl font-bold transition active:scale-95 text-xs md:text-sm uppercase tracking-wider">Batal</button>
-                <button id="btn-submit-tugas-mhs" onclick="window.kumpulkanTugasMhs()" class="flex-[2] bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-black shadow-lg shadow-indigo-500/30 transition active:scale-95 text-xs md:text-sm uppercase tracking-wider flex items-center justify-center"><i class="fa-solid fa-paper-plane mr-2"></i> Serahkan Tugas</button>
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Beri Nilai Angka</p>
+                                <input type="number" id="inline-input-angka" placeholder="0" class="w-full bg-white focus:ring-2 ring-indigo-400 p-5 rounded-2xl border border-paper-200 outline-none text-slate-800 transition font-black text-4xl text-center shadow-inner">
+                            </div>
+                            
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Catatan Dosen</p>
+                                <textarea id="inline-input-catatan" rows="4" placeholder="Tuliskan revisi atau apresiasi..." class="w-full bg-white focus:ring-2 ring-indigo-400 p-4 rounded-2xl border border-paper-200 outline-none text-slate-800 transition text-sm resize-none shadow-inner leading-relaxed"></textarea>
+                            </div>
+                            
+                            <button onclick="window.simpanNilaiInline()" id="btn-simpan-inline" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-black shadow-lg shadow-indigo-500/30 transition active:scale-95 text-sm uppercase tracking-widest flex justify-center items-center"><i class="fa-solid fa-check mr-2"></i> Simpan Penilaian</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-        <!-- HALAMAN PENILAIAN TUGAS (PREMIUM UI) -->
-                <div id="dsn-view-tugas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
-                    <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-8 space-y-4 md:space-y-0">
-                        <div>
-                            <h2 class="text-3xl font-black text-slate-800 tracking-tight mb-1">Meja Penilaian</h2>
-                            <p class="text-slate-500 text-sm font-medium">Periksa dan berikan nilai untuk tugas mahasiswa yang masuk.</p>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl text-xs font-bold border border-indigo-100 shadow-sm"><i class="fa-solid fa-filter mr-1"></i> Filter Kelas</button>
-                            <button onclick="window.renderDaftarTugasMasuk()" class="bg-white border border-paper-200 text-slate-600 hover:bg-paper-50 px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm"><i class="fa-solid fa-rotate-right mr-1"></i> Segarkan</button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-4 mb-8">
-                        <div class="bg-white p-5 rounded-2xl border border-paper-200 shadow-sm">
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Masuk</p>
-                            <p class="text-2xl font-black text-slate-800" id="stat-tugas-total">0</p>
-                        </div>
-                        <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200 shadow-sm">
-                            <p class="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1">Perlu Dinilai</p>
-                            <p class="text-2xl font-black text-amber-600" id="stat-tugas-pending">0</p>
-                        </div>
-                        <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200 shadow-sm">
-                            <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Selesai Dinilai</p>
-                            <p class="text-2xl font-black text-emerald-600" id="stat-tugas-done">0</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm text-slate-600">
-                                <thead class="bg-paper-50 text-[10px] uppercase font-black text-slate-400 border-b border-paper-200 tracking-wider">
-                                    <tr>
-                                        <th class="px-6 py-4">Mahasiswa</th>
-                                        <th class="px-6 py-4">Tugas & Kelas</th>
-                                        <th class="px-6 py-4">Status</th>
-                                        <th class="px-6 py-4 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tugas-masuk-body">
-                                    <tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium">Memuat data tugas...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
 
                 <div id="dsn-view-kelas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-8">
@@ -2406,25 +2393,115 @@ window.renderSoalMahasiswa = (questions) => {
         };
 
         // 2. Fungsi Menampilkan Tabel (Terfilter Khusus Kelas Milik Dosen Tersebut)
+// 2. Fungsi Menampilkan Tabel 
         window.renderDaftarTugasMasuk = () => {
             const tbody = document.getElementById('tugas-masuk-body');
             if(!tbody) return;
 
-            // Pastikan dosen hanya melihat tugas dari kelas yang dia ajar
+            if(!window.globalClasses) window.globalClasses = [];
             const myKelasCodes = window.globalClasses.filter(c => c.dosen === dosenState.name).map(c => c.kode);
             const myTugas = window.tugasMasukDatabase.filter(t => myKelasCodes.includes(t.kelas));
 
-            let pending = 0; let done = 0;
             let html = '';
 
-            // Jika database kosong
             if (myTugas.length === 0) {
-                 tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium">Belum ada mahasiswa yang mengumpulkan tugas ke kelas Anda.</td></tr>';
-                 document.getElementById('stat-tugas-total').innerText = 0;
-                 document.getElementById('stat-tugas-pending').innerText = 0;
-                 document.getElementById('stat-tugas-done').innerText = 0;
+                 tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium border-2 border-dashed rounded-xl">Belum ada tugas masuk.</td></tr>';
                  return;
             }
+
+            myTugas.sort((a,b) => b.timestamp - a.timestamp).forEach((t) => {
+                const statusBadge = t.status === 'Pending' 
+                    ? '<span class="bg-amber-100 text-amber-600 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest"><i class="fa-regular fa-clock mr-1"></i> Menunggu</span>'
+                    : `<span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest"><i class="fa-solid fa-check mr-1"></i> Dinilai (${t.nilai})</span>`;
+
+                const namaMhs = t.mhsName || t.mhs || "Mahasiswa";
+
+                html += `
+                <tr class="border-b border-paper-100 hover:bg-indigo-50/30 transition fade-in">
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-slate-800 line-clamp-1">${namaMhs}</p>
+                        <p class="text-xs text-slate-500">${t.mhsNim || t.nim || "N/A"}</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-slate-700 text-sm line-clamp-1">${t.judul}</p>
+                        <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mt-1">${t.kelas}</p>
+                    </td>
+                    <td class="px-6 py-4 text-center">${statusBadge}</td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="window.bukaPanelNilai('${t.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-md active:scale-95 relative z-30">
+                            <i class="fa-solid fa-marker mr-1"></i> Nilai
+                        </button>
+                    </td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+        };
+
+        // 3. FUNGSI MEJA PENILAIAN 2.0 (MEMBUKA PANEL SAMPING, BUKAN POP-UP)
+        window.bukaPanelNilai = (id) => {
+            const tugas = window.tugasMasukDatabase.find(t => t.id === id);
+            if(!tugas) return window.showToast('Data tugas tidak ditemukan di memori.');
+
+            window.currentPenilaianId = id;
+            
+            // Isi data ke dalam Panel
+            document.getElementById('inline-nilai-title').innerText = tugas.judul;
+            document.getElementById('inline-nilai-subtitle').innerText = `Oleh: ${tugas.mhsName || tugas.mhs} (${tugas.kelas})`;
+            document.getElementById('inline-input-angka').value = tugas.nilai || '';
+            document.getElementById('inline-input-catatan').value = tugas.catatan || '';
+
+            // Animasi Menggeser Lebar Panel
+            const panelKanan = document.getElementById('panel-kanan-nilai');
+            panelKanan.classList.remove('w-0', 'opacity-0');
+            panelKanan.classList.add('w-80', 'md:w-96', 'border', 'opacity-100');
+        };
+
+        window.tutupPanelNilai = () => {
+            const panelKanan = document.getElementById('panel-kanan-nilai');
+            panelKanan.classList.remove('w-80', 'md:w-96', 'border', 'opacity-100');
+            panelKanan.classList.add('w-0', 'opacity-0');
+            window.currentPenilaianId = null;
+        };
+
+        // 4. Menyimpan Nilai dari Panel In-Line
+        window.simpanNilaiInline = async () => {
+            const nilai = document.getElementById('inline-input-angka').value;
+            const catatan = document.getElementById('inline-input-catatan').value.trim();
+            
+            if(!nilai || nilai < 0 || nilai > 100) return window.showToast('Masukkan nilai angka 0-100 yang valid!');
+            const tugas = window.tugasMasukDatabase.find(t => t.id === window.currentPenilaianId);
+            
+            if(tugas && typeof useFirebase !== 'undefined' && useFirebase && currentUser) {
+                try {
+                    const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                    
+                    const btn = document.getElementById('btn-simpan-inline');
+                    const oldText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Memproses...';
+                    btn.disabled = true;
+
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'submissions', window.currentPenilaianId), {
+                        nilai: parseInt(nilai),
+                        catatan: catatan,
+                        status: 'Dinilai',
+                        dosenPenilai: dosenState.name,
+                        tanggalDinilai: Date.now()
+                    });
+
+                    btn.innerHTML = oldText;
+                    btn.disabled = false;
+
+                    window.showToast(`Nilai ${nilai} berhasil disimpan!`);
+                    window.tutupPanelNilai(); 
+                    
+                } catch (e) {
+                    window.showToast('Gagal menyimpan nilai ke server!');
+                }
+            } else {
+                window.showToast('Koneksi database tidak tersedia.');
+            }
+        };
 
             // Urutkan dari tugas yang paling baru dikumpulkan
             myTugas.sort((a,b) => b.timestamp - a.timestamp).forEach((t) => {
