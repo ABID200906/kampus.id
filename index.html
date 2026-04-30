@@ -228,6 +228,11 @@
                                 <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Akademik</span>
                             </div>
+                            <!-- TOMBOL BEASISWA -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-blue-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('beasiswa'); window.renderBeasiswa();">
+                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-award text-xl"></i></div>
+                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Beasiswa</span>
+                            </div>
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-indigo-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('tugasku')">
                                 <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-open text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tugasku</span>
@@ -507,6 +512,26 @@
 
                         <div id="elibrary-container" class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                             </div>
+                    </div>
+                </div>
+
+                <!-- HALAMAN INFO BEASISWA -->
+                <div id="mhs-view-beasiswa" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
+                    <div class="max-w-3xl mx-auto pt-6 md:pt-10 px-4 pb-24">
+                        <div class="flex items-center mb-8">
+                            <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-600 hover:bg-paper-100 shadow-sm mr-4 transition"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                            <h2 class="text-3xl font-black text-slate-800 flex items-center"><i class="fa-solid fa-award text-blue-500 mr-3"></i>Info Beasiswa</h2>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-[2rem] border border-paper-200 shadow-sm mb-8 flex items-center space-x-3 transition focus-within:ring-2 ring-blue-300">
+                            <i class="fa-solid fa-search text-slate-400 ml-3 text-lg"></i>
+                            <input type="text" id="beasiswa-search-input" placeholder="Cari beasiswa (contoh: LPDP, Djarum, Luar Negeri)..." class="flex-1 outline-none border-none text-sm md:text-base font-medium text-slate-700 bg-transparent" onkeypress="if(event.key === 'Enter') window.cariBeasiswa()">
+                            <button onclick="window.cariBeasiswa()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-bold transition shadow-md active:scale-95 text-sm">Cari</button>
+                        </div>
+        
+                        <div id="beasiswa-container" class="space-y-4">
+                            <!-- Daftar Kartu Beasiswa akan muncul di sini -->
+                        </div>
                     </div>
                 </div>
 
@@ -2864,6 +2889,68 @@
             } else {
                 window.showToast("Poin tidak cukup! Kerjakan Tantangan atau Presensi dulu.");
             }
+        };
+
+        // ========================== FITUR PENCARIAN BEASISWA ==========================
+        window.dataBeasiswaLokal = [
+            { judul: "Beasiswa LPDP Reguler 2026", penyelenggara: "Kemenkeu RI", deadline: "30 Juni 2026", tipe: "Penuh (Luar/Dalam Negeri)", tag: "Pemerintah", img: "https://via.placeholder.com/100?text=LPDP&bg=1e3a8a&textColor=fff" },
+            { judul: "Djarum Plus Scholarship", penyelenggara: "Djarum Foundation", deadline: "15 Mei 2026", tipe: "Bantuan Dana + Soft Skill", tag: "Swasta", img: "https://via.placeholder.com/100?text=Djarum&bg=b91c1c&textColor=fff" },
+            { judul: "Beasiswa Unggulan Kemdikbud", penyelenggara: "Kemdikbud Ristek", deadline: "10 Agustus 2026", tipe: "Penuh (Biaya Kuliah & Hidup)", tag: "Pemerintah", img: "https://via.placeholder.com/100?text=BU&bg=047857&textColor=fff" },
+            { judul: "Bank Indonesia Scholarship", penyelenggara: "Bank Indonesia", deadline: "20 Mei 2026", tipe: "Bantuan Dana Bulanan", tag: "BUMN", img: "https://via.placeholder.com/100?text=BI&bg=1d4ed8&textColor=fff" },
+            { judul: "CIMB Niaga Kreatif", penyelenggara: "Bank CIMB Niaga", deadline: "05 Juli 2026", tipe: "Bantuan Dana Kuliah", tag: "Swasta", img: "https://via.placeholder.com/100?text=CIMB&bg=be123c&textColor=fff" },
+            { judul: "Beasiswa BSI Scholars", penyelenggara: "Bank Syariah Indonesia", deadline: "12 September 2026", tipe: "Bantuan UKT & Mentoring", tag: "BUMN", img: "https://via.placeholder.com/100?text=BSI&bg=0f766e&textColor=fff" }
+        ];
+
+        window.renderBeasiswa = (query = "") => {
+            const container = document.getElementById('beasiswa-container');
+            if(!container) return;
+
+            let filtered = window.dataBeasiswaLokal;
+            if (query) {
+                const q = query.toLowerCase();
+                filtered = window.dataBeasiswaLokal.filter(b => 
+                    b.judul.toLowerCase().includes(q) || 
+                    b.penyelenggara.toLowerCase().includes(q) || 
+                    b.tag.toLowerCase().includes(q)
+                );
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[1.5rem] bg-white">Tidak ada beasiswa yang cocok dengan pencarian Anda.</div>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((b, idx) => {
+                let tagColor = b.tag === 'Pemerintah' ? 'bg-blue-100 text-blue-600' : (b.tag === 'Swasta' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600');
+
+                html += `
+                <div class="bg-white p-5 md:p-6 rounded-[1.5rem] border border-paper-200 shadow-sm flex flex-col sm:flex-row gap-4 hover:shadow-md hover:border-blue-300 transition fade-in" style="animation-delay: ${idx * 0.05}s">
+                    <div class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-sm border border-paper-100">
+                        <img src="${b.img}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="font-bold text-slate-800 text-base md:text-lg leading-tight line-clamp-1">${b.judul}</h4>
+                            <span class="${tagColor} text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg ml-2 shrink-0">${b.tag}</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-500 mb-3"><i class="fa-solid fa-building-columns mr-1"></i> ${b.penyelenggara}</p>
+                        <div class="flex flex-wrap gap-2 text-xs font-bold text-slate-600">
+                            <span class="bg-paper-100 px-3 py-1.5 rounded-lg border border-paper-200"><i class="fa-solid fa-money-bill-wave mr-1 text-emerald-500"></i> ${b.tipe}</span>
+                            <span class="bg-red-50 text-red-600 px-3 py-1.5 rounded-lg border border-red-100"><i class="fa-solid fa-clock mr-1"></i> Deadline: ${b.deadline}</span>
+                        </div>
+                    </div>
+                    <div class="sm:flex sm:flex-col sm:justify-center w-full sm:w-auto mt-2 sm:mt-0">
+                        <button onclick="window.showToast('Membuka tautan portal beasiswa resmi...')" class="w-full bg-blue-50 text-blue-600 hover:bg-blue-500 hover:text-white transition px-6 py-3.5 sm:py-3 rounded-xl font-bold text-sm shadow-sm border border-blue-100 shrink-0 whitespace-nowrap active:scale-95 transform">Info Lengkap</button>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        };
+
+        window.cariBeasiswa = () => {
+            const input = document.getElementById('beasiswa-search-input');
+            if(input) window.renderBeasiswa(input.value);
         };
 
         
