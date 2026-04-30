@@ -515,26 +515,42 @@
                     </div>
                 </div>
 
-                <!-- HALAMAN INFO BEASISWA -->
+        <!-- HALAMAN INFO BEASISWA (UI PREMIUM) -->
                 <div id="mhs-view-beasiswa" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
-                    <div class="max-w-3xl mx-auto pt-6 md:pt-10 px-4 pb-24">
-                        <div class="flex items-center mb-8">
-                            <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-600 hover:bg-paper-100 shadow-sm mr-4 transition"><i class="fa-solid fa-arrow-left text-lg"></i></button>
-                            <h2 class="text-3xl font-black text-slate-800 flex items-center"><i class="fa-solid fa-award text-blue-500 mr-3"></i>Info Beasiswa</h2>
+                    <!-- Hero Banner Beasiswa -->
+                    <div class="h-60 relative overflow-hidden flex flex-col justify-center px-6 md:px-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-b-[2.5rem] shadow-md shrink-0 pt-10">
+                        <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="absolute top-6 left-6 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/40 transition z-20 shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                        <i class="fa-solid fa-globe absolute -right-10 -bottom-10 text-[12rem] text-white opacity-10 pointer-events-none"></i>
+                        <i class="fa-solid fa-plane-departure absolute right-20 top-10 text-5xl text-white opacity-20 pointer-events-none"></i>
+                        <div class="relative z-10 mt-4 text-white">
+                            <span class="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest mb-3 inline-block shadow-sm">Peluang Emas</span>
+                            <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-none mb-2">Bursa Beasiswa</h2>
+                            <p class="text-blue-100 font-medium text-sm md:text-base max-w-md">Pencarian pendanaan pendidikan dari berbagai instansi secara real-time melalui AI.</p>
                         </div>
-                        
-                        <div class="bg-white p-4 rounded-[2rem] border border-paper-200 shadow-sm mb-8 flex items-center space-x-3 transition focus-within:ring-2 ring-blue-300">
-                            <i class="fa-solid fa-search text-slate-400 ml-3 text-lg"></i>
-                            <input type="text" id="beasiswa-search-input" placeholder="Cari beasiswa (contoh: LPDP, Djarum, Luar Negeri)..." class="flex-1 outline-none border-none text-sm md:text-base font-medium text-slate-700 bg-transparent" onkeypress="if(event.key === 'Enter') window.cariBeasiswa()">
-                            <button onclick="window.cariBeasiswa()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-bold transition shadow-md active:scale-95 text-sm">Cari</button>
+                    </div>
+        
+                    <div class="max-w-4xl mx-auto px-4 pb-24 relative -mt-8 z-20">
+                        <!-- Kotak Pencarian Melayang -->
+                        <div class="bg-white p-3 rounded-[2rem] border border-paper-200 shadow-xl mb-4 flex items-center space-x-2 transition focus-within:ring-4 ring-blue-300/50">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-search text-xl"></i></div>
+                            <input type="text" id="beasiswa-search-input" placeholder="Ketik kata kunci (misal: LPDP, Inggris, S2)..." class="flex-1 outline-none border-none text-sm md:text-base font-bold text-slate-700 bg-transparent placeholder-slate-400" onkeypress="if(event.key === 'Enter') window.cariBeasiswa()">
+                            <button onclick="window.cariBeasiswa()" class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 md:px-8 py-3.5 rounded-xl font-black transition shadow-md active:scale-95 text-sm uppercase tracking-wider">Cari</button>
                         </div>
         
-                        <div id="beasiswa-container" class="space-y-4">
-                            <!-- Daftar Kartu Beasiswa akan muncul di sini -->
+                        <!-- Tombol Filter Cepat (Chips) -->
+                        <div class="flex space-x-3 overflow-x-auto pb-4 mb-4 no-scrollbar px-1">
+                            <button onclick="window.renderBeasiswa('Pemerintah Indonesia')" class="bg-white border border-paper-200 hover:border-blue-400 hover:bg-blue-50 text-slate-600 hover:text-blue-600 px-4 py-2.5 rounded-xl text-xs font-bold shrink-0 shadow-sm transition active:scale-95"><i class="fa-solid fa-landmark mr-2"></i>Pemerintah</button>
+                            <button onclick="window.renderBeasiswa('Luar Negeri Internasional')" class="bg-white border border-paper-200 hover:border-indigo-400 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 px-4 py-2.5 rounded-xl text-xs font-bold shrink-0 shadow-sm transition active:scale-95"><i class="fa-solid fa-earth-americas mr-2"></i>Luar Negeri</button>
+                            <button onclick="window.renderBeasiswa('Swasta BUMN')" class="bg-white border border-paper-200 hover:border-orange-400 hover:bg-orange-50 text-slate-600 hover:text-orange-600 px-4 py-2.5 rounded-xl text-xs font-bold shrink-0 shadow-sm transition active:scale-95"><i class="fa-solid fa-building mr-2"></i>Swasta/BUMN</button>
+                            <button onclick="window.renderBeasiswa('Pertukaran Mahasiswa Exchange')" class="bg-white border border-paper-200 hover:border-emerald-400 hover:bg-emerald-50 text-slate-600 hover:text-emerald-600 px-4 py-2.5 rounded-xl text-xs font-bold shrink-0 shadow-sm transition active:scale-95"><i class="fa-solid fa-people-arrows mr-2"></i>Exchange</button>
                         </div>
+        
+                        <!-- Container Hasil Beasiswa -->
+                        <div id="beasiswa-container" class="space-y-5"></div>
                     </div>
                 </div>
 
+                
                 <div id="mhs-view-class-detail" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-40">
                     <div id="class-detail-header" class="h-48 md:h-56 relative overflow-hidden flex items-end px-6 md:px-10 pb-8 bg-gradient-to-r from-brand-400 to-brand-500 rounded-b-[2.5rem] shadow-sm">
                     </div>
@@ -2891,23 +2907,29 @@
             }
         };
 
-        // ========================== FITUR PENCARIAN BEASISWA (REAL-TIME DARI AI) ==========================
+        // ========================== FITUR PENCARIAN BEASISWA (REAL-TIME DARI AI - PREMIUM UI) ==========================
         window.renderBeasiswa = async (query = "") => {
             const container = document.getElementById('beasiswa-container');
             if(!container) return;
 
-            container.innerHTML = '<div class="text-center py-10 text-blue-500 font-medium flex flex-col items-center"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4"></i>Mencari beasiswa asli di internet...</div>';
+            // Animasi Loading Radar AI yang lebih keren
+            container.innerHTML = `
+                <div class="text-center py-16 bg-white rounded-[2.5rem] border border-paper-200 shadow-sm fade-in">
+                    <div class="w-24 h-24 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-5 relative">
+                        <i class="fa-solid fa-satellite-dish text-4xl animate-bounce"></i>
+                        <div class="absolute inset-0 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div>
+                    </div>
+                    <h3 class="font-black text-slate-800 text-xl mb-2 tracking-tight">Radar AI Aktif</h3>
+                    <p class="text-slate-500 font-medium text-sm">Menyisir peluang beasiswa terbaik di internet secara real-time...</p>
+                </div>`;
 
             try {
-                // Perintah ke AI untuk mencari beasiswa sungguhan
-                let prompt = "Berikan 5 informasi beasiswa terbaru untuk mahasiswa Indonesia yang masih buka pendaftarannya. Format HANYA sebagai JSON Array of Objects dengan properti: 'judul' (nama beasiswa), 'penyelenggara', 'deadline', 'tipe' (misal: Bantuan Dana, Penuh), 'tag' (Pilih salah satu: Pemerintah, Swasta, Internasional), dan 'url' (tautan asli atau website resmi untuk mendaftar). DILARANG MENAMBAHKAN TEKS LAIN SELAIN JSON ARRAY.";
+                let prompt = "Berikan 5 informasi beasiswa terbaru untuk mahasiswa Indonesia yang masih buka pendaftarannya. Format HANYA sebagai JSON Array of Objects dengan properti: 'judul' (nama beasiswa), 'penyelenggara', 'deadline', 'tipe' (misal: Biaya Penuh, Bantuan Dana), 'tag' (Pilih salah satu: Pemerintah, Swasta, Internasional), dan 'url' (tautan asli atau website resmi untuk mendaftar). DILARANG MENAMBAHKAN TEKS LAIN SELAIN JSON ARRAY.";
                 
-                // Jika user mengetikkan sesuatu di kotak pencarian
                 if (query) {
                     prompt = `Carikan informasi beasiswa nyata tentang "${query}" untuk mahasiswa. Format HANYA JSON Array of Objects dengan properti: 'judul', 'penyelenggara', 'deadline', 'tipe', 'tag', 'url'. Maksimal 5. Pastikan URL-nya valid. DILARANG MENAMBAHKAN TEKS LAIN SELAIN JSON ARRAY.`;
                 }
 
-                // Menggunakan API Konektika seperti pada Chatbot & Berita
                 const response = await fetch('https://konektika.web.id/v1/chat/completions', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kimiApiKey}` },
@@ -2928,38 +2950,53 @@
                 const filtered = JSON.parse(cleanJson);
 
                 if (filtered.length === 0) {
-                    container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[1.5rem] bg-white">Tidak ada beasiswa yang cocok.</div>';
+                    container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[2rem] bg-white">Tidak ada beasiswa yang cocok.</div>';
                     return;
                 }
 
                 let html = '';
                 filtered.forEach((b, idx) => {
-                    let tagColor = b.tag.toLowerCase().includes('pemerintah') ? 'bg-blue-100 text-blue-600' : (b.tag.toLowerCase().includes('swasta') ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600');
+                    // Warna dinamis berdasarkan Tag
+                    let tagColor = 'bg-slate-100 text-slate-600';
+                    let ribbonColor = 'from-slate-400 to-slate-500';
                     
-                    // Buat gambar logo otomatis berdasarkan nama penyelenggara
+                    if(b.tag.toLowerCase().includes('pemerintah')) { tagColor = 'bg-blue-100 text-blue-600'; ribbonColor = 'from-blue-400 to-indigo-500'; }
+                    else if(b.tag.toLowerCase().includes('swasta')) { tagColor = 'bg-orange-100 text-orange-600'; ribbonColor = 'from-orange-400 to-red-500'; }
+                    else { tagColor = 'bg-emerald-100 text-emerald-600'; ribbonColor = 'from-teal-400 to-emerald-500'; }
+                    
                     const bgColors = ['1e3a8a', 'b91c1c', '047857', '1d4ed8', 'be123c', '0f766e'];
                     const bgColor = bgColors[idx % bgColors.length];
                     const imgUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(b.penyelenggara)}&background=${bgColor}&color=fff&size=128&rounded=true`;
 
+                    // Struktur Kartu Premium
                     html += `
-                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] border border-paper-200 shadow-sm flex flex-col sm:flex-row gap-4 hover:shadow-md hover:border-blue-300 transition fade-in" style="animation-delay: ${idx * 0.05}s">
-                        <div class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-sm border border-paper-100 bg-paper-50 p-1">
-                            <img src="${imgUrl}" class="w-full h-full object-contain rounded-xl">
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start mb-1">
-                                <h4 class="font-bold text-slate-800 text-base md:text-lg leading-tight line-clamp-1">${b.judul}</h4>
-                                <span class="${tagColor} text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg ml-2 shrink-0">${b.tag}</span>
+                    <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 fade-in relative overflow-hidden group" style="animation-delay: ${idx * 0.05}s">
+                        <!-- Pita Warna di Kiri -->
+                        <div class="absolute top-0 left-0 w-2.5 h-full bg-gradient-to-b ${ribbonColor}"></div>
+                        
+                        <div class="p-6 md:p-8 flex flex-col md:flex-row gap-5 md:items-center ml-2">
+                            <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden shrink-0 shadow-inner border border-paper-100 bg-paper-50 p-1 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                <img src="${imgUrl}" class="w-full h-full object-contain rounded-xl">
                             </div>
-                            <p class="text-sm font-bold text-slate-500 mb-3"><i class="fa-solid fa-building-columns mr-1"></i> ${b.penyelenggara}</p>
-                            <div class="flex flex-wrap gap-2 text-xs font-bold text-slate-600">
-                                <span class="bg-paper-100 px-3 py-1.5 rounded-lg border border-paper-200"><i class="fa-solid fa-money-bill-wave mr-1 text-emerald-500"></i> ${b.tipe}</span>
-                                <span class="bg-red-50 text-red-600 px-3 py-1.5 rounded-lg border border-red-100"><i class="fa-solid fa-clock mr-1"></i> ${b.deadline}</span>
+                            
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center gap-2 mb-2">
+                                    <span class="${tagColor} text-[10px] md:text-xs font-black uppercase tracking-widest px-3 py-1 rounded-md shadow-sm">${b.tag}</span>
+                                    <span class="bg-red-50 text-red-600 text-[10px] md:text-xs font-black uppercase tracking-widest px-3 py-1 rounded-md shadow-sm flex items-center border border-red-100"><i class="fa-regular fa-clock mr-1.5"></i> Tutup: ${b.deadline}</span>
+                                </div>
+                                <h4 class="font-black text-slate-800 text-lg md:text-xl leading-tight mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">${b.judul}</h4>
+                                <p class="text-sm font-bold text-slate-500 mb-4 flex items-center"><i class="fa-solid fa-building-columns mr-2 text-slate-400"></i> ${b.penyelenggara}</p>
+                                
+                                <div class="inline-flex items-center bg-paper-50 px-4 py-2 rounded-xl border border-paper-200 text-xs font-bold text-slate-600 shadow-inner">
+                                    <i class="fa-solid fa-wallet mr-2 text-emerald-500 text-base"></i> Cakupan: <span class="ml-1 text-slate-800">${b.tipe}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="sm:flex sm:flex-col sm:justify-center w-full sm:w-auto mt-2 sm:mt-0">
-                            <!-- PERHATIKAN BARIS INI: Tag Button diganti menjadi Tag <a> Link -->
-                            <a href="${b.url}" target="_blank" class="w-full bg-blue-50 text-blue-600 hover:bg-blue-500 hover:text-white transition px-6 py-3.5 sm:py-3 rounded-xl font-bold text-sm shadow-sm border border-blue-100 shrink-0 whitespace-nowrap active:scale-95 transform text-center block">Buka Web Resmi</a>
+                            
+                            <div class="w-full md:w-auto mt-4 md:mt-0 shrink-0 border-t md:border-t-0 md:border-l border-paper-100 pt-4 md:pt-0 md:pl-6">
+                                <a href="${b.url}" target="_blank" class="w-full md:w-auto inline-flex justify-center items-center bg-paper-100 text-slate-600 hover:bg-blue-500 hover:text-white hover:shadow-lg hover:shadow-blue-500/30 transition-all px-8 py-4 rounded-xl font-black text-sm active:scale-95 transform whitespace-nowrap">
+                                    Daftar Sekarang <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>`;
                 });
@@ -2967,7 +3004,7 @@
 
             } catch (e) {
                 console.error("AI Beasiswa Error:", e);
-                container.innerHTML = `<div class="text-center py-10 text-red-400 font-medium border-2 border-dashed border-red-100 rounded-[2rem] bg-white">Gagal terhubung ke server pencari beasiswa.<br><span class="text-xs text-red-300">${e.message}</span></div>`;
+                container.innerHTML = `<div class="text-center py-10 bg-red-50 rounded-[2rem] border border-red-200 text-red-500 font-bold shadow-sm"><i class="fa-solid fa-triangle-exclamation text-4xl mb-3 block"></i> Gagal terhubung ke server AI.<br><span class="text-xs font-medium text-red-400 mt-2 block">${e.message}</span></div>`;
             }
         };
 
