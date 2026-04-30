@@ -2212,62 +2212,71 @@
             }
         };
 
-        // ========================== BERITA GLOBAL & AI ==========================
+// ========================== BERITA GLOBAL & AI ==========================
         window.fetchGlobalNewsAI = async () => {
             const container = document.getElementById('news-container');
             if(!container) return;
             
+            // Cek apakah hari ini sudah pernah menarik berita (Biar tidak boros kuota API)
             if (appState.globalNewsDate === todayDate && appState.globalNewsData) {
                 window.renderGlobalNewsFeed(appState.globalNewsData);
                 return;
             }
 
-            if(container.innerHTML.trim() === '') {
-                 container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium flex flex-col items-center"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4 text-brand-400"></i>Memuat berita global hari ini...</div>';
-            }
+            container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium flex flex-col items-center"><i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4 text-brand-400"></i>Memuat berita global dari AI...</div>';
 
             try {
-                const prompt = "Buatkan 3 ringkasan berita global hari ini (fokus pada inovasi, teknologi, atau lingkungan hidup). Formatkan HANYA sebagai JSON Array of Objects dengan properti: 'title' (judul berita), 'snippet' (ringkasan 2 kalimat), dan 'keyword' (1 kata kunci bahasa inggris untuk gambar). Jangan tambahkan teks lain selain JSON murni.";
-                const responseText = await window.fetchKimiAPI(prompt, 'json_only', "Kamu adalah AI. Hanya keluarkan format JSON valid.");
-                
-                let cleanJson = responseText.replace(/```json/gi, '').replace(/```/gi, '').trim();
-                const articles = JSON.parse(cleanJson);
-                
-                const formattedArticles = articles.map(item => {
-                    const safeKeyword = encodeURIComponent(item.keyword || 'news');
-                    return { title: item.title, snippet: item.snippet, image: `https://image.pollinations.io/prompt/latest%20${safeKeyword}%20news%20realistic?width=400&height=300&nologo=true`, source: 'Kimi AI Global News' };
+                const prompt = "Buatkan 3 ringkasan berita global hari ini (fokus pada inovasi, teknologi, atau lingkungan hidup). Formatkan HANYA sebagai JSON Array of Objects dengan properti: 'title' (judul berita), 'snippet' (ringkasan 2 kalimat), dan 'keyword' (1 kata kunci bahasa inggris untuk cari gambar). DILARANG MENAMBAHKAN TEKS LAIN SELAIN JSON ARRAY.";
+
+                // MENGHUBUNGI SERVER KONEKTIKA (Sama seperti Chatbot)
+                const response = await fetch('https://konektika.web.id/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${kimiApiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "kimi-pro",
+                        messages: [
+                            { role: "system", content: "Kamu adalah mesin pencetak JSON. Dilarang merespon dengan basa-basi atau format markdown (seperti ```json). Langsung berikan array [ { ... } ]." },
+                            { role: "user", content: prompt }
+                        ]
+                    })
                 });
 
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error?.message || "Gagal menghubungi Konektika API");
+
+                let rawText = data.choices[0].message.content;
+                
+                // Membersihkan teks jika AI tidak sengaja menambahkan ```json
+                let cleanJson = rawText.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                const articles = JSON.parse(cleanJson);
+                
+                // Menyusun format gambar agar sesuai dengan keyword dari AI
+                const formattedArticles = articles.map(item => {
+                    const safeKeyword = encodeURIComponent(item.keyword || 'environment');
+                    return { 
+                        title: item.title, 
+                        snippet: item.snippet, 
+                        // Menggunakan layanan Pollinations AI Image untuk otomatis cari gambar
+                        image: `https://image.pollinations.io/prompt/${safeKeyword}%20news%20realistic?width=400&height=300&nologo=true`, 
+                        source: 'Kimi AI Global News' 
+                    };
+                });
+
+                // Simpan ke memori agar kalau ganti menu tidak perlu loading AI ulang
                 appState.globalNewsDate = todayDate;
                 appState.globalNewsData = formattedArticles;
                 window.saveState();
 
+                // Tampilkan ke layar
                 window.renderGlobalNewsFeed(formattedArticles);
-            } catch (e) {
-                container.innerHTML = '<div class="text-center py-10 text-red-400 font-medium border-2 border-dashed border-red-100 rounded-[2rem] bg-white">Gagal memuat berita dari AI. Pastikan koneksi stabil.</div>';
-            }
-        };
 
-        window.renderGlobalNewsFeed = (articles) => {
-            const container = document.getElementById('news-container');
-            if(!container) return;
-            let html = '';
-            articles.forEach((news, idx) => {
-                html += `
-                    <div class="block bg-white p-4 md:p-5 rounded-[1.5rem] border border-paper-200 shadow-sm transition hover:shadow-md hover:border-brand-300 fade-in" style="animation-delay: ${idx * 0.05}s">
-                        <div class="flex items-start space-x-4 md:space-x-5">
-                            <div class="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-paper-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
-                                <img src="${news.image}" alt="News Image" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1 flex flex-col justify-center">
-                                <span class="text-[10px] md:text-[11px] font-black text-brand-600 uppercase tracking-widest mb-1.5 flex items-center"><i class="fa-solid fa-robot mr-1.5 text-brand-500"></i>${news.source}</span>
-                                <h4 class="text-sm md:text-base font-bold text-slate-800 leading-snug mb-2">${news.title}</h4>
-                                <p class="text-xs text-slate-500 font-medium line-clamp-3 leading-relaxed">${news.snippet}</p>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-            container.innerHTML = html;
+            } catch (e) {
+                console.error("AI News Error:", e);
+                container.innerHTML = `<div class="text-center py-10 text-red-400 font-medium border-2 border-dashed border-red-100 rounded-[2rem] bg-white">Gagal merangkum berita global.<br><span class="text-xs text-red-300">Pesan: ${e.message || "Gangguan koneksi API"}</span></div>`;
+            }
         };
 
         // FUNGSI MENCARI BUKU DARI OPEN LIBRARY API (GRATIS & TANPA LIMIT KETAT)
