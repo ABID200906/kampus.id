@@ -584,36 +584,67 @@
                 </div>
             </div>
 
-                <div id="mhs-view-ujian" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-slate-900 absolute inset-0 z-[100]">
-                    <div class="max-w-3xl mx-auto pt-8 px-6 pb-20 flex flex-col items-center justify-center min-h-full text-center" id="mhs-exam-container">
-                        <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" id="btn-kembali-ujian" class="absolute top-6 left-6 w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 hover:bg-slate-700 transition shadow-lg"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-
-                        <div class="w-28 h-28 bg-red-500/20 text-red-500 rounded-[2.5rem] flex items-center justify-center mb-8 text-6xl shadow-lg border border-red-500/30">
-                            <i class="fa-solid fa-laptop-code"></i>
-                        </div>
-                        <h2 class="text-4xl font-black text-white mb-4 tracking-tight">Exam Browser</h2>
-                        <p class="text-base text-slate-400 mb-10 max-w-md font-medium leading-relaxed">Sistem ini mengunci layar Anda ke mode penuh (Fullscreen). Keluar dari mode penuh dianggap sebagai kecurangan.</p>
-                        
-                        <div id="ujian-setup-area" class="w-full max-w-md bg-slate-800 p-10 rounded-[3rem] border border-slate-700 shadow-2xl relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-500 to-orange-500"></div>
-                            <h3 class="font-bold text-white mb-6 text-left text-lg">Kode Akses Ujian</h3>
-                            <input type="text" id="kode-ujian-input" placeholder="Masukkan kode..." class="w-full bg-slate-900 rounded-2xl py-5 px-6 outline-none border border-slate-600 text-lg focus:ring-2 focus:ring-red-500 transition text-white uppercase font-black text-center tracking-widest mb-8">
-                            <button id="btn-mulai-ujian-mhs" class="w-full bg-red-500 hover:bg-red-600 transition text-white py-5 rounded-2xl font-bold shadow-lg shadow-red-500/20 active:scale-95 text-xl">Mulai Ujian</button>
-                        </div>
-
-                        <div id="ujian-active-area" class="hidden w-full max-w-2xl bg-white p-8 md:p-10 rounded-[3rem] text-left shadow-2xl relative">
-                            <div class="absolute top-0 left-0 w-full h-2 bg-red-500"></div>
-                            <div class="flex justify-between items-center mb-8 border-b border-paper-100 pb-5 mt-2">
-                                <h3 class="font-black text-2xl text-slate-800">Ujian Berlangsung</h3>
-                                <div class="text-red-500 font-bold flex items-center bg-red-50 px-4 py-2 rounded-full text-sm border border-red-100"><i class="fa-solid fa-circle text-[10px] animate-pulse mr-2"></i> LIVE</div>
+            <!-- HALAMAN EXAM BROWSER (MODERN UI) -->
+                    <div id="mhs-view-ujian" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-slate-950 absolute inset-0 z-[100]">
+                        <!-- Header Ujian (Statik) -->
+                        <div class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-6 py-4 flex justify-between items-center">
+                            <div class="flex items-center space-x-4">
+                                <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" id="btn-kembali-ujian" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition shadow-lg">
+                                    <i class="fa-solid fa-arrow-left"></i>
+                                </button>
+                                <div>
+                                    <h2 class="text-white font-black tracking-tight text-lg md:text-xl flex items-center">
+                                        <i class="fa-solid fa-shield-halved text-red-500 mr-2"></i> Exam Browser
+                                    </h2>
+                                    <p class="text-slate-500 text-[10px] md:text-xs font-bold uppercase tracking-widest" id="exam-status-text">Menunggu Verifikasi Kode</p>
+                                </div>
                             </div>
-                            
-                            <div id="mhs-exam-questions-container" class="space-y-6 mb-8"></div>
-
-                            <button id="btn-selesai-ujian-mhs" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-5 rounded-2xl active:scale-95 transition shadow-lg text-lg">Selesai & Kumpulkan Ujian</button>
+                            <!-- Timer / Info (Hanya muncul saat ujian aktif) -->
+                            <div id="exam-timer-display" class="hidden bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-xl">
+                                <span class="text-red-500 font-black text-sm md:text-base tracking-mono"><i class="fa-regular fa-clock mr-2"></i><span id="timer-val">00:00:00</span></span>
+                            </div>
+                        </div>
+            
+                        <div class="max-w-4xl mx-auto pt-10 px-4 pb-32">
+                            <!-- VIEW 1: SETUP AREA (MASUKKAN KODE) -->
+                            <div id="ujian-setup-area" class="fade-in flex flex-col items-center justify-center py-10 text-center">
+                                <div class="w-24 h-24 bg-red-500/10 text-red-500 rounded-[2rem] flex items-center justify-center mb-8 text-5xl shadow-2xl border border-red-500/20">
+                                    <i class="fa-solid fa-laptop-code"></i>
+                                </div>
+                                <h2 class="text-3xl font-black text-white mb-3">Sistem Ujian Terintegrasi</h2>
+                                <p class="text-slate-400 mb-10 max-w-sm font-medium text-sm leading-relaxed">Pastikan Anda berada di lingkungan yang tenang. Layar akan terkunci ke mode penuh selama ujian berlangsung.</p>
+                                
+                                <div class="w-full max-w-md bg-slate-900 p-8 md:p-10 rounded-[2.5rem] border border-slate-800 shadow-2xl relative overflow-hidden">
+                                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-600 to-rose-500"></div>
+                                    <h3 class="font-bold text-white mb-6 text-left text-base uppercase tracking-widest opacity-60">Kode Akses Ujian</h3>
+                                    <input type="text" id="kode-ujian-input" placeholder="Ketik Kode..." class="w-full bg-slate-950 rounded-2xl py-5 px-6 outline-none border border-slate-700 text-2xl focus:ring-2 focus:ring-red-500 transition text-white uppercase font-black text-center tracking-[0.5em] mb-8 placeholder:text-slate-800">
+                                    <button id="btn-mulai-ujian-mhs" class="w-full bg-red-600 hover:bg-red-500 transition-all text-white py-5 rounded-2xl font-black shadow-lg shadow-red-600/20 active:scale-95 text-lg uppercase tracking-wider">Mulai Sesi Ujian</button>
+                                </div>
+                            </div>
+            
+                            <!-- VIEW 2: ACTIVE AREA (SOAL-SOAL) -->
+                            <div id="ujian-active-area" class="hidden fade-in space-y-6">
+                                <!-- Progress Bar -->
+                                <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 mb-8">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-slate-400 text-xs font-bold uppercase tracking-widest">Progress Pengerjaan</span>
+                                        <span class="text-white font-black text-sm" id="exam-progress-text">0%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                        <div id="exam-progress-bar" class="bg-red-500 h-full transition-all duration-500" style="width: 0%"></div>
+                                    </div>
+                                </div>
+            
+                                <div id="mhs-exam-questions-container" class="space-y-6">
+                                    <!-- Soal-soal akan muncul di sini dengan desain kartu -->
+                                </div>
+            
+                                <div class="pt-10">
+                                    <button id="btn-selesai-ujian-mhs" class="w-full bg-slate-100 hover:bg-white text-slate-900 font-black py-5 rounded-2xl active:scale-95 transition-all shadow-xl text-lg uppercase tracking-widest">Kumpulkan Jawaban <i class="fa-solid fa-paper-plane ml-2"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
             </main>
         </div>
@@ -1596,12 +1627,12 @@
 
 
         // ========================== UJIAN REAL-TIME (MAHASISWA) ==========================
-        window.mulaiUjian = () => {
+            window.mulaiUjian = () => {
             const code = document.getElementById('kode-ujian-input').value.trim().toUpperCase();
             if(!code) return window.showToast('Masukkan kode pengawas terlebih dahulu!');
             
             const exam = window.activeExams.find(e => e.kode === code && e.status === 'active');
-            if(!exam) return window.showToast('Kode ujian tidak valid atau sesi telah ditutup oleh dosen!');
+            if(!exam) return window.showToast('Kode tidak valid atau sesi ditutup!');
 
             window.currentMhsExamId = exam.id;
             window.currentMhsExamData = exam;
@@ -1610,12 +1641,16 @@
             if (elem.requestFullscreen) {
                 elem.requestFullscreen().then(async () => {
                     window.examModeActive = true;
+                    // Update UI
                     document.getElementById('ujian-setup-area').classList.add('hidden');
                     document.getElementById('btn-kembali-ujian').classList.add('hidden');
                     document.getElementById('ujian-active-area').classList.remove('hidden');
-                    window.toggleUIForExam(true);
-                    
+                    document.getElementById('exam-timer-display').classList.remove('hidden');
+                    document.getElementById('exam-status-text').innerText = "Ujian Berjalan • " + exam.kode;
+                    document.getElementById('exam-status-text').classList.replace('text-slate-500', 'text-red-500');
+
                     window.renderSoalMahasiswa(exam.questions);
+                    // ... sisanya sama (Firebase update)
 
                     if(useFirebase && appState.nim) {
                         const pPath = `participants.${appState.nim}`;
@@ -1629,27 +1664,52 @@
             } else { window.showToast('Browser Anda tidak mendukung Exam Mode.'); }
         };
 
-        window.renderSoalMahasiswa = (questions) => {
+window.renderSoalMahasiswa = (questions) => {
             const container = document.getElementById('mhs-exam-questions-container');
             if(!container || !questions) return;
             
             let html = '';
             questions.forEach((q, i) => {
                 html += `
-                <div class="bg-paper-50 p-6 rounded-2xl border border-paper-200 mb-6 text-left">
-                    <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Soal ${i+1} / ${questions.length}</p>
-                    <p class="text-slate-800 font-semibold text-lg leading-relaxed mb-6">${q.q}</p>
-                    <div class="space-y-3">
-                        ${q.options.map((opt, optIdx) => `
-                            <label class="flex items-center p-4 bg-white border border-paper-200 rounded-xl cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                <input type="radio" name="soal_${i}" value="${optIdx}" class="w-5 h-5 text-red-500 border-gray-300 focus:ring-red-400">
-                                <span class="ml-3 text-slate-700 font-medium">${opt}</span>
-                            </label>
-                        `).join('')}
+                <div class="bg-slate-900 rounded-[2rem] border border-slate-800 p-6 md:p-10 shadow-sm transition-all hover:border-slate-700 fade-in group">
+                    <div class="flex items-start gap-4 md:gap-6">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-slate-800 text-red-500 rounded-xl flex items-center justify-center font-black text-lg shrink-0 border border-slate-700 group-hover:bg-red-500 group-hover:text-white transition-colors">
+                            ${i+1}
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-white font-bold text-lg md:text-xl leading-relaxed mb-8">${q.q}</p>
+                            
+                            <div class="grid grid-cols-1 gap-3">
+                                ${q.options.map((opt, optIdx) => `
+                                    <label class="flex items-center p-4 md:p-5 bg-slate-950 border border-slate-800 rounded-2xl cursor-pointer hover:bg-slate-800 hover:border-red-500/50 transition-all group/opt">
+                                        <div class="relative flex items-center justify-center">
+                                            <input type="radio" name="soal_${i}" value="${optIdx}" class="peer hidden" onchange="window.updateExamProgress()">
+                                            <div class="w-6 h-6 border-2 border-slate-700 rounded-full peer-checked:border-red-500 peer-checked:bg-red-500 flex items-center justify-center transition-all">
+                                                <div class="w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100"></div>
+                                            </div>
+                                        </div>
+                                        <span class="ml-4 text-slate-400 group-hover/opt:text-white font-medium text-sm md:text-base transition-colors">${opt}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
                     </div>
                 </div>`;
             });
             container.innerHTML = html;
+            window.updateExamProgress();
+        };
+
+        // Fungsi tambahan untuk menghitung progress bar
+        window.updateExamProgress = () => {
+            const total = window.currentMhsExamData.questions.length;
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            const pct = Math.round((answered / total) * 100);
+            
+            const bar = document.getElementById('exam-progress-bar');
+            const txt = document.getElementById('exam-progress-text');
+            if(bar) bar.style.width = pct + '%';
+            if(txt) txt.innerText = pct + '%';
         };
 
         window.selesaiUjian = async () => {
