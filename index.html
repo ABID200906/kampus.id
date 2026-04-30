@@ -1037,50 +1037,84 @@
         </div>
     </div>
 
-        <!-- HALAMAN PENILAIAN TUGAS (PREMIUM UI) -->
-                <div id="dsn-view-tugas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
+                
+            <--PENILAIAN TUGAS NEWW--->
+                <div id="dsn-view-tugas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto relative z-10">
+                    <!-- Header -->
                     <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-8 space-y-4 md:space-y-0">
                         <div>
                             <h2 class="text-3xl font-black text-slate-800 tracking-tight mb-1">Meja Penilaian</h2>
                             <p class="text-slate-500 text-sm font-medium">Periksa dan berikan nilai untuk tugas mahasiswa yang masuk.</p>
                         </div>
-                        <div class="flex space-x-2">
-                            <button class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl text-xs font-bold border border-indigo-100 shadow-sm"><i class="fa-solid fa-filter mr-1"></i> Filter Kelas</button>
-                            <button onclick="window.renderDaftarTugasMasuk()" class="bg-white border border-paper-200 text-slate-600 hover:bg-paper-50 px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm"><i class="fa-solid fa-rotate-right mr-1"></i> Segarkan</button>
+                        <div class="flex space-x-3">
+                            <button class="bg-white/80 backdrop-blur-md text-slate-600 hover:text-indigo-600 px-5 py-2.5 rounded-[1rem] text-sm font-bold border border-slate-200 shadow-sm hover:shadow-md transition-all flex items-center group">
+                                <i class="fa-solid fa-filter mr-2 text-slate-400 group-hover:text-indigo-500 transition-colors"></i> Filter
+                            </button>
+                            <button onclick="window.renderDaftarTugasMasuk()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-[1rem] text-sm font-bold shadow-[0_8px_20px_rgba(79,70,229,0.3)] hover:shadow-[0_10px_25px_rgba(79,70,229,0.5)] transition-all active:scale-95 flex items-center">
+                                <i class="fa-solid fa-rotate-right mr-2"></i> Segarkan
+                            </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-4 mb-8">
-                        <div class="bg-white p-5 rounded-2xl border border-paper-200 shadow-sm">
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Masuk</p>
-                            <p class="text-2xl font-black text-slate-800" id="stat-tugas-total">0</p>
+                    <!-- 3 Kartu Statistik (Glow & Glass) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10">
+                        <!-- Total -->
+                        <div class="bg-white/90 backdrop-blur-md p-6 rounded-[1.5rem] border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-indigo-300 transition-all duration-300 relative overflow-hidden group">
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-indigo-50 rounded-full opacity-50 group-hover:scale-[2.5] transition-transform duration-500 pointer-events-none"></div>
+                            <div class="flex justify-between items-center relative z-10">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Masuk</p>
+                                    <p class="text-3xl font-black text-slate-800 group-hover:text-indigo-600 transition-colors" id="stat-tugas-total">0</p>
+                                </div>
+                                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-[1rem] flex items-center justify-center text-xl shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+                                    <i class="fa-solid fa-inbox"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200 shadow-sm">
-                            <p class="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1">Perlu Dinilai</p>
-                            <p class="text-2xl font-black text-amber-600" id="stat-tugas-pending">0</p>
+                        <!-- Pending -->
+                        <div class="bg-white/90 backdrop-blur-md p-6 rounded-[1.5rem] border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-amber-300 transition-all duration-300 relative overflow-hidden group">
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-50 rounded-full opacity-50 group-hover:scale-[2.5] transition-transform duration-500 pointer-events-none"></div>
+                            <div class="flex justify-between items-center relative z-10">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Perlu Dinilai</p>
+                                    <p class="text-3xl font-black text-amber-500 group-hover:text-amber-600 transition-colors" id="stat-tugas-pending">0</p>
+                                </div>
+                                <div class="w-12 h-12 bg-amber-100 text-amber-500 rounded-[1rem] flex items-center justify-center text-xl shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                                    <i class="fa-solid fa-hourglass-half"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200 shadow-sm">
-                            <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Selesai Dinilai</p>
-                            <p class="text-2xl font-black text-emerald-600" id="stat-tugas-done">0</p>
+                        <!-- Done -->
+                        <div class="bg-white/90 backdrop-blur-md p-6 rounded-[1.5rem] border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-emerald-300 transition-all duration-300 relative overflow-hidden group">
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-50 rounded-full opacity-50 group-hover:scale-[2.5] transition-transform duration-500 pointer-events-none"></div>
+                            <div class="flex justify-between items-center relative z-10">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Selesai Dinilai</p>
+                                    <p class="text-3xl font-black text-emerald-500 group-hover:text-emerald-600 transition-colors" id="stat-tugas-done">0</p>
+                                </div>
+                                <div class="w-12 h-12 bg-emerald-100 text-emerald-500 rounded-[1rem] flex items-center justify-center text-xl shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                                    <i class="fa-solid fa-check-double"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm text-slate-600">
-                                <thead class="bg-paper-50 text-[10px] uppercase font-black text-slate-400 border-b border-paper-200 tracking-wider">
-                                    <tr>
-                                        <th class="px-6 py-4">Mahasiswa</th>
-                                        <th class="px-6 py-4">Tugas & Kelas</th>
-                                        <th class="px-6 py-4">Status</th>
-                                        <th class="px-6 py-4 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tugas-masuk-body">
-                                    <tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium">Memuat data tugas...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <!-- Modern Data Table -->
+                    <div class="w-full">
+                        <!-- Perhatikan penggunaan border-separate agar tiap baris tugas bisa menjadi kotak mandiri -->
+                        <table class="w-full text-left border-separate border-spacing-y-3">
+                            <thead>
+                                <tr class="text-[10px] uppercase font-black text-slate-400 tracking-widest px-4">
+                                    <th class="pb-2 pl-4">Mahasiswa</th>
+                                    <th class="pb-2">Tugas & Kelas</th>
+                                    <th class="pb-2">Status</th>
+                                    <th class="pb-2 text-center pr-4">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tugas-masuk-body">
+                                <!-- Dirender via JS -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -1554,50 +1588,74 @@
     </div>
 
     <!-- MODAL PENILAIAN TUGAS (SPLIT VIEW) -->
-    <div id="modal-nilai-tugas" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4 md:p-6">
-        <div class="bg-white w-full max-w-5xl h-[90vh] rounded-[2.5rem] shadow-2xl relative scale-95 transition-transform duration-300 flex flex-col overflow-hidden" id="modal-nilai-tugas-content">
+    <div id="modal-nilai-tugas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[3000] hidden flex items-center justify-center p-4 md:p-6 transition-opacity">
+        <!-- Kotak Modal Super Premium -->
+        <div class="bg-white w-full max-w-5xl h-[90vh] rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative scale-95 transition-transform duration-300 flex flex-col overflow-hidden border border-white/20" id="modal-nilai-tugas-content">
             
-            <div class="bg-indigo-600 px-6 py-4 flex justify-between items-center shrink-0">
-                <div class="text-white">
-                    <h3 class="font-black text-lg tracking-tight" id="modal-nilai-title">Esai Pengantar Ekologi</h3>
-                    <p class="text-indigo-200 text-xs font-medium" id="modal-nilai-subtitle">Dikumpulkan oleh: Mahasiswa</p>
+            <!-- Modern Header dengan Gradien & Efek Cahaya -->
+            <div class="bg-gradient-to-r from-indigo-600 to-violet-600 px-8 py-5 flex justify-between items-center shrink-0 relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="text-white relative z-10 flex items-center">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-xl mr-4 backdrop-blur-sm border border-white/30 shadow-inner">
+                        <i class="fa-solid fa-clipboard-user"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-xl tracking-tight leading-tight" id="modal-nilai-title">Esai Pengantar Ekologi</h3>
+                        <p class="text-indigo-200 text-xs font-medium tracking-wide mt-0.5" id="modal-nilai-subtitle">Dikumpulkan oleh: Mahasiswa</p>
+                    </div>
                 </div>
-                <button onclick="window.closeModal('modal-nilai-tugas')" class="bg-white/20 hover:bg-white/30 text-white w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="window.closeModal('modal-nilai-tugas')" class="relative z-10 bg-white/10 hover:bg-white/30 text-white w-10 h-10 rounded-full flex items-center justify-center transition backdrop-blur-sm border border-white/20 active:scale-95"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
-                <!-- Preview Dokumen Kiri -->
-                <div class="flex-1 bg-paper-100 border-b md:border-b-0 md:border-r border-paper-200 p-4 md:p-6 flex flex-col">
-                    <div class="bg-white flex-1 rounded-[1.5rem] border border-paper-200 shadow-inner flex items-center justify-center relative overflow-hidden group">
-                        <i class="fa-regular fa-file-pdf text-6xl text-red-400 absolute opacity-20 transform -rotate-12"></i>
-                        <div class="text-center relative z-10">
-                            <i class="fa-solid fa-file-arrow-down text-3xl text-indigo-500 mb-3"></i>
-                            <p class="font-bold text-slate-700 text-sm">Dokumen Tugas (PDF)</p>
-                            <p class="text-xs text-slate-400 mt-1">tugas_ekologi_final.pdf</p>
-                            <button class="mt-4 bg-indigo-50 text-indigo-600 hover:bg-indigo-500 hover:text-white transition px-5 py-2 rounded-xl text-xs font-bold border border-indigo-100">Unduh & Lihat</button>
+            <!-- Split View: Kiri (Dokumen) & Kanan (Form Nilai) -->
+            <div class="flex-1 flex flex-col md:flex-row overflow-hidden bg-slate-50">
+                
+                <!-- Kiri: Preview Dokumen -->
+                <div class="flex-1 border-b md:border-b-0 md:border-r border-slate-200/60 p-6 md:p-8 flex flex-col relative">
+                    <!-- Subtle Pola Titik (Dotted Pattern) -->
+                    <div class="absolute inset-0 z-0 opacity-30 pointer-events-none" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;"></div>
+                    
+                    <div class="bg-white/80 backdrop-blur-sm flex-1 rounded-[2rem] border border-slate-200 shadow-sm flex items-center justify-center relative overflow-hidden group z-10">
+                        <i class="fa-regular fa-file-pdf text-9xl text-slate-100 absolute transform -rotate-12 group-hover:scale-110 transition-transform duration-700"></i>
+                        
+                        <div class="text-center relative z-10 flex flex-col items-center">
+                            <div class="w-20 h-20 bg-indigo-50 text-indigo-500 rounded-[1.5rem] flex items-center justify-center text-4xl mb-4 shadow-inner border border-indigo-100 group-hover:-translate-y-2 transition-transform duration-300">
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                            </div>
+                            <p class="font-black text-slate-800 text-lg">Dokumen Jawaban (PDF)</p>
+                            <p class="text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full mt-2 border border-slate-200">tugas_mahasiswa_final.pdf</p>
+                            
+                            <button class="mt-6 bg-indigo-600 text-white hover:bg-indigo-700 transition px-6 py-3 rounded-xl text-sm font-bold shadow-md active:scale-95 flex items-center">
+                                <i class="fa-solid fa-eye mr-2"></i> Pratinjau Dokumen
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Form Penilaian Kanan -->
-                <div class="w-full md:w-[400px] p-6 md:p-8 bg-white overflow-y-auto shrink-0 flex flex-col">
-                    <h4 class="font-black text-slate-800 mb-6 text-lg border-b border-paper-100 pb-3"><i class="fa-solid fa-marker text-indigo-500 mr-2"></i> Form Penilaian</h4>
+                <!-- Kanan: Form Nilai -->
+                <div class="w-full md:w-[420px] bg-white p-6 md:p-8 overflow-y-auto shrink-0 flex flex-col relative z-10">
+                    <div class="flex items-center mb-6 border-b border-slate-100 pb-4">
+                        <h4 class="font-black text-slate-800 text-lg"><i class="fa-solid fa-marker text-indigo-500 mr-2"></i> Berikan Penilaian</h4>
+                    </div>
                     
-                    <div class="space-y-5 flex-1">
-                        <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Nilai Angka (0-100)</p>
-                            <div class="relative">
-                                <input type="number" id="input-nilai-angka" placeholder="0" min="0" max="100" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-2xl border border-paper-200 outline-none text-slate-800 transition font-black text-2xl text-center">
-                            </div>
+                    <div class="space-y-6 flex-1">
+                        <!-- Input Nilai Raksasa -->
+                        <div class="bg-slate-50 p-6 rounded-[1.5rem] border border-slate-200 focus-within:border-indigo-400 focus-within:ring-4 focus-within:ring-indigo-50 transition-all text-center">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Skor Akhir (0-100)</p>
+                            <input type="number" id="input-nilai-angka" placeholder="0" min="0" max="100" class="w-32 bg-white text-center text-5xl font-black text-indigo-600 rounded-2xl py-4 border border-slate-200 shadow-inner outline-none transition-all placeholder:text-slate-200 mx-auto block">
                         </div>
+
+                        <!-- Input Catatan/Feedback -->
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Catatan Revisi / Feedback</p>
-                            <textarea id="input-nilai-catatan" rows="5" placeholder="Berikan komentar untuk mahasiswa..." class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-2xl border border-paper-200 outline-none text-slate-800 transition font-medium text-sm resize-none"></textarea>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Komentar / Revisi (Opsional)</p>
+                            <textarea id="input-nilai-catatan" rows="4" placeholder="Kerja bagus! Namun perhatikan format sitasi di paragraf ke-3..." class="w-full bg-slate-50 focus:bg-white focus:ring-2 ring-indigo-400 p-5 rounded-[1.5rem] border border-slate-200 outline-none text-slate-700 transition font-medium text-sm resize-none shadow-inner leading-relaxed"></textarea>
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-6 border-t border-paper-100">
-                        <button onclick="window.simpanNilaiTugas()" class="w-full bg-indigo-600 hover:bg-indigo-700 transition text-white py-4 rounded-2xl font-black shadow-lg shadow-indigo-500/30 active:scale-95 text-sm uppercase tracking-widest"><i class="fa-solid fa-check mr-2"></i> Simpan Penilaian</button>
+                    <div class="mt-8 pt-6 border-t border-slate-100">
+                        <button onclick="window.simpanNilaiTugas()" class="w-full bg-indigo-600 hover:bg-indigo-700 transition text-white py-4 rounded-[1.2rem] font-black shadow-[0_8px_20px_rgba(79,70,229,0.3)] hover:shadow-[0_10px_25px_rgba(79,70,229,0.5)] active:scale-95 text-sm uppercase tracking-widest flex items-center justify-center">
+                            <i class="fa-solid fa-check-double mr-2 text-indigo-200"></i> Simpan Penilaian
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2653,10 +2711,8 @@ window.renderSoalMahasiswa = (questions) => {
             const tbody = document.getElementById('tugas-masuk-body');
             if(!tbody) return;
 
-            // Pastikan globalClasses siap agar tidak error
             if(!window.globalClasses) window.globalClasses = [];
 
-            // Pastikan dosen hanya melihat tugas dari kelas yang dia ajar
             const myKelasCodes = window.globalClasses.filter(c => c.dosen === dosenState.name).map(c => c.kode);
             const myTugas = window.tugasMasukDatabase.filter(t => myKelasCodes.includes(t.kelas));
 
@@ -2664,12 +2720,66 @@ window.renderSoalMahasiswa = (questions) => {
             let html = '';
 
             if (myTugas.length === 0) {
-                 tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium">Belum ada mahasiswa yang mengumpulkan tugas ke kelas Anda.</td></tr>';
+                 tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium bg-white rounded-[1.5rem] border border-dashed border-slate-200">Belum ada mahasiswa yang mengumpulkan tugas ke kelas Anda.</td></tr>';
                  if(document.getElementById('stat-tugas-total')) document.getElementById('stat-tugas-total').innerText = 0;
                  if(document.getElementById('stat-tugas-pending')) document.getElementById('stat-tugas-pending').innerText = 0;
                  if(document.getElementById('stat-tugas-done')) document.getElementById('stat-tugas-done').innerText = 0;
                  return;
             }
+
+            myTugas.sort((a,b) => b.timestamp - a.timestamp).forEach((t) => {
+                if(t.status === 'Pending') pending++;
+                else done++;
+
+                const namaMhs = t.mhsName || t.mhs || "Mahasiswa";
+                const nimMhs = t.mhsNim || t.nim || "N/A";
+                
+                // Badge Status
+                const statusBadge = t.status === 'Pending' 
+                    ? `<div class="inline-flex items-center bg-amber-50 border border-amber-200 text-amber-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm whitespace-nowrap"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse mr-2"></span> Menunggu</div>`
+                    : `<div class="inline-flex items-center bg-emerald-50 border border-emerald-200 text-emerald-600 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm whitespace-nowrap"><i class="fa-solid fa-check-circle mr-1.5 text-emerald-500"></i> Dinilai: <span class="ml-1 text-emerald-700 text-xs">${t.nilai}</span></div>`;
+
+                // Desain Baris Tabel ala "Card" terpisah
+                html += `
+                <tr class="bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300 group fade-in">
+                    
+                    <td class="p-4 rounded-l-[1.5rem] border-y border-l border-slate-200 group-hover:border-indigo-300 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full border-2 border-slate-100 bg-slate-200 overflow-hidden shadow-sm shrink-0">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(namaMhs)}&background=random&color=fff" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <p class="font-black text-slate-800 text-sm group-hover:text-indigo-600 transition-colors">${namaMhs}</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${nimMhs}</p>
+                            </div>
+                        </div>
+                    </td>
+                    
+                    <td class="p-4 border-y border-slate-200 group-hover:border-indigo-300 transition-colors">
+                        <p class="font-bold text-slate-700 text-sm line-clamp-1 mb-1.5">${t.judul}</p>
+                        <span class="inline-flex items-center bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-widest border border-slate-200">
+                            <i class="fa-solid fa-layer-group mr-1.5 border-r border-slate-300 pr-1.5"></i> ${t.kelas}
+                        </span>
+                    </td>
+                    
+                    <td class="p-4 border-y border-slate-200 group-hover:border-indigo-300 transition-colors">
+                        ${statusBadge}
+                    </td>
+                    
+                    <td class="p-4 rounded-r-[1.5rem] border-y border-r border-slate-200 group-hover:border-indigo-300 text-center transition-colors">
+                        <button onclick="window.bukaModalNilai('${t.id}')" class="relative z-10 cursor-pointer ${t.status === 'Pending' ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md' : 'bg-white hover:bg-slate-50 text-slate-600 border border-slate-200'} px-5 py-2.5 rounded-[1rem] text-xs font-bold transition-all active:scale-95 flex items-center justify-center mx-auto whitespace-nowrap">
+                            ${t.status === 'Pending' ? '<i class="fa-solid fa-pen-nib mr-2"></i> Beri Nilai' : '<i class="fa-solid fa-pen mr-2"></i> Edit'}
+                        </button>
+                    </td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+            
+            if(document.getElementById('stat-tugas-total')) document.getElementById('stat-tugas-total').innerText = myTugas.length;
+            if(document.getElementById('stat-tugas-pending')) document.getElementById('stat-tugas-pending').innerText = pending;
+            if(document.getElementById('stat-tugas-done')) document.getElementById('stat-tugas-done').innerText = done;
+        };
 
             myTugas.sort((a,b) => b.timestamp - a.timestamp).forEach((t) => {
                 if(t.status === 'Pending') pending++;
