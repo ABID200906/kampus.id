@@ -882,16 +882,52 @@
                     </div>
                 </div>
 
-                <!-- MODAL PENILAIAN TUGAS (SPLIT VIEW) -->
-            <div id="modal-nilai-tugas" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4 md:p-6">
-                <div class="bg-white w-full max-w-5xl h-[90vh] rounded-[2.5rem] shadow-2xl relative scale-95 transition-transform duration-300 flex flex-col overflow-hidden" id="modal-nilai-tugas-content">
-                    
-                    <div class="bg-indigo-600 px-6 py-4 flex justify-between items-center shrink-0">
-                        <div class="text-white">
-                            <h3 class="font-black text-lg tracking-tight" id="modal-nilai-title">Esai Pengantar Ekologi</h3>
-                            <p class="text-indigo-200 text-xs font-medium" id="modal-nilai-subtitle">Dikumpulkan oleh: Mahasiswa</p>
+                                <!-- MODAL PENILAIAN TUGAS (SPLIT VIEW) -->
+                            <div id="modal-nilai-tugas" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4 md:p-6">
+                                <div class="bg-white w-full max-w-5xl h-[90vh] rounded-[2.5rem] shadow-2xl relative scale-95 transition-transform duration-300 flex flex-col overflow-hidden" id="modal-nilai-tugas-content">
+                                    
+                                    <div class="bg-indigo-600 px-6 py-4 flex justify-between items-center shrink-0">
+                                        <div class="text-white">
+                                            <h3 class="font-black text-lg tracking-tight" id="modal-nilai-title">Esai Pengantar Ekologi</h3>
+                                            <p class="text-indigo-200 text-xs font-medium" id="modal-nilai-subtitle">Dikumpulkan oleh: Mahasiswa</p>
+                                        </div>
+                                        <button onclick="window.closeModal('modal-nilai-tugas')" class="bg-white/20 hover:bg-white/30 text-white w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                                    </div>
+                
+                                    <!-- MODAL MAHASISWA: KUMPULKAN TUGAS (PREMIUM UI) -->
+                    <div id="modal-kumpul-tugas" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4">
+                        <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl relative scale-95 transform transition-all duration-300 overflow-hidden flex flex-col" id="modal-kumpul-tugas-content">
+                            
+                            <!-- Header -->
+                            <div class="bg-gradient-to-br from-indigo-500 to-violet-600 p-8 text-center relative overflow-hidden shrink-0">
+                                <button onclick="window.closeModal('modal-kumpul-tugas')" class="absolute top-5 right-5 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition backdrop-blur-sm active:scale-95"><i class="fa-solid fa-xmark text-lg"></i></button>
+                                <i class="fa-solid fa-cloud-arrow-up absolute -left-4 -bottom-4 text-white/10 text-8xl transform -rotate-12 pointer-events-none"></i>
+                                <div class="w-16 h-16 bg-white/20 backdrop-blur-md text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner"><i class="fa-solid fa-file-arrow-up"></i></div>
+                                <h3 class="font-black text-2xl text-white tracking-tight" id="kumpul-tugas-title">Judul Tugas</h3>
+                                <p class="text-indigo-100 text-xs mt-1 font-bold uppercase tracking-widest" id="kumpul-tugas-subtitle">Mata Kuliah: BIO-202</p>
+                            </div>
+                
+                            <!-- Area Upload -->
+                            <div class="p-6 md:p-8 space-y-4 bg-paper-50 border-b border-paper-100">
+                                <div class="bg-white p-5 rounded-[1.5rem] border border-paper-200 shadow-sm mb-2">
+                                    <p class="text-xs font-bold text-slate-500 flex items-center"><i class="fa-solid fa-circle-info text-indigo-400 mr-2"></i> Kumpulkan jawaban Anda dalam format PDF, Word, atau Gambar (Max. 10MB).</p>
+                                </div>
+                
+                                <!-- Drag & Drop Zone -->
+                                <input type="file" id="tugas-file" class="hidden" accept=".pdf,.doc,.docx,image/*" onchange="window.handleFileTugasMhs(event)">
+                                <div onclick="document.getElementById('tugas-file').click()" class="border-2 border-dashed border-indigo-300 bg-indigo-50 hover:bg-indigo-100 text-center p-8 rounded-[2rem] cursor-pointer transition-colors group">
+                                    <div class="w-14 h-14 bg-white text-indigo-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm group-hover:-translate-y-1 transition-transform"><i class="fa-solid fa-file-import"></i></div>
+                                    <p class="text-sm font-bold text-slate-700 mb-1" id="tugas-file-name">Ketuk untuk pilih file PDF / Dokumen</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Penyimpanan Cloud Aman</p>
+                                </div>
+                            </div>
+                
+                            <!-- Footer Tombol -->
+                            <div class="p-5 md:p-6 bg-white flex space-x-3 shrink-0 rounded-b-[2.5rem]">
+                                <button onclick="window.closeModal('modal-kumpul-tugas')" class="flex-1 bg-paper-100 hover:bg-paper-200 text-slate-600 py-4 rounded-xl font-bold transition active:scale-95 text-xs md:text-sm uppercase tracking-wider">Batal</button>
+                                <button id="btn-submit-tugas-mhs" onclick="window.kumpulkanTugasMhs()" class="flex-[2] bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-black shadow-lg shadow-indigo-500/30 transition active:scale-95 text-xs md:text-sm uppercase tracking-wider flex items-center justify-center"><i class="fa-solid fa-paper-plane mr-2"></i> Serahkan Tugas</button>
+                            </div>
                         </div>
-                        <button onclick="window.closeModal('modal-nilai-tugas')" class="bg-white/20 hover:bg-white/30 text-white w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
                     </div>
         
                     <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
@@ -1322,6 +1358,7 @@
                         <select id="input-jenis-materi" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-medium appearance-none">
                             <option value="pdf">Dokumen PDF</option>
                             <option value="video">Video Pembelajaran</option>
+                            <option value="video">Tugas</option>
                             <option value="kuis">Kuis Evaluasi</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
@@ -1875,11 +1912,63 @@ window.renderJoinedClasses = () => {
              container.innerHTML = `<div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">${html}</div>`;
         };
 
-        window.bukaMateriMahasiswa = (jenis, judul) => {
+window.renderMateriMahasiswa = () => {
+             const classDoc = globalClasses.find(c => c.id === window.currentActiveKelasMhs);
+             const container = document.getElementById('mahasiswa-materi-items');
+             if(!container) return;
+
+             if(!classDoc || !classDoc.materi || classDoc.materi.length === 0) {
+                 container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[2rem] bg-white">Belum ada materi/tugas yang diunggah oleh Dosen.</div>';
+                 return;
+             }
+
+             let html = '';
+             classDoc.materi.forEach(m => {
+                let iconHtml = ''; let bgClass = ''; let textClass = '';
+                if (m.jenis === 'pdf') { iconHtml = '<i class="fa-regular fa-file-pdf"></i>'; bgClass = 'bg-red-50'; textClass = 'text-red-500'; }
+                else if (m.jenis === 'video') { iconHtml = '<i class="fa-solid fa-circle-play"></i>'; bgClass = 'bg-blue-50'; textClass = 'text-blue-500'; }
+                else if (m.jenis === 'tugas') { iconHtml = '<i class="fa-solid fa-cloud-arrow-up"></i>'; bgClass = 'bg-indigo-50'; textClass = 'text-indigo-500'; } // Ikon Baru
+                else { iconHtml = '<i class="fa-solid fa-list-check"></i>'; bgClass = 'bg-amber-50'; textClass = 'text-amber-500'; }
+
+                html += `
+                <div class="p-5 border-b border-paper-100 flex items-center justify-between hover:bg-paper-50 transition cursor-pointer group" onclick="window.bukaMateriMahasiswa('${m.jenis}', '${m.judul.replace(/'/g, "\\'")}', '${classDoc.kode}')">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 ${bgClass} ${textClass} rounded-[1rem] flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform">${iconHtml}</div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm md:text-base">${m.judul}</p>
+                            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-1">${m.tipeText}</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-brand-500 transition text-lg"></i>
+                </div>`;
+             });
+             container.innerHTML = `<div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">${html}</div>`;
+        };
+
+        window.bukaMateriMahasiswa = (jenis, judul, kodeKelas) => {
             const titleEl = document.getElementById('viewer-title');
             const content = document.getElementById('viewer-content');
-            if(titleEl) titleEl.innerText = judul;
             
+            // JIKA TIPE MATERI ADALAH TUGAS
+            if(jenis === 'tugas') {
+                document.getElementById('kumpul-tugas-title').innerText = judul;
+                document.getElementById('kumpul-tugas-subtitle').innerText = `Mata Kuliah: ${kodeKelas}`;
+                
+                // Menitipkan data sementara di tombol agar mudah dibaca saat diklik kirim
+                const btnSubmit = document.getElementById('btn-submit-tugas-mhs');
+                btnSubmit.setAttribute('data-judul', judul);
+                btnSubmit.setAttribute('data-kelas', kodeKelas);
+                
+                // Kembalikan tampilan area file seperti semula
+                document.getElementById('tugas-file-name').innerHTML = 'Ketuk untuk pilih file PDF / Dokumen';
+                document.getElementById('tugas-file').value = '';
+                
+                window.openModal('modal-kumpul-tugas');
+                return;
+            }
+
+            // JIKA TIPE MATERI LAINNYA (PDF/Video)
+            if(titleEl) titleEl.innerText = judul;
             if(jenis === 'pdf') {
                 content.innerHTML = `<iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" class="w-full h-full border-none bg-paper-200 rounded-b-2xl"></iframe>`;
                 window.openModal('modal-materi-viewer');
@@ -2613,6 +2702,31 @@ window.renderSoalMahasiswa = (questions) => {
             container.innerHTML = html;
         };
 
+        window.renderMateriDosen = () => {
+            const classDoc = globalClasses.find(c => c.id === window.currentActiveKelasDsn);
+            const container = document.getElementById('dosen-materi-items');
+            if(!container) return;
+
+            if(!classDoc || !classDoc.materi || classDoc.materi.length === 0) {
+                 container.innerHTML = '<p class="text-slate-500 text-sm text-center py-6 border-2 border-dashed border-paper-200 rounded-[1.5rem]">Belum ada materi di kelas ini.</p>';
+                 return;
+            }
+            let html = '';
+            classDoc.materi.forEach(m => {
+                let iconHtml = '';
+                if (m.jenis === 'pdf') iconHtml = '<i class="fa-regular fa-file-pdf text-red-500 text-3xl mr-4"></i>';
+                else if (m.jenis === 'video') iconHtml = '<i class="fa-solid fa-circle-play text-blue-500 text-3xl mr-4"></i>';
+                else if (m.jenis === 'tugas') iconHtml = '<i class="fa-solid fa-cloud-arrow-up text-indigo-500 text-3xl mr-4"></i>'; // Ikon Baru
+                else iconHtml = '<i class="fa-solid fa-list-check text-amber-500 text-3xl mr-4"></i>';
+
+                html += `<div class="flex justify-between items-center p-4 bg-paper-50 rounded-[1rem] border border-paper-200 fade-in">
+                    <div class="flex items-center">${iconHtml}<div><p class="font-bold text-slate-700 text-sm">${m.judul}</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">${m.tipeText}</p></div></div>
+                    <button class="text-slate-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-50" onclick="window.hapusMateriDosen('${m.id}')"><i class="fa-solid fa-trash"></i></button>
+                </div>`;
+            });
+            container.innerHTML = html;
+        };
+
         window.simpanMateriDosen = async () => {
             const judul = document.getElementById('input-judul-materi').value.trim();
             const jenis = document.getElementById('input-jenis-materi').value;
@@ -2622,17 +2736,19 @@ window.renderSoalMahasiswa = (questions) => {
             let tipeText = '';
             if (jenis === 'pdf') tipeText = 'Dokumen PDF'; 
             else if (jenis === 'video') tipeText = 'Video Pembelajaran'; 
+            else if (jenis === 'tugas') tipeText = 'Tugas Pengumpulan File'; // Teks Baru
             else tipeText = 'Kuis Evaluasi';
 
             const newMateri = { id: Date.now().toString(), judul: judul, jenis: jenis, tipeText: tipeText, timestamp: Date.now() };
             const classDoc = globalClasses.find(c => c.id === window.currentActiveKelasDsn);
             
-            if(classDoc && useFirebase && currentUser) {
+            if(classDoc && typeof useFirebase !== 'undefined' && useFirebase && currentUser) {
                 const updatedMateri = classDoc.materi ? [...classDoc.materi, newMateri] : [newMateri];
                 try {
+                    const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', window.currentActiveKelasDsn), { materi: updatedMateri });
-                    window.showToast('Materi berhasil diunggah ke kelas!');
-                } catch(e) { window.showToast('Gagal mengunggah materi ke server.'); }
+                    window.showToast('Berhasil diunggah ke kelas!');
+                } catch(e) { window.showToast('Gagal mengunggah ke server.'); }
             }
             window.closeModal('modal-tambah-materi');
             document.getElementById('input-judul-materi').value = '';
@@ -3866,6 +3982,66 @@ window.renderSoalMahasiswa = (questions) => {
                 window.handleIzinFileUpload({ target: { files: [] } }); // Reset tampilan kotak file
                 
             }, 1500);
+        };
+
+        // TAMBAHAN: Efek visual saat mahasiswa memilih file
+        window.handleFileTugasMhs = (event) => {
+            const file = event.target.files[0];
+            const nameDisplay = document.getElementById('tugas-file-name');
+            if (file) {
+                nameDisplay.innerHTML = `<span class="text-indigo-600 font-black"><i class="fa-solid fa-file-circle-check mr-2"></i> ${file.name}</span>`;
+            } else {
+                nameDisplay.innerText = 'Ketuk untuk pilih file PDF / Dokumen';
+            }
+        };
+
+        // TAMBAHAN: Eksekusi pengiriman Tugas Mahasiswa ke Firebase
+        window.kumpulkanTugasMhs = async () => {
+            const btn = document.getElementById('btn-submit-tugas-mhs');
+            const judulTugas = btn.getAttribute('data-judul');
+            const kodeKelas = btn.getAttribute('data-kelas');
+            const fileInput = document.getElementById('tugas-file');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                return window.showToast('Pilih file dokumen jawaban Anda terlebih dahulu!');
+            }
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Mengunggah...';
+            btn.disabled = true;
+
+            // Merakit bingkisan data untuk dikirim ke Meja Penilaian Dosen
+            const newSubmission = {
+                mhsName: appState.userName,
+                mhsNim: appState.nim,
+                kelas: kodeKelas,
+                judul: judulTugas,
+                status: 'Pending',
+                nilai: null,
+                catatan: '',
+                file: fileInput.files[0].name,
+                timestamp: Date.now()
+            };
+
+            if (typeof useFirebase !== 'undefined' && useFirebase && currentUser) {
+                try {
+                    const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                    
+                    // Lempar tugas ke laci 'submissions' di server Firebase
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'submissions'), newSubmission);
+                    
+                    window.showToast('Tugas berhasil dikumpulkan ke Meja Dosen!');
+                    window.closeModal('modal-kumpul-tugas');
+                    
+                } catch(e) {
+                    window.showToast('Gagal mengunggah ke server.');
+                }
+            } else {
+                window.showToast('Gagal terhubung ke database.');
+            }
+
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         };
 
         
