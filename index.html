@@ -986,41 +986,63 @@
         </div>
     </div>
 
-    <div id="modal-izin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[3000] hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative scale-95 transform transition-all duration-300" id="modal-izin-content">
-            <h3 class="font-bold text-2xl mb-6 text-slate-800 text-center">Form Izin</h3>
-            <div class="space-y-5">
-                <div>
-                    <p class="text-xs font-bold text-slate-500 mb-2 ml-2 uppercase tracking-widest">Keterangan</p>
+<!-- MODAL FORM IZIN (PREMIUM UI) -->
+    <div id="modal-izin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl relative scale-95 transform transition-all duration-300 overflow-hidden flex flex-col" id="modal-izin-content">
+            
+            <!-- Header Banner Form -->
+            <div class="bg-gradient-to-br from-amber-400 to-orange-500 p-8 text-center relative overflow-hidden shrink-0">
+                <button onclick="window.closeModal('modal-izin')" class="absolute top-5 right-5 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition backdrop-blur-sm active:scale-95"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <i class="fa-solid fa-envelope-open-text absolute -left-6 -bottom-6 text-white/20 text-7xl transform -rotate-12 pointer-events-none"></i>
+                <div class="w-16 h-16 bg-white/20 backdrop-blur-md text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner"><i class="fa-solid fa-pen-clip"></i></div>
+                <h3 class="font-black text-2xl text-white tracking-tight">Pengajuan Izin</h3>
+                <p class="text-amber-50 text-xs mt-1 font-medium">Kirim permohonan absen ke Dosen / Bagian Akademik.</p>
+            </div>
+
+            <!-- Area Input Form -->
+            <div class="p-6 md:p-8 space-y-4 overflow-y-auto max-h-[60vh] bg-paper-50 border-b border-paper-100">
+                
+                <!-- Input Kategori -->
+                <div class="bg-white p-4 rounded-[1.5rem] border border-paper-200 focus-within:border-amber-400 focus-within:ring-2 ring-amber-100 transition shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 flex items-center"><i class="fa-solid fa-tag text-amber-500 mr-2"></i>Kategori Izin</p>
                     <div class="relative">
-                        <select id="izin-type" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-accent-400 p-4 rounded-2xl border-none outline-none text-slate-800 transition font-medium appearance-none">
-                            <option value="Sakit">Sakit</option>
-                            <option value="Izin Pribadi">Izin Keperluan Pribadi</option>
-                            <option value="Lainnya">Lainnya</option>
+                        <select id="izin-type" class="w-full bg-transparent border-none outline-none text-slate-800 font-bold text-sm md:text-base appearance-none cursor-pointer">
+                            <option value="Sakit">Kondisi Sakit / Medis</option>
+                            <option value="Izin Pribadi">Izin Keperluan Pribadi / Keluarga</option>
+                            <option value="Tugas Kampus">Dispensasi Tugas Kampus</option>
                         </select>
-                        <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                        <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none"></i>
                     </div>
                 </div>
-                <div>
-                    <p class="text-xs font-bold text-slate-500 mb-2 ml-2 uppercase tracking-widest">Tanggal</p>
-                    <input type="date" id="izin-date" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-accent-400 p-4 rounded-2xl border-none outline-none text-slate-800 transition font-medium">
+
+                <!-- Input Tanggal -->
+                <div class="bg-white p-4 rounded-[1.5rem] border border-paper-200 focus-within:border-amber-400 focus-within:ring-2 ring-amber-100 transition shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 flex items-center"><i class="fa-regular fa-calendar-check text-amber-500 mr-2"></i>Tanggal Mulai Izin</p>
+                    <input type="date" id="izin-date" class="w-full bg-transparent border-none outline-none text-slate-800 font-bold text-sm md:text-base cursor-pointer">
                 </div>
-                <div>
-                    <p class="text-xs font-bold text-slate-500 mb-2 ml-2 uppercase tracking-widest">Detail / Alasan</p>
-                    <textarea id="izin-reason" rows="3" placeholder="Jelaskan alasan ketidakhadiran..." class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-accent-400 p-4 rounded-[1.5rem] border-none outline-none text-slate-800 transition resize-none font-medium"></textarea>
+
+                <!-- Input Detail -->
+                <div class="bg-white p-4 rounded-[1.5rem] border border-paper-200 focus-within:border-amber-400 focus-within:ring-2 ring-amber-100 transition shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center"><i class="fa-solid fa-align-left text-amber-500 mr-2"></i>Keterangan Detail</p>
+                    <textarea id="izin-reason" rows="3" placeholder="Tuliskan alasan lengkap permohonan izin Anda..." class="w-full bg-transparent border-none outline-none text-slate-800 font-medium text-sm resize-none placeholder-slate-300 leading-relaxed"></textarea>
                 </div>
+
+                <!-- Upload Area (Drag & Drop Style) -->
                 <div>
-                    <p class="text-xs font-bold text-slate-500 mb-2 ml-2 uppercase tracking-widest">Lampiran Bukti (Opsional)</p>
-                    <div class="flex items-center space-x-3">
-                        <input type="file" id="izin-file" class="hidden">
-                        <button onclick="document.getElementById('izin-file').click()" class="bg-paper-100 hover:bg-paper-200 text-slate-600 px-5 py-3 rounded-2xl font-bold text-xs transition">Pilih File</button>
-                        <span id="izin-file-name" class="text-[10px] text-slate-400 truncate max-w-[140px] font-medium">Tidak ada file</span>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Lampiran Berkas (Opsional)</p>
+                    <input type="file" id="izin-file" class="hidden" accept="image/*,.pdf" onchange="window.handleIzinFileUpload(event)">
+                    <div id="izin-upload-zone" onclick="document.getElementById('izin-file').click()" class="border-2 border-dashed border-amber-300 bg-amber-50 hover:bg-amber-100 text-center p-6 rounded-[1.5rem] cursor-pointer transition-colors group">
+                        <div class="w-12 h-12 bg-white text-amber-500 rounded-full flex items-center justify-center text-xl mx-auto mb-3 shadow-sm group-hover:-translate-y-1 transition-transform"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                        <p class="text-sm font-bold text-slate-700" id="izin-file-name">Ketuk untuk unggah Surat Dokter / Bukti</p>
+                        <p class="text-[10px] font-bold text-slate-400 mt-1.5 uppercase tracking-widest">Maksimal 5MB (JPG, PNG, PDF)</p>
                     </div>
                 </div>
             </div>
-            <div class="mt-8 flex space-x-4">
-                <button onclick="window.closeModal('modal-izin')" class="flex-1 bg-paper-100 hover:bg-paper-200 transition py-4 rounded-2xl font-bold text-slate-600 active:scale-95 transform">Batal</button>
-                <button id="btn-submit-izin" class="flex-1 bg-brand-500 hover:bg-brand-600 transition text-white py-4 rounded-2xl font-bold shadow-md active:scale-95 transform">Kirim</button>
+
+            <!-- Footer Tombol -->
+            <div class="p-5 md:p-6 bg-white flex space-x-3 shrink-0 rounded-b-[2.5rem]">
+                <button onclick="window.closeModal('modal-izin')" class="flex-1 bg-paper-100 hover:bg-paper-200 text-slate-600 py-3.5 md:py-4 rounded-xl font-bold transition active:scale-95 text-xs md:text-sm uppercase tracking-wider">Batal</button>
+                <button id="btn-submit-izin" class="flex-[2] bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-3.5 md:py-4 rounded-xl font-black shadow-lg shadow-orange-500/30 transition active:scale-95 text-xs md:text-sm uppercase tracking-wider flex items-center justify-center"><i class="fa-solid fa-paper-plane mr-2"></i> Kirim Permohonan</button>
             </div>
         </div>
     </div>
@@ -3340,6 +3362,60 @@ window.renderSoalMahasiswa = (questions) => {
             if(input && input.value.trim() !== '') {
                 window.renderLibrary('Semua', input.value);
             }
+        };
+
+        // ========================== FITUR IZIN (PREMIUM UI LOGIC) ==========================
+        
+        // Mengubah warna dan teks saat user memilih file
+        window.handleIzinFileUpload = (event) => {
+            const file = event.target.files[0];
+            const nameDisplay = document.getElementById('izin-file-name');
+            const zone = document.getElementById('izin-upload-zone');
+            
+            if (file) {
+                // Berubah Hijau saat file berhasil dimasukkan
+                nameDisplay.innerHTML = `<span class="text-emerald-600 font-black"><i class="fa-solid fa-file-circle-check mr-2"></i>${file.name}</span>`;
+                zone.classList.replace('border-amber-300', 'border-emerald-400');
+                zone.classList.replace('bg-amber-50', 'bg-emerald-50');
+            } else {
+                // Kembali ke semula jika batal
+                nameDisplay.innerText = 'Ketuk untuk unggah Surat Dokter / Bukti';
+                zone.classList.replace('border-emerald-400', 'border-amber-300');
+                zone.classList.replace('bg-emerald-50', 'bg-amber-50');
+            }
+        };
+
+        // Fungsi saat tombol Kirim diklik
+        window.submitIzin = () => {
+            const type = document.getElementById('izin-type').value;
+            const date = document.getElementById('izin-date').value;
+            const reason = document.getElementById('izin-reason').value.trim();
+            const btn = document.getElementById('btn-submit-izin');
+
+            if (!date || !reason) {
+                return window.showToast('Mohon pilih tanggal dan isi keterangan izin Anda!');
+            }
+
+            // Animasi Tombol Loading
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Memproses...`;
+            btn.disabled = true;
+
+            // Simulasi Proses Jaringan (1.5 detik)
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                
+                window.showToast(`Izin ${type} untuk tanggal ${date} berhasil dikirim ke Akademik!`);
+                window.closeModal('modal-izin');
+                
+                // Reset form setelah dikirim
+                document.getElementById('izin-date').value = '';
+                document.getElementById('izin-reason').value = '';
+                document.getElementById('izin-file').value = '';
+                window.handleIzinFileUpload({ target: { files: [] } }); // Reset tampilan kotak file
+                
+            }, 1500);
         };
 
         
