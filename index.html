@@ -1084,17 +1084,23 @@
                     </div>
                 </div>
 
-                <div id="dsn-view-kelas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
-                    <div class="flex justify-between items-center mb-8">
+                <div id="dsn-view-kelas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto relative z-10">
+                    <div class="flex flex-col md:flex-row justify-between md:items-end mb-10 space-y-4 md:space-y-0">
                         <div>
-                            <h2 class="text-2xl font-black text-slate-800 mb-1">Manajemen Kelas</h2>
-                            <p class="text-slate-500 text-sm font-medium">Buat dan kelola materi untuk mahasiswa di Cloud.</p>
+                            <h2 class="text-3xl font-black text-slate-800 mb-1 tracking-tight">Manajemen Kelas</h2>
+                            <p class="text-slate-500 text-sm font-medium">Buat ruang belajar virtual dan kelola materi mahasiswa Anda.</p>
                         </div>
-                        <button onclick="window.openModal('modal-buat-kelas')" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-md transition active:scale-95 text-sm flex items-center"><i class="fa-solid fa-plus mr-2"></i> Kelas Baru</button>
+                        <button onclick="window.openModal('modal-buat-kelas')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3.5 rounded-[1rem] font-bold shadow-[0_8px_20px_rgba(79,70,229,0.3)] hover:shadow-[0_10px_25px_rgba(79,70,229,0.5)] hover:-translate-y-1 transition-all duration-300 text-sm flex items-center group">
+                            <div class="bg-white/20 p-1.5 rounded-lg mr-3 group-hover:rotate-90 transition-transform duration-500">
+                                <i class="fa-solid fa-plus"></i>
+                            </div> 
+                            Buat Kelas Baru
+                        </button>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="dosen-kelas-list">
-                        <div class="text-center py-10 text-slate-400 font-medium col-span-2 border-2 border-dashed border-paper-200 rounded-[2rem]">Memuat kelas dari database...</div>
+                    <!-- Wadah Grid untuk Kartu Kelas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="dosen-kelas-list">
+                        <div class="text-center py-10 text-slate-400 font-medium col-span-full border-2 border-dashed border-paper-200 rounded-[2rem]">Memuat kelas dari database...</div>
                     </div>
                 </div>
 
@@ -2857,33 +2863,68 @@ window.renderSoalMahasiswa = (questions) => {
             if(!list) return;
 
             const myClasses = globalClasses.filter(c => c.dosen === dosenState.name);
-            document.getElementById('stat-kelas').innerText = myClasses.length;
+            const statKelas = document.getElementById('stat-kelas');
+            if(statKelas) statKelas.innerText = myClasses.length;
             
             if(myClasses.length === 0) {
-                list.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium col-span-2 border-2 border-dashed border-paper-200 rounded-[2rem]">Belum ada kelas yang Anda buat.</div>';
+                list.innerHTML = `
+                <div class="col-span-full flex flex-col items-center justify-center py-16 bg-white/50 backdrop-blur-sm border-2 border-dashed border-slate-300 rounded-[2.5rem] fade-in">
+                    <div class="w-20 h-20 bg-indigo-50 text-indigo-400 rounded-full flex items-center justify-center text-4xl mb-4 shadow-inner">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <h3 class="font-black text-slate-700 text-xl tracking-tight">Belum Ada Kelas</h3>
+                    <p class="text-slate-500 text-sm mt-2">Mulai buat kelas pertama Anda untuk mengundang mahasiswa.</p>
+                </div>`;
                 return;
             }
 
             let html = '';
-            myClasses.forEach(k => {
-                let colorFrom = "from-indigo-400"; let colorTo = "to-blue-500"; let icon = "fa-book";
-                if(k.kode.includes("KIM") || k.nama.toLowerCase().includes("kimia")) { colorFrom = "from-teal-400"; colorTo = "to-emerald-400"; icon = "fa-flask"; }
-                else if (k.kode.includes("ING")) { colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon = "fa-language"; }
-                else if (k.kode.includes("MAT")) { colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon = "fa-calculator"; }
+            myClasses.forEach((k, idx) => {
+                // Tema Warna Dinamis berdasarkan nama/kode kelas
+                let colorFrom = "from-indigo-500"; let colorTo = "to-blue-600"; let icon = "fa-book-open-reader"; let themeColor = "indigo";
+                const kName = k.nama.toLowerCase();
+                if(k.kode.includes("KIM") || kName.includes("kimia")) { colorFrom = "from-teal-500"; colorTo = "to-emerald-600"; icon = "fa-flask"; themeColor = "emerald"; }
+                else if (k.kode.includes("ING") || kName.includes("inggris")) { colorFrom = "from-orange-400"; colorTo = "to-rose-500"; icon = "fa-earth-americas"; themeColor = "orange"; }
+                else if (k.kode.includes("MAT") || kName.includes("matematika")) { colorFrom = "from-blue-500"; colorTo = "to-indigo-600"; icon = "fa-calculator"; themeColor = "blue"; }
 
                 html += `
-                <div class="bg-white border border-paper-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition fade-in">
-                    <div class="h-24 bg-gradient-to-r ${colorFrom} ${colorTo} p-5 flex items-end relative overflow-hidden">
-                        <i class="fa-solid ${icon} absolute -right-2 -bottom-2 text-6xl text-white/20"></i>
-                        <h3 class="text-2xl font-black text-white relative z-10">${k.kode}</h3>
-                    </div>
-                    <div class="p-5">
-                        <p class="font-bold text-slate-800 text-lg mb-1 line-clamp-1">${k.nama}</p>
-                        <p class="text-xs text-slate-500 mb-4 font-medium"><i class="fa-solid fa-users mr-1"></i> Kelas Tersedia</p>
-                        <div class="flex space-x-2">
-                            <button class="flex-1 bg-paper-100 hover:bg-paper-200 text-slate-600 font-bold py-2 rounded-lg text-xs transition" onclick="window.bukaKelolaMateri('${k.kode}', '${k.nama.replace(/'/g, "\\'")}', '${k.id}')">Kelola Materi</button>
-                            <button class="flex-1 bg-brand-50 hover:bg-brand-100 text-brand-600 font-bold py-2 rounded-lg text-xs transition" onclick="window.showToast('Kode disalin: ${k.kode}')">Salin Kode</button>
+                <div class="bg-white/90 backdrop-blur-md border border-white/50 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-2 hover:border-${themeColor}-300 transition-all duration-500 fade-in group relative" style="animation-delay: ${idx * 0.05}s">
+                    
+                    <!-- Header Gradien Kartu -->
+                    <div class="h-36 bg-gradient-to-br ${colorFrom} ${colorTo} p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                        <i class="fa-solid ${icon} absolute -right-4 -bottom-4 text-[5rem] text-white/20 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500"></i>
+                        
+                        <div class="flex justify-between items-start relative z-10">
+                            <span class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">${k.kode}</span>
+                            <button onclick="window.showToast('Kode disalin: ${k.kode}')" class="w-9 h-9 bg-white/10 hover:bg-white/30 text-white rounded-full flex items-center justify-center transition backdrop-blur-sm shadow-sm active:scale-95" title="Salin Kode Kelas">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
                         </div>
+                        <h3 class="text-xl font-black text-white relative z-10 tracking-tight line-clamp-1 drop-shadow-md mt-auto">${k.nama}</h3>
+                    </div>
+                    
+                    <!-- Tubuh Konten Kartu -->
+                    <div class="p-6 relative bg-white/50">
+                        <!-- Avatar Mahasiswa Melayang (Simulasi) -->
+                        <div class="absolute -top-5 left-6 flex -space-x-3 group-hover:-translate-y-1 transition-transform duration-300">
+                            <div class="w-10 h-10 rounded-full border-2 border-white bg-paper-200 overflow-hidden shadow-sm z-30"><img src="https://ui-avatars.com/api/?name=A&background=random" class="w-full h-full"></div>
+                            <div class="w-10 h-10 rounded-full border-2 border-white bg-paper-200 overflow-hidden shadow-sm z-20"><img src="https://ui-avatars.com/api/?name=B&background=random" class="w-full h-full"></div>
+                            <div class="w-10 h-10 rounded-full border-2 border-white bg-paper-100 shadow-sm z-10 flex items-center justify-center text-[10px] font-bold text-slate-500 bg-white">+${Math.floor(Math.random() * 30) + 10}</div>
+                        </div>
+
+                        <div class="mt-6 mb-6 flex items-center justify-between text-sm">
+                            <div class="flex items-center text-slate-500 font-bold">
+                                <div class="w-8 h-8 bg-${themeColor}-50 text-${themeColor}-500 rounded-lg flex items-center justify-center mr-3 shadow-inner">
+                                    <i class="fa-solid fa-photo-film text-sm"></i>
+                                </div>
+                                <span>${k.materi ? k.materi.length : 0} Modul Materi</span>
+                            </div>
+                        </div>
+
+                        <button onclick="window.bukaKelolaMateri('${k.kode}', '${k.nama.replace(/'/g, "\\'")}', '${k.id}')" class="w-full bg-slate-50 hover:bg-${themeColor}-500 text-slate-700 hover:text-white border border-slate-200 hover:border-transparent font-bold py-3.5 rounded-xl text-sm transition-all duration-300 shadow-sm hover:shadow-[0_8px_20px_rgba(0,0,0,0.1)] active:scale-95 flex items-center justify-center group/btn">
+                            Kelola Kelas <i class="fa-solid fa-arrow-right-long ml-2 text-slate-400 group-hover/btn:text-white group-hover/btn:translate-x-1 transition-all"></i>
+                        </button>
                     </div>
                 </div>`;
             });
