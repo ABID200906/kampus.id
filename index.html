@@ -295,82 +295,56 @@
                     </div>
                 </div>
 
-                <!-- HALAMAN AKADEMIK & PRESENSI (PREMIUM UI) -->
-                        <div id="mhs-view-academy" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
-                            <!-- Header Banner Akademik -->
-                            <div class="h-48 md:h-56 relative overflow-hidden flex flex-col justify-center px-6 md:px-10 bg-gradient-to-br from-accent-600 to-indigo-700 rounded-b-[2.5rem] shadow-sm shrink-0 pt-6">
-                                <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="absolute top-6 left-6 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 transition z-20"><i class="fa-solid fa-arrow-left"></i></button>
-                                <i class="fa-solid fa-user-check absolute -right-6 -bottom-6 text-8xl text-white opacity-10 pointer-events-none"></i>
-                                <div class="relative z-10 text-white">
-                                    <span class="bg-accent-500/50 border border-accent-400/50 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-2 inline-block">Portal Mahasiswa</span>
-                                    <h2 class="text-3xl font-black tracking-tight">Akademik & Presensi</h2>
-                                </div>
-                            </div>
-                
-                            <div class="max-w-4xl mx-auto px-4 pb-24 -mt-8 relative z-20">
-                                <!-- Card Geofencing (Radar Presensi) -->
-                                <div class="bg-white rounded-[2.5rem] p-6 md:p-8 border border-paper-200 shadow-xl mb-8 relative overflow-hidden group">
-                                    <div class="absolute -right-16 -top-16 w-48 h-48 bg-accent-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-700"></div>
-                                    
-                                    <div class="relative z-10">
-                                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
-                                            <div>
-                                                <p class="text-[10px] font-black text-accent-500 uppercase tracking-[0.2em] mb-1">Status Lokasi Sekarang</p>
-                                                <h3 class="text-xl md:text-2xl font-black text-slate-800 flex items-center">
-                                                    <i class="fa-solid fa-location-dot text-red-500 mr-2 animate-pulse"></i> Kampus Utama
-                                                </h3>
-                                            </div>
-                                            <div id="display-status-radius-container" class="w-max">
-                                                <span id="display-status-radius" class="bg-slate-100 text-slate-500 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider border border-paper-200">Mengecek Lokasi...</span>
-                                            </div>
-                                        </div>
-                
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                                            <div class="bg-paper-50 p-5 rounded-2xl border border-paper-200 flex items-center space-x-4">
-                                                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm text-accent-500 text-xl shrink-0"><i class="fa-solid fa-person-walking-arrow-right"></i></div>
-                                                <div>
-                                                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">Jarak ke Pusat</p>
-                                                    <p class="text-base font-black text-slate-800" id="display-jarak-mhs">-- KM</p>
-                                                </div>
-                                            </div>
-                                            <div class="bg-paper-50 p-5 rounded-2xl border border-paper-200 flex items-center space-x-4">
-                                                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm text-brand-500 text-xl shrink-0"><i class="fa-solid fa-clock"></i></div>
-                                                <div>
-                                                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">Waktu Server</p>
-                                                    <p class="text-base font-black text-slate-800" id="live-clock-mhs">00:00:00</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                
-                                        <button onclick="window.handleCheckIn()" id="btn-checkin" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-5 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center text-lg uppercase tracking-widest group">
-                                            <i class="fa-solid fa-fingerprint mr-3 text-brand-400 group-hover:scale-110 transition-transform"></i> Ambil Presensi Sekarang
-                                        </button>
+                <div id="mhs-view-academy" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto">
+                    <div class="max-w-3xl mx-auto pt-4 md:pt-8 px-4 pb-20">
+                        <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center"><i class="fa-solid fa-graduation-cap mr-3 text-accent-500"></i>Akademik & Presensi</h2>
+                        
+                        <div class="bg-white rounded-[2rem] p-6 md:p-8 border border-accent-100 shadow-sm mb-8 relative overflow-hidden">
+                            <div class="absolute -right-10 -top-10 text-accent-50 opacity-50 pointer-events-none"><i class="fa-solid fa-map-location-dot text-[10rem]"></i></div>
+                            <div class="relative z-10">
+                                <div class="flex justify-between items-start mb-6">
+                                    <div>
+                                        <p class="text-xs font-black text-accent-500 uppercase tracking-widest mb-1">GEOFENCING RADAR</p>
+                                        <h3 class="text-xl md:text-2xl font-bold text-slate-800">Kampus Utama</h3>
+                                    </div>
+                                    <div class="bg-brand-50 text-brand-600 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center border border-brand-100 shadow-sm">
+                                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse mr-2"></span> Terhubung
                                     </div>
                                 </div>
-                
-                                <!-- Bagian Tugas Aktif -->
-                                <div class="flex items-center justify-between mb-5 px-2">
-                                    <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight">Tugas Kuliah Terdekat</h3>
-                                    <span class="text-[10px] font-black text-accent-600 bg-accent-50 px-3 py-1 rounded-full border border-accent-100">CLOUD SYNC</span>
-                                </div>
-                
-                                <div id="mhs-tasks-container" class="space-y-4">
-                                    <div class="bg-white p-5 md:p-6 rounded-[2rem] border border-paper-200 flex items-center justify-between hover:shadow-md transition cursor-pointer group">
+                                    <div class="bg-paper-50 p-5 rounded-2xl border border-paper-200 flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-4 md:space-y-0">
                                         <div class="flex items-center space-x-4">
-                                            <div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform"><i class="fa-regular fa-file-pdf"></i></div>
+                                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-accent-500 text-xl"><i class="fa-solid fa-location-crosshairs"></i></div>
                                             <div>
-                                                <p class="font-black text-slate-800 text-sm md:text-base line-clamp-1">Esai Pengantar Ekologi</p>
-                                                <p class="text-xs text-slate-500 font-medium mt-0.5">Dikumpulkan via Portal Cloud</p>
+                                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Jarak dari Pusat</p>
+                                                <p class="text-lg font-black text-slate-800" id="display-jarak-mhs">0.12 KM <span class="text-xs font-medium text-slate-500">(120 meter)</span></p>
                                             </div>
                                         </div>
-                                        <div class="text-right shrink-0 ml-4">
-                                            <span class="text-[10px] font-black text-red-500 bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg block mb-1">BESOK</span>
-                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">23:59 WIB</p>
+                                        <div class="md:text-right">
+                                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Status Area</p>
+                                            <p class="text-sm font-bold text-brand-500" id="display-status-radius">Dalam Radius (1KM)</p>
                                         </div>
                                     </div>
-                                </div>
+                                <button onclick="window.handleCheckIn()" id="btn-checkin" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-slate-700 transition active:scale-95 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-fingerprint mr-2 text-brand-400"></i> Presensi Kehadiran Sekarang
+                                </button>
                             </div>
                         </div>
+
+                        <h3 class="font-bold text-slate-800 text-lg mb-4 mt-8">Tugas Paperless Aktif</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-5 md:p-6 rounded-2xl border border-paper-200 flex items-center justify-between hover:shadow-md transition cursor-pointer">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-regular fa-file-pdf"></i></div>
+                                    <div>
+                                        <p class="font-bold text-slate-800 text-sm md:text-base">Esai Pengantar Ekologi</p>
+                                        <p class="text-xs text-slate-500 mt-0.5">Dikumpulkan via Cloud • 12MB Max</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold text-red-500 bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg">Besok</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div id="mhs-view-jadwal" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
                     <div class="max-w-3xl mx-auto pt-6 md:pt-10 px-4 pb-20">
@@ -2749,93 +2723,81 @@ window.renderSoalMahasiswa = (questions) => {
                 return R * c; 
             };
             
-            window.handleCheckIn = () => {
-                const todayDate = new Date().toDateString();
+                window.handleCheckIn = () => {
+                    const todayDate = new Date().toDateString();
+                    if (appState.lastAttendanceDate === todayDate) {
+                        return window.showToast("Anda sudah melakukan presensi hari ini!");
+                    }
                 
-                // 1. Validasi jika sudah absen hari ini
-                if (appState.lastAttendanceDate === todayDate) {
-                    return window.showToast("Anda sudah melakukan presensi hari ini!");
-                }
-            
-                // 2. Cek ketersediaan fitur Geolocation
-                if (!navigator.geolocation) {
-                    return window.showToast("Browser tidak mendukung GPS.");
-                }
-            
-                window.showToast("Mengambil koordinat presensi...");
-            
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const userLat = position.coords.latitude;
-                    const userLng = position.coords.longitude;
-                    
-                    // KOORDINAT KAMPUS UTAMA
-                    const campusLat = -6.0852; 
-                    const campusLng = 106.4234;
-            
-                    const distanceKm = window.calculateDistance(userLat, userLng, campusLat, campusLng);
-                    const distanceMeters = Math.round(distanceKm * 1000);
-            
-                    // --- LANGKAH 2: MENGUBAH TAMPILAN DI LAYAR (UI PREMIUM) ---
-                    const displayJarak = document.getElementById('display-jarak-mhs');
-                    const displayStatus = document.getElementById('display-status-radius');
-            
-                    if (displayJarak) {
-                        // Tampilan jarak yang lebih rapi (2 angka desimal)
-                        displayJarak.innerHTML = `${distanceKm.toFixed(2)} KM <span class="text-[10px] font-bold text-slate-400">(${distanceMeters}m)</span>`;
+                    if (!navigator.geolocation) {
+                        return window.showToast("Browser tidak mendukung GPS.");
                     }
-            
-                    if (displayStatus) {
-                        if (distanceKm <= 1.0) { // Jika dalam radius 1KM
-                            displayStatus.innerText = "DALAM RADIUS (SAH)";
-                            // Mengubah warna menjadi Hijau Brand
-                            displayStatus.className = "bg-brand-50 text-brand-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider border border-brand-200 shadow-sm";
-                        } else {
-                            displayStatus.innerText = "LUAR RADIUS (DITOLAK)";
-                            // Mengubah warna menjadi Merah Aksentuasi
-                            displayStatus.className = "bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider border border-red-200 shadow-sm";
-                        }
-                    }
-                    // ----------------------------------------------------------
-            
-                    // 3. Logika Penyimpanan jika Berhasil (Radius <= 1 KM)
-                    if (distanceKm <= 1.0) { 
-                        appState.lastAttendanceDate = todayDate;
-                        appState.points += 20; // Bonus poin ramah lingkungan
-                        window.saveState();
-            
-                        const btn = document.getElementById('btn-checkin');
-                        if(btn) {
-                            // Mengubah tombol menjadi mode Selesai
-                            btn.classList.replace('bg-slate-900', 'bg-brand-500');
-                            btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
-                            btn.disabled = true; // Nonaktifkan tombol
-                        }
+                
+                    window.showToast("Mengambil koordinat presensi...");
+                
+                    navigator.geolocation.getCurrentPosition(async (position) => {
+                        const userLat = position.coords.latitude;
+                        const userLng = position.coords.longitude;
                         
-                        window.showToast(`Presensi berhasil diterima! Jarak: ${distanceMeters} meter.`);
-            
-                        // Kirim data ke Database Firebase Dosen
-                        if (typeof useFirebase !== 'undefined' && useFirebase) {
-                            try {
-                                const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-                                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'presensi'), {
-                                    nim: appState.nim,
-                                    nama: appState.userName,
-                                    jarak: distanceMeters,
-                                    status: "Dalam Radius",
-                                    waktu: new Date().toLocaleTimeString('id-ID'),
-                                    timestamp: Date.now()
-                                });
-                            } catch(e) {
-                                console.error("Firebase Sync Error:", e);
+                        // PENTING: Ganti dengan koordinat lokasi tes Anda!
+                        const campusLat = -6.0852; 
+                        const campusLng = 106.4234;
+                
+                        const distanceKm = window.calculateDistance(userLat, userLng, campusLat, campusLng);
+                        const distanceMeters = Math.round(distanceKm * 1000);
+                
+                        // --- MENGUBAH TAMPILAN DI LAYAR (SESUAI ID HTML) ---
+                        const displayJarak = document.getElementById('display-jarak-mhs');
+                        const displayStatus = document.getElementById('display-status-radius');
+                
+                        if (displayJarak) {
+                            displayJarak.innerHTML = `${distanceKm.toFixed(2)} KM <span class="text-xs font-medium text-slate-500">(${distanceMeters} meter)</span>`;
+                        }
+                
+                        if (displayStatus) {
+                            if (distanceKm <= 1.0) {
+                                displayStatus.innerText = "Dalam Radius (Sah)";
+                                displayStatus.className = "text-sm font-bold text-brand-500";
+                            } else {
+                                displayStatus.innerText = "Luar Radius (Tidak Sah)";
+                                displayStatus.className = "text-sm font-bold text-red-500";
                             }
                         }
-                    } else {
-                        window.showToast(`Gagal! Anda berada ${distanceMeters} meter di luar kampus.`);
-                    }
-                }, (error) => {
-                    window.showToast("Gagal akses lokasi. Aktifkan GPS Anda.");
-                }, { enableHighAccuracy: true });
-            };
+                        // ---------------------------------------------------
+                
+                        if (distanceKm <= 1.0) { 
+                            appState.lastAttendanceDate = todayDate;
+                            appState.points += 20;
+                            window.saveState();
+                
+                            const btn = document.getElementById('btn-checkin');
+                            if(btn) {
+                                btn.classList.replace('bg-slate-800', 'bg-brand-500');
+                                btn.innerHTML = `<i class="fa-solid fa-check text-white mr-2"></i> Presensi Selesai`;
+                            }
+                            window.showToast(`Presensi berhasil diterima! Jarak: ${distanceMeters} meter.`);
+                
+                            // Kirim ke Firebase Dosen
+                            if (typeof useFirebase !== 'undefined' && useFirebase) {
+                                try {
+                                    const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'presensi'), {
+                                        nim: appState.nim,
+                                        nama: appState.userName,
+                                        jarak: distanceMeters,
+                                        status: "Dalam Radius",
+                                        waktu: new Date().toLocaleTimeString('id-ID'),
+                                        timestamp: Date.now()
+                                    });
+                                } catch(e) {}
+                            }
+                        } else {
+                            window.showToast(`Gagal! Anda berada ${distanceMeters} meter di luar kampus.`);
+                        }
+                    }, (error) => {
+                        window.showToast("Gagal akses lokasi. Aktifkan GPS Anda.");
+                    }, { enableHighAccuracy: true });
+                };
 
         // ========================== CHATBOT ECO-NEO (CUSTOM BASE URL KONEKTIKA) ==========================
         
