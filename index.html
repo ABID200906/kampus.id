@@ -2279,6 +2279,29 @@
             }
         };
 
+        // ========================== FUNGSI PENAMPIL BERITA AI (YANG SEMPAT HILANG) ==========================
+        window.renderGlobalNewsFeed = (articles) => {
+            const container = document.getElementById('news-container');
+            if(!container) return;
+            let html = '';
+            articles.forEach((news, idx) => {
+                html += `
+                    <div class="block bg-white p-4 md:p-5 rounded-[1.5rem] border border-paper-200 shadow-sm transition hover:shadow-md hover:border-brand-300 fade-in" style="animation-delay: ${idx * 0.05}s">
+                        <div class="flex items-start space-x-4 md:space-x-5">
+                            <div class="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-paper-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                                <img src="${news.image}" alt="News Image" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 flex flex-col justify-center">
+                                <span class="text-[10px] md:text-[11px] font-black text-brand-600 uppercase tracking-widest mb-1.5 flex items-center"><i class="fa-solid fa-robot mr-1.5 text-brand-500"></i>${news.source}</span>
+                                <h4 class="text-sm md:text-base font-bold text-slate-800 leading-snug mb-2">${news.title}</h4>
+                                <p class="text-xs text-slate-500 font-medium line-clamp-3 leading-relaxed">${news.snippet}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+            container.innerHTML = html;
+        };
+
         // FUNGSI MENCARI BUKU DARI OPEN LIBRARY API (GRATIS & TANPA LIMIT KETAT)
         window.searchBooks = async (query) => {
             const container = document.getElementById('elibrary-container');
