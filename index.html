@@ -2699,15 +2699,14 @@
 
         // ========================== CHATBOT ECO-NEO (INTEGRASI AI) ==========================
         
-        // Fungsi untuk mengirim pesan ke API AI Asli
         window.sendBotMessage = async () => {
             const input = document.getElementById('bot-input');
             const text = input.value.trim();
             const chatBox = document.getElementById('bot-messages');
             
-            if (!text) return; // Jangan kirim kalau kosong
+            if (!text) return; 
         
-            // 1. TAMPILKAN PESAN DARI MAHASISWA
+            // 1. TAMPILKAN PESAN MAHASISWA
             const userMsgHtml = `
             <div class="flex justify-end mb-4 fade-in">
                 <div class="bg-slate-800 text-white p-4 rounded-2xl rounded-tr-sm shadow-sm max-w-[80%] text-sm md:text-base">
@@ -2715,72 +2714,87 @@
                 </div>
             </div>`;
             chatBox.innerHTML += userMsgHtml;
-            input.value = ''; // Kosongkan kotak ketik
+            input.value = ''; 
             chatBox.scrollTop = chatBox.scrollHeight;
         
             // 2. TAMPILKAN ANIMASI AI SEDANG MENGETIK
             const typingId = 'typing-' + Date.now();
-            const typingHtml = `
+            chatBox.innerHTML += `
             <div id="${typingId}" class="flex items-end space-x-3 mb-4 fade-in">
                 <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
-                <div class="bg-white border border-paper-200 text-slate-500 p-4 rounded-2xl rounded-tl-sm shadow-sm flex space-x-1.5 items-center h-12">
+                <div class="bg-white border border-paper-200 p-4 rounded-2xl rounded-tl-sm shadow-sm flex space-x-1.5 items-center h-12">
                     <div class="w-2 h-2 bg-brand-300 rounded-full animate-bounce"></div>
                     <div class="w-2 h-2 bg-brand-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
                     <div class="w-2 h-2 bg-brand-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
                 </div>
             </div>`;
-            chatBox.innerHTML += typingHtml;
             chatBox.scrollTop = chatBox.scrollHeight;
         
             try {
-                // 3. MENGIRIM PESAN KE SERVER AI (Menggunakan variabel kimiApiKey dari kodemu)
-                // Format API Key AIzaSy adalah milik Google Gemini AI
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${kimiApiKey}`;
-                
-                // Memberi tahu AI siapa dirinya agar jawabannya sesuai tema EcoVerse
-                const promptSystem = `Kamu adalah Eco-Neo, asisten AI ramah di kampus EcoVerse. Jawab pertanyaan mahasiswa berikut dengan singkat, padat, berbahasa Indonesia, dan selipkan emoji. Pertanyaan: ${text}`;
+                const promptSystem = "Kamu adalah Eco-Neo, asisten AI ramah di kampus EcoVerse. Jawab singkat, padat, berbahasa Indonesia, dan selipkan emoji.";
+                let botReply = "";
         
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptSystem }] }]
-                    })
-                });
+                // 3. CEK JENIS API KEY DAN KIRIM KE SERVER YANG TEPAT
+                if (kimiApiKey.startsWith("sk-")) {
+                    // ---> MENGGUNAKAN SERVER KIMI AI (MOONSHOT)
+                    const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${kimiApiKey}`
+                        },
+                        body: JSON.stringify({
+                            model: "moonshot-v1-8k",
+                            messages: [
+                                { role: "system", content: promptSystem },
+                                { role: "user", content: text }
+                            ]
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error.message); // Tangkap pesan error dari Kimi
+                    botReply = data.choices[0].message.content;
         
-                const data = await response.json();
-                
-                // Hapus animasi mengetik karena balasan sudah datang
-                document.getElementById(typingId).remove();
-        
-                // Ambil teks balasan dari AI
-                let botReply = "Maaf, otak AI saya sedang agak pusing. Coba lagi ya!";
-                if (data && data.candidates && data.candidates.length > 0) {
+                } else if (kimiApiKey.startsWith("AIzaSy")) {
+                    // ---> MENGGUNAKAN SERVER GOOGLE GEMINI
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${kimiApiKey}`;
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: promptSystem + " Pertanyaan: " + text }] }] })
+                    });
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error.message); // Tangkap pesan error dari Google
                     botReply = data.candidates[0].content.parts[0].text;
-                    // Rapikan format teks tebal (Markdown ke HTML)
-                    botReply = botReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+                    
+                } else {
+                    throw new Error("Format API Key tidak valid. Kimi AI berawalan 'sk-', Gemini berawalan 'AIzaSy'.");
                 }
         
+                // Rapikan teks balasan (Tebal & Baris baru)
+                botReply = botReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+                
                 // 4. TAMPILKAN BALASAN AI KE LAYAR
-                const botMsgHtml = `
+                document.getElementById(typingId).remove();
+                chatBox.innerHTML += `
                 <div class="flex items-end space-x-3 mb-4 fade-in">
                     <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
                     <div class="bg-white border border-paper-200 text-slate-700 p-4 rounded-2xl rounded-tl-sm shadow-sm max-w-[80%] text-sm md:text-base leading-relaxed">
                         ${botReply}
                     </div>
                 </div>`;
-                
-                chatBox.innerHTML += botMsgHtml;
                 chatBox.scrollTop = chatBox.scrollHeight;
         
             } catch (error) {
-                // Jika internet putus atau API Key limit/bermasalah
+                // JIKA GAGAL, TAMPILKAN PENYEBAB ASLINYA
                 document.getElementById(typingId).remove();
+                console.error("AI Error Detail:", error);
                 chatBox.innerHTML += `
                 <div class="flex items-end space-x-3 mb-4 fade-in">
-                    <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-red-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-triangle-exclamation text-sm"></i></div>
                     <div class="bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl rounded-tl-sm shadow-sm max-w-[80%] text-sm md:text-base">
-                        Koneksi ke AI terputus. Pastikan internetmu lancar ya!
+                        <b>Oops, gagal terhubung!</b><br>
+                        <span class="text-xs text-red-500">${error.message || "Periksa koneksi internet atau API Key Anda."}</span>
                     </div>
                 </div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
