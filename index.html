@@ -790,6 +790,9 @@
                 <button onclick="window.switchTabDsn('kelas', this)" class="dosen-nav-item flex items-center px-4 py-3.5 rounded-xl transition-all w-full text-left">
                     <i class="fa-solid fa-chalkboard-user w-6 text-lg"></i> <span class="font-medium text-sm">Manajemen Kelas</span>
                 </button>
+                <button onclick="window.switchTabDsn('tugas', this)" class="dosen-nav-item flex items-center px-4 py-3.5 rounded-xl transition-all w-full text-left">
+                    <i class="fa-solid fa-clipboard-check w-6 text-lg"></i> <span class="font-medium text-sm">Penilaian Tugas</span>
+                </button>
                 <button onclick="window.switchTabDsn('jadwal', this)" class="dosen-nav-item flex items-center px-4 py-3.5 rounded-xl transition-all w-full text-left">
                     <i class="fa-regular fa-calendar-days w-6 text-lg"></i> <span class="font-medium text-sm">Atur Jadwal</span>
                 </button>
@@ -880,6 +883,57 @@
 
                 </div>
                 </div>
+
+                <!-- MODAL PENILAIAN TUGAS (SPLIT VIEW) -->
+            <div id="modal-nilai-tugas" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4 md:p-6">
+                <div class="bg-white w-full max-w-5xl h-[90vh] rounded-[2.5rem] shadow-2xl relative scale-95 transition-transform duration-300 flex flex-col overflow-hidden" id="modal-nilai-tugas-content">
+                    
+                    <div class="bg-indigo-600 px-6 py-4 flex justify-between items-center shrink-0">
+                        <div class="text-white">
+                            <h3 class="font-black text-lg tracking-tight" id="modal-nilai-title">Esai Pengantar Ekologi</h3>
+                            <p class="text-indigo-200 text-xs font-medium" id="modal-nilai-subtitle">Dikumpulkan oleh: Mahasiswa</p>
+                        </div>
+                        <button onclick="window.closeModal('modal-nilai-tugas')" class="bg-white/20 hover:bg-white/30 text-white w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+        
+                    <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                        <!-- Preview Dokumen Kiri -->
+                        <div class="flex-1 bg-paper-100 border-b md:border-b-0 md:border-r border-paper-200 p-4 md:p-6 flex flex-col">
+                            <div class="bg-white flex-1 rounded-[1.5rem] border border-paper-200 shadow-inner flex items-center justify-center relative overflow-hidden group">
+                                <i class="fa-regular fa-file-pdf text-6xl text-red-400 absolute opacity-20 transform -rotate-12"></i>
+                                <div class="text-center relative z-10">
+                                    <i class="fa-solid fa-file-arrow-down text-3xl text-indigo-500 mb-3"></i>
+                                    <p class="font-bold text-slate-700 text-sm">Dokumen Tugas (PDF)</p>
+                                    <p class="text-xs text-slate-400 mt-1">tugas_ekologi_final.pdf</p>
+                                    <button class="mt-4 bg-indigo-50 text-indigo-600 hover:bg-indigo-500 hover:text-white transition px-5 py-2 rounded-xl text-xs font-bold border border-indigo-100">Unduh & Lihat</button>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Form Penilaian Kanan -->
+                        <div class="w-full md:w-[400px] p-6 md:p-8 bg-white overflow-y-auto shrink-0 flex flex-col">
+                            <h4 class="font-black text-slate-800 mb-6 text-lg border-b border-paper-100 pb-3"><i class="fa-solid fa-marker text-indigo-500 mr-2"></i> Form Penilaian</h4>
+                            
+                            <div class="space-y-5 flex-1">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Nilai Angka (0-100)</p>
+                                    <div class="relative">
+                                        <input type="number" id="input-nilai-angka" placeholder="0" min="0" max="100" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-2xl border border-paper-200 outline-none text-slate-800 transition font-black text-2xl text-center">
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Catatan Revisi / Feedback</p>
+                                    <textarea id="input-nilai-catatan" rows="5" placeholder="Berikan komentar untuk mahasiswa..." class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-2xl border border-paper-200 outline-none text-slate-800 transition font-medium text-sm resize-none"></textarea>
+                                </div>
+                            </div>
+        
+                            <div class="mt-6 pt-6 border-t border-paper-100">
+                                <button onclick="window.simpanNilaiTugas()" class="w-full bg-indigo-600 hover:bg-indigo-700 transition text-white py-4 rounded-2xl font-black shadow-lg shadow-indigo-500/30 active:scale-95 text-sm uppercase tracking-widest"><i class="fa-solid fa-check mr-2"></i> Simpan Penilaian</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
                 <div id="dsn-view-kelas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-8">
@@ -1343,7 +1397,58 @@
         </div>
     </div>
 
+    <!-- MODAL PENILAIAN TUGAS (SPLIT VIEW) -->
+    <div id="modal-nilai-tugas" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4 md:p-6">
+        <div class="bg-white w-full max-w-5xl h-[90vh] rounded-[2.5rem] shadow-2xl relative scale-95 transition-transform duration-300 flex flex-col overflow-hidden" id="modal-nilai-tugas-content">
+            
+            <div class="bg-indigo-600 px-6 py-4 flex justify-between items-center shrink-0">
+                <div class="text-white">
+                    <h3 class="font-black text-lg tracking-tight" id="modal-nilai-title">Esai Pengantar Ekologi</h3>
+                    <p class="text-indigo-200 text-xs font-medium" id="modal-nilai-subtitle">Dikumpulkan oleh: Mahasiswa</p>
+                </div>
+                <button onclick="window.closeModal('modal-nilai-tugas')" class="bg-white/20 hover:bg-white/30 text-white w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
 
+            <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                <!-- Preview Dokumen Kiri -->
+                <div class="flex-1 bg-paper-100 border-b md:border-b-0 md:border-r border-paper-200 p-4 md:p-6 flex flex-col">
+                    <div class="bg-white flex-1 rounded-[1.5rem] border border-paper-200 shadow-inner flex items-center justify-center relative overflow-hidden group">
+                        <i class="fa-regular fa-file-pdf text-6xl text-red-400 absolute opacity-20 transform -rotate-12"></i>
+                        <div class="text-center relative z-10">
+                            <i class="fa-solid fa-file-arrow-down text-3xl text-indigo-500 mb-3"></i>
+                            <p class="font-bold text-slate-700 text-sm">Dokumen Tugas (PDF)</p>
+                            <p class="text-xs text-slate-400 mt-1">tugas_ekologi_final.pdf</p>
+                            <button class="mt-4 bg-indigo-50 text-indigo-600 hover:bg-indigo-500 hover:text-white transition px-5 py-2 rounded-xl text-xs font-bold border border-indigo-100">Unduh & Lihat</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Penilaian Kanan -->
+                <div class="w-full md:w-[400px] p-6 md:p-8 bg-white overflow-y-auto shrink-0 flex flex-col">
+                    <h4 class="font-black text-slate-800 mb-6 text-lg border-b border-paper-100 pb-3"><i class="fa-solid fa-marker text-indigo-500 mr-2"></i> Form Penilaian</h4>
+                    
+                    <div class="space-y-5 flex-1">
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Nilai Angka (0-100)</p>
+                            <div class="relative">
+                                <input type="number" id="input-nilai-angka" placeholder="0" min="0" max="100" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-2xl border border-paper-200 outline-none text-slate-800 transition font-black text-2xl text-center">
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Catatan Revisi / Feedback</p>
+                            <textarea id="input-nilai-catatan" rows="5" placeholder="Berikan komentar untuk mahasiswa..." class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-2xl border border-paper-200 outline-none text-slate-800 transition font-medium text-sm resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-paper-100">
+                        <button onclick="window.simpanNilaiTugas()" class="w-full bg-indigo-600 hover:bg-indigo-700 transition text-white py-4 rounded-2xl font-black shadow-lg shadow-indigo-500/30 active:scale-95 text-sm uppercase tracking-widest"><i class="fa-solid fa-check mr-2"></i> Simpan Penilaian</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -2139,6 +2244,166 @@ window.renderSoalMahasiswa = (questions) => {
                     else { dot.classList.remove('bg-brand-500', 'w-6', 'md:w-8'); dot.classList.add('bg-brand-200'); }
                 });
             }, 5000);
+        };
+
+        // ========================== FITUR MEJA PENILAIAN (FIREBASE REAL-TIME) ==========================
+        
+        window.tugasMasukDatabase = [];
+        window.currentPenilaianId = null;
+
+        // 1. Fungsi Sinkronisasi Data Tugas dari Server Firebase
+        window.mulaiSinkronTugasDosen = async () => {
+            if (typeof useFirebase !== 'undefined' && useFirebase && currentUser) {
+                try {
+                    const { collection, onSnapshot } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                    
+                    // Mendengarkan perubahan data di koleksi 'submissions' (Tugas yang dikumpulkan mahasiswa)
+                    onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'submissions'), (snapshot) => {
+                        window.tugasMasukDatabase = [];
+                        snapshot.forEach(doc => {
+                            window.tugasMasukDatabase.push({ id: doc.id, ...doc.data() });
+                        });
+                        window.renderDaftarTugasMasuk(); // Langsung render ulang tabel
+                    });
+                } catch (e) {
+                    console.error("Gagal menghubungkan tabel penilaian ke Firebase:", e);
+                }
+            }
+        };
+
+        // 2. Fungsi Menampilkan Tabel (Terfilter Khusus Kelas Milik Dosen Tersebut)
+        window.renderDaftarTugasMasuk = () => {
+            const tbody = document.getElementById('tugas-masuk-body');
+            if(!tbody) return;
+
+            // Pastikan dosen hanya melihat tugas dari kelas yang dia ajar
+            const myKelasCodes = window.globalClasses.filter(c => c.dosen === dosenState.name).map(c => c.kode);
+            const myTugas = window.tugasMasukDatabase.filter(t => myKelasCodes.includes(t.kelas));
+
+            let pending = 0; let done = 0;
+            let html = '';
+
+            // Jika database kosong
+            if (myTugas.length === 0) {
+                 tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium">Belum ada mahasiswa yang mengumpulkan tugas ke kelas Anda.</td></tr>';
+                 document.getElementById('stat-tugas-total').innerText = 0;
+                 document.getElementById('stat-tugas-pending').innerText = 0;
+                 document.getElementById('stat-tugas-done').innerText = 0;
+                 return;
+            }
+
+            // Urutkan dari tugas yang paling baru dikumpulkan
+            myTugas.sort((a,b) => b.timestamp - a.timestamp).forEach((t) => {
+                if(t.status === 'Pending') pending++;
+                else done++;
+
+                const statusBadge = t.status === 'Pending' 
+                    ? '<span class="bg-amber-100 text-amber-600 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest"><i class="fa-regular fa-clock mr-1"></i> Menunggu</span>'
+                    : `<span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest"><i class="fa-solid fa-check mr-1"></i> Dinilai (${t.nilai})</span>`;
+
+                // Handle data firebase (antisipasi perbedaan penamaan field)
+                const namaMhs = t.mhsName || t.mhs || "Mahasiswa";
+                const nimMhs = t.mhsNim || t.nim || "N/A";
+
+                html += `
+                <tr class="border-b border-paper-100 hover:bg-indigo-50/30 transition fade-in">
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-slate-800">${namaMhs}</p>
+                        <p class="text-xs text-slate-500">${nimMhs}</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-slate-700 text-sm line-clamp-1">${t.judul}</p>
+                        <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mt-1">${t.kelas}</p>
+                    </td>
+                    <td class="px-6 py-4">${statusBadge}</td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="window.bukaModalNilai('${t.id}')" class="bg-indigo-50 hover:bg-indigo-500 hover:text-white text-indigo-600 px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm border border-indigo-100 active:scale-95">
+                            ${t.status === 'Pending' ? 'Beri Nilai' : 'Edit Nilai'}
+                        </button>
+                    </td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+            
+            // Update Statistik Dashboard
+            document.getElementById('stat-tugas-total').innerText = myTugas.length;
+            document.getElementById('stat-tugas-pending').innerText = pending;
+            document.getElementById('stat-tugas-done').innerText = done;
+        };
+
+        // 3. Membuka Layar Split-Screen dan Memuat Data Tugas Spesifik
+        window.bukaModalNilai = (id) => {
+            const tugas = window.tugasMasukDatabase.find(t => t.id === id);
+            if(!tugas) return;
+
+            window.currentPenilaianId = id;
+            const namaMhs = tugas.mhsName || tugas.mhs || "Mahasiswa";
+            const nimMhs = tugas.mhsNim || tugas.nim || "N/A";
+
+            document.getElementById('modal-nilai-title').innerText = tugas.judul;
+            document.getElementById('modal-nilai-subtitle').innerText = `Dikumpulkan oleh: ${namaMhs} (${nimMhs}) - ${tugas.kelas}`;
+            
+            // Set input sesuai data dari server jika sudah pernah dinilai
+            document.getElementById('input-nilai-angka').value = tugas.nilai || '';
+            document.getElementById('input-nilai-catatan').value = tugas.catatan || '';
+
+            window.openModal('modal-nilai-tugas');
+        };
+
+        // 4. Menyimpan Nilai Kembali ke Server Firebase
+        window.simpanNilaiTugas = async () => {
+            const nilai = document.getElementById('input-nilai-angka').value;
+            const catatan = document.getElementById('input-nilai-catatan').value.trim();
+            
+            if(!nilai || nilai < 0 || nilai > 100) return window.showToast('Masukkan nilai angka 0-100 yang valid!');
+
+            const tugas = window.tugasMasukDatabase.find(t => t.id === window.currentPenilaianId);
+            
+            if(tugas && useFirebase && currentUser) {
+                try {
+                    const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                    
+                    // Efek tombol memuat
+                    const btn = document.querySelector('#modal-nilai-tugas-content button[onclick="window.simpanNilaiTugas()"]');
+                    const oldText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Menyimpan...';
+                    btn.disabled = true;
+
+                    // Mengirim update data 'status', 'nilai', dan 'catatan' ke Firebase Firestore
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'submissions', window.currentPenilaianId), {
+                        nilai: parseInt(nilai),
+                        catatan: catatan,
+                        status: 'Dinilai',
+                        dosenPenilai: dosenState.name, // Merekam siapa dosen yang menilai
+                        tanggalDinilai: Date.now()
+                    });
+
+                    // Kembalikan tombol ke semula
+                    btn.innerHTML = oldText;
+                    btn.disabled = false;
+
+                    const namaMhs = tugas.mhsName || tugas.mhs || "Mahasiswa";
+                    window.showToast(`Nilai ${nilai} berhasil disimpan ke Database untuk ${namaMhs}!`);
+                    window.closeModal('modal-nilai-tugas');
+                    
+                    // Tidak perlu dipanggil window.renderDaftarTugasMasuk() secara manual
+                    // karena fungsi 'onSnapshot' di atas akan otomatis mendeteksi perubahan dan merender ulang tabel!
+                    
+                } catch (e) {
+                    window.showToast('Gagal menyimpan nilai ke server!');
+                    console.error(e);
+                }
+            } else {
+                window.showToast('Koneksi database tidak tersedia.');
+            }
+        };
+
+        // Otomatis Panggil Sinkronisasi saat Dosen Login
+        const oldSetupDosen = window.setupDashboardDosen;
+        window.setupDashboardDosen = () => {
+            if (oldSetupDosen) oldSetupDosen();
+            window.mulaiSinkronTugasDosen(); // <-- Aktifkan radar Firebase untuk tugas
         };
 
 
