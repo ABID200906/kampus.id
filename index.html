@@ -52,21 +52,7 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .eco-news-glow { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15); }
-        /* ANIMASI TEKS BERJALAN DI BACKGROUND */
-        .bg-text-scroll {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            white-space: nowrap;
-            font-size: 12vw; /* Ukuran teks raksasa menyesuaikan layar */
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.15); /* Warna putih transparan */
-            animation: textMarquee 30s linear infinite; /* Kecepatan jalan 30 detik */
-        }
-        @keyframes textMarquee {
-            0% { left: 100vw; }
-            100% { left: -250vw; }
-        }
+        .bg-login { background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%); }
     </style>
 
     <script>
@@ -99,17 +85,8 @@
 
 <body class="bg-paper-50 text-slate-800 font-sans antialiased overflow-hidden w-full h-[100dvh] flex flex-col md:flex-row relative">
 
-<div id="login-view" class="fixed inset-0 z-[500] bg-login flex items-center justify-center p-4 md:p-6 transition-opacity duration-500 overflow-y-auto pt-10 pb-10 relative">
-        
-        <!-- EFEK TEKS BERJALAN DI BACKGROUND -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-            <div class="bg-text-scroll">
-                SELAMAT DATANG DI APLIKASI KAMI • SELAMAT DATANG DI APLIKASI KAMI • SELAMAT DATANG DI APLIKASI KAMI
-            </div>
-        </div>
-
-        <!-- KOTAK LOGIN UTAMA (Tambahkan z-10 agar menimpa teks latar) -->
-        <div class="bg-white/95 backdrop-blur-xl w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl flex flex-col items-center fade-in text-center border border-white/50 relative z-10 overflow-hidden my-auto">
+    <div id="login-view" class="fixed inset-0 z-[500] bg-login flex items-center justify-center p-4 md:p-6 transition-opacity duration-500 overflow-y-auto pt-10 pb-10">
+        <div class="bg-white/95 backdrop-blur-xl w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl flex flex-col items-center fade-in text-center border border-white/50 relative overflow-hidden my-auto">
             <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-brand-400 to-accent-500 rounded-[1.5rem] flex items-center justify-center text-white text-3xl md:text-4xl shadow-lg mb-5 transform rotate-3 shrink-0">
                 <i class="fa-solid fa-leaf"></i>
             </div>
@@ -2661,8 +2638,8 @@
                         const userLng = position.coords.longitude;
                         
                         // PENTING: Ganti dengan koordinat lokasi tes Anda!
-                        const campusLat = -6.200000; 
-                        const campusLng = 106.816666;
+                        const campusLat = -6.0852; 
+                        const campusLng = 106.4234;
                 
                         const distanceKm = window.calculateDistance(userLat, userLng, campusLat, campusLng);
                         const distanceMeters = Math.round(distanceKm * 1000);
