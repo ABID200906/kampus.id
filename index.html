@@ -4205,16 +4205,6 @@ window.simpanMateriDosen = async () => {
 // ========================== GLOBAL INIT ==========================
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
-            
-            // 🧹 SCRIPT PEMBERSIH DUPLIKAT OTOMATIS (MAGIC CLEANER)
-            const allElements = document.querySelectorAll('[id]');
-            const seenIds = {};
-            for (let i = allElements.length - 1; i >= 0; i--) {
-                const el = allElements[i];
-                if (seenIds[el.id]) el.remove(); else seenIds[el.id] = true;
-            }
-            // =======================================================
-
             setupAllEventListeners();
             
             // Memanggil fungsi Drag Pet (jika sudah ditambahkan sebelumnya)
