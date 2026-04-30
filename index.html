@@ -935,6 +935,53 @@
                 </div>
             </div>
 
+        <!-- HALAMAN PENILAIAN TUGAS (PREMIUM UI) -->
+                <div id="dsn-view-tugas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-8 space-y-4 md:space-y-0">
+                        <div>
+                            <h2 class="text-3xl font-black text-slate-800 tracking-tight mb-1">Meja Penilaian</h2>
+                            <p class="text-slate-500 text-sm font-medium">Periksa dan berikan nilai untuk tugas mahasiswa yang masuk.</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl text-xs font-bold border border-indigo-100 shadow-sm"><i class="fa-solid fa-filter mr-1"></i> Filter Kelas</button>
+                            <button onclick="window.renderDaftarTugasMasuk()" class="bg-white border border-paper-200 text-slate-600 hover:bg-paper-50 px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm"><i class="fa-solid fa-rotate-right mr-1"></i> Segarkan</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 mb-8">
+                        <div class="bg-white p-5 rounded-2xl border border-paper-200 shadow-sm">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Masuk</p>
+                            <p class="text-2xl font-black text-slate-800" id="stat-tugas-total">0</p>
+                        </div>
+                        <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200 shadow-sm">
+                            <p class="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1">Perlu Dinilai</p>
+                            <p class="text-2xl font-black text-amber-600" id="stat-tugas-pending">0</p>
+                        </div>
+                        <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200 shadow-sm">
+                            <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Selesai Dinilai</p>
+                            <p class="text-2xl font-black text-emerald-600" id="stat-tugas-done">0</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-600">
+                                <thead class="bg-paper-50 text-[10px] uppercase font-black text-slate-400 border-b border-paper-200 tracking-wider">
+                                    <tr>
+                                        <th class="px-6 py-4">Mahasiswa</th>
+                                        <th class="px-6 py-4">Tugas & Kelas</th>
+                                        <th class="px-6 py-4">Status</th>
+                                        <th class="px-6 py-4 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tugas-masuk-body">
+                                    <tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium">Memuat data tugas...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="dsn-view-kelas" class="dsn-view-section hidden fade-in p-6 md:p-10 w-full max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-8">
                         <div>
