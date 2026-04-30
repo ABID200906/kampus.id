@@ -479,30 +479,53 @@
                     </div>
                 </div>
 
+        <!-- HALAMAN TUGASKU / KELAS (PREMIUM UI) -->
                 <div id="mhs-view-tugasku" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
-                    <div class="max-w-3xl mx-auto pt-6 md:pt-10 px-4 pb-20">
-                        <div class="flex items-center mb-8">
-                            <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-600 hover:bg-paper-100 shadow-sm mr-4 transition"><i class="fa-solid fa-arrow-left text-lg"></i></button>
-                            <h2 class="text-3xl font-black text-slate-800">Tugasku</h2>
+                    
+                    <!-- Header Banner -->
+                    <div class="h-56 md:h-64 relative overflow-hidden flex flex-col justify-center px-6 md:px-10 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-b-[2.5rem] shadow-sm shrink-0 pt-8">
+                        <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="absolute top-6 left-4 md:left-8 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 transition z-20 shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                        <i class="fa-solid fa-chalkboard-user absolute -right-10 -bottom-10 text-[10rem] md:text-[14rem] text-white/10 pointer-events-none"></i>
+                        <div class="relative z-10 md:ml-16 mt-2">
+                            <span class="bg-white/20 border border-white/30 backdrop-blur-md px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[10px] md:text-xs font-black text-white uppercase tracking-widest mb-3 inline-block shadow-sm">Ruang Belajar</span>
+                            <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight leading-none mb-2">Kelasku & Tugas</h2>
+                            <p class="text-indigo-100 font-medium text-xs md:text-sm max-w-md">Gabung kelas dosen dan pantau semua tugas kuliahmu secara terpusat.</p>
                         </div>
+                    </div>
+        
+                    <!-- Area Konten -->
+                    <div class="max-w-4xl mx-auto px-4 pb-24 relative -mt-8 z-20">
                         
-                        <div class="bg-white p-8 rounded-[2.5rem] border border-paper-200 shadow-sm mb-10">
-                            <div class="flex items-center space-x-4 mb-6">
-                                <div class="w-14 h-14 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-plus"></i></div>
-                                <div>
-                                    <h3 class="font-bold text-slate-800 text-lg">Gabung Kelas Baru</h3>
-                                    <p class="text-xs font-medium text-slate-500 mt-1">Masukkan kode kelas dari dosen Anda</p>
+                        <!-- Card Gabung Kelas Melayang -->
+                        <div class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-paper-200 shadow-xl mb-10 relative overflow-hidden group">
+                            <div class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-700"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center space-x-4 mb-6">
+                                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner shrink-0"><i class="fa-solid fa-key"></i></div>
+                                    <div>
+                                        <h3 class="font-black text-slate-800 text-lg md:text-xl">Gabung Kelas Baru</h3>
+                                        <p class="text-xs font-medium text-slate-500 mt-1">Masukkan kode kelas unik dari Dosen Pengampu.</p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                                    <div class="relative flex-1">
+                                        <i class="fa-solid fa-hashtag absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                        <input type="text" id="kode-kelas-input" placeholder="Ketik Kode (Misal: BIO-202)" class="w-full bg-paper-50 focus:bg-white rounded-2xl py-4 pl-12 pr-5 outline-none border border-paper-200 text-sm md:text-base focus:ring-2 focus:ring-indigo-300 transition uppercase font-black text-slate-700 tracking-wider shadow-inner">
+                                    </div>
+                                    <button id="btn-gabung-kelas" class="bg-indigo-600 hover:bg-indigo-700 transition text-white px-8 py-4 rounded-2xl font-black shadow-md shadow-indigo-500/30 active:scale-95 text-sm md:text-base w-full sm:w-auto shrink-0 flex items-center justify-center uppercase tracking-widest"><i class="fa-solid fa-right-to-bracket mr-2"></i> Gabung</button>
                                 </div>
                             </div>
-                            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                                <input type="text" id="kode-kelas-input" placeholder="Contoh: BIO-202" class="flex-1 bg-paper-50 rounded-2xl py-4 px-5 outline-none border border-paper-200 text-base focus:ring-2 focus:ring-indigo-300 transition uppercase font-bold text-slate-700">
-                                <button id="btn-gabung-kelas" class="bg-indigo-500 hover:bg-indigo-600 transition text-white px-8 py-4 rounded-2xl font-bold shadow-md active:scale-95 text-base w-full sm:w-auto">Gabung</button>
-                            </div>
                         </div>
-
-                        <h3 class="font-black text-slate-800 text-xl mb-6 flex items-center"><i class="fa-solid fa-book-open text-indigo-500 mr-3"></i>Daftar Kelas Saya</h3>
-                        <div id="daftar-kelas-container" class="space-y-4">
-                            <div class="text-center py-12 text-slate-400 font-medium text-base border-2 border-dashed border-paper-200 rounded-[2rem] bg-white/50">Belum ada kelas yang Anda ikuti.</div>
+        
+                        <!-- Header Daftar Kelas -->
+                        <div class="flex items-center justify-between mb-6 px-2 border-b border-paper-200 pb-4">
+                            <h3 class="font-black text-slate-800 text-xl tracking-tight flex items-center"><i class="fa-solid fa-chalkboard text-indigo-500 mr-3"></i>Daftar Kelas Aktif</h3>
+                            <span class="bg-paper-100 text-slate-500 px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest shadow-inner border border-paper-200" id="jumlah-kelas-badge">0 Kelas</span>
+                        </div>
+        
+                        <!-- Wadah Kartu Kelas (Format Grid 2 Kolom di Desktop) -->
+                        <div id="daftar-kelas-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <!-- Kartu Kelas akan di-render di sini oleh JavaScript -->
                         </div>
                     </div>
                 </div>
@@ -1501,43 +1524,73 @@
             if(el) el.classList.add('active'); 
         };
 
-        window.renderJoinedClasses = () => {
+window.renderJoinedClasses = () => {
             const container = document.getElementById('daftar-kelas-container');
+            const badge = document.getElementById('jumlah-kelas-badge');
             if(!container) return;
 
+            // Update Badge Jumlah Kelas
+            if(badge) badge.innerText = (appState.joinedClasses ? appState.joinedClasses.length : 0) + ' KELAS AKTIF';
+
             if (!appState.joinedClasses || appState.joinedClasses.length === 0) {
-                container.innerHTML = '<div class="text-center py-12 text-slate-400 font-medium text-base border-2 border-dashed border-paper-200 rounded-[2rem] bg-white/50">Belum ada kelas yang Anda ikuti. Minta kode kelas dari Dosen Anda!</div>';
+                container.innerHTML = `
+                <div class="col-span-full text-center py-16 bg-white rounded-[2.5rem] border-2 border-dashed border-paper-200 shadow-sm fade-in">
+                    <div class="w-20 h-20 bg-indigo-50 text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fa-solid fa-folder-open text-4xl"></i></div>
+                    <h3 class="font-black text-slate-800 text-lg mb-1">Belum Ada Kelas</h3>
+                    <p class="text-slate-500 text-xs md:text-sm">Silakan masukkan kode dari Dosen di atas untuk bergabung.</p>
+                </div>`;
                 return;
             }
 
             let html = '';
-            appState.joinedClasses.forEach(code => {
+            appState.joinedClasses.forEach((code, idx) => {
                 const cls = globalClasses.find(c => c.kode === code) || { id: null, kode: code, nama: "Kelas " + code, dosen: "Dosen Pengajar", materi: [] };
                 
                 let subjectName = cls.nama;
-                let colorFrom = "from-brand-400"; let colorTo = "to-brand-500"; let icon1 = "fa-leaf"; let icon2 = "fa-seedling";
-                const codeSearch = code.toUpperCase();
+                let colorFrom = "from-brand-400"; let colorTo = "to-brand-500"; 
+                let icon1 = "fa-leaf"; let icon2 = "fa-seedling"; let themeColor = "brand";
                 
-                if(codeSearch.includes("KIM") || subjectName.toLowerCase().includes("kimia")) { colorFrom = "from-teal-400"; colorTo = "to-emerald-400"; icon1 = "fa-flask"; icon2 = "fa-atom"; } 
-                else if (codeSearch.includes("ING") || subjectName.toLowerCase().includes("inggris")) { colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon1 = "fa-language"; icon2 = "fa-spell-check"; } 
-                else if (codeSearch.includes("MAT") || subjectName.toLowerCase().includes("matematika") || subjectName.toLowerCase().includes("kalkulus")) { colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon1 = "fa-calculator"; icon2 = "fa-square-root-variable"; }
+                const codeSearch = code.toUpperCase();
+                // Tema Dinamis Berdasarkan Nama Kelas
+                if(codeSearch.includes("KIM") || subjectName.toLowerCase().includes("kimia")) { colorFrom = "from-teal-400"; colorTo = "to-emerald-400"; icon1 = "fa-flask"; icon2 = "fa-atom"; themeColor = "emerald"; } 
+                else if (codeSearch.includes("ING") || subjectName.toLowerCase().includes("inggris")) { colorFrom = "from-orange-400"; colorTo = "to-rose-400"; icon1 = "fa-language"; icon2 = "fa-spell-check"; themeColor = "orange"; } 
+                else if (codeSearch.includes("MAT") || subjectName.toLowerCase().includes("matematika") || subjectName.toLowerCase().includes("kalkulus")) { colorFrom = "from-blue-400"; colorTo = "to-indigo-500"; icon1 = "fa-calculator"; icon2 = "fa-square-root-variable"; themeColor = "blue"; }
 
                 html += `
-                <div class="bg-white rounded-[1.5rem] border border-paper-200 shadow-sm overflow-hidden fade-in relative mb-6">
-                    <div class="h-32 bg-gradient-to-r ${colorFrom} ${colorTo} relative overflow-hidden flex items-center px-6 md:px-8">
-                        <i class="fa-solid ${icon1} absolute -right-4 -bottom-4 text-7xl text-white opacity-20"></i>
-                        <i class="fa-solid ${icon2} absolute right-20 top-4 text-4xl text-white opacity-20"></i>
-                        <h2 class="text-3xl font-black text-white relative z-10 tracking-wide line-clamp-1">${subjectName}</h2>
+                <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm hover:shadow-xl hover:border-${themeColor}-300 overflow-hidden fade-in flex flex-col group transition-all duration-300 cursor-pointer" style="animation-delay: ${idx * 0.05}s" onclick="window.bukaDetailKelas('${code}', '${subjectName.replace(/'/g, "\\'")}', '${colorFrom}', '${colorTo}', '${icon1}', '${icon2}', '${cls.id}')">
+                    
+                    <!-- Cover Kelas Atas -->
+                    <div class="h-28 bg-gradient-to-r ${colorFrom} ${colorTo} relative overflow-hidden flex items-center px-6">
+                        <i class="fa-solid ${icon1} absolute -right-2 -bottom-4 text-7xl text-white opacity-20 group-hover:scale-110 transition-transform duration-500"></i>
+                        <h2 class="text-xl md:text-2xl font-black text-white relative z-10 tracking-wide line-clamp-1" style="text-shadow: 0 2px 4px rgba(0,0,0,0.2);">${subjectName}</h2>
                     </div>
-                    <div class="p-6 md:p-8">
-                        <div class="flex space-x-2 mb-4">
-                            <span class="bg-brand-50 text-brand-600 px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center uppercase tracking-wider"><i class="fa-solid fa-check-circle mr-1.5 text-xs"></i> Kelas Aktif</span>
+                    
+                    <!-- Detail Informasi Bawah -->
+                    <div class="p-5 md:p-6 flex flex-col flex-1 relative">
+                        <!-- Tombol Masuk Melayang -->
+                        <div class="absolute -top-6 right-6 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md border border-paper-100 text-${themeColor}-500 group-hover:bg-${themeColor}-500 group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-arrow-right"></i>
                         </div>
-                        <h3 class="text-xl font-black text-slate-800 mb-5 tracking-tight">${code}</h3>
-                        <div class="space-y-3 mb-6 text-sm font-medium text-slate-600">
-                            <div class="flex items-center"><i class="fa-solid fa-person-chalkboard w-7 text-center text-slate-400 text-lg"></i> Dosen: ${cls.dosen}</div>
+
+                        <div class="flex justify-between items-start mb-4 pr-14">
+                            <span class="bg-paper-100 text-slate-600 px-3 py-1 rounded-lg text-[10px] font-black tracking-widest border border-paper-200 uppercase shadow-inner">${code}</span>
                         </div>
-                        <button class="w-full border-2 border-paper-200 text-slate-700 font-bold py-3.5 rounded-2xl hover:bg-paper-50 transition active:scale-95 flex items-center justify-center text-base" onclick="window.bukaDetailKelas('${code}', '${subjectName.replace(/'/g, "\\'")}', '${colorFrom}', '${colorTo}', '${icon1}', '${icon2}', '${cls.id}')">Lihat Detail Kelas</button>
+                        
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-paper-200 overflow-hidden shadow-sm shrink-0 border border-paper-200">
+                                     <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(cls.dosen)}&background=random&color=fff" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Dosen Pengampu</p>
+                                     <p class="text-xs font-bold text-slate-700 leading-tight line-clamp-1">${cls.dosen}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-paper-100 flex items-center justify-between">
+                            <span class="text-[10px] font-bold text-slate-500 flex items-center"><i class="fa-solid fa-file-lines mr-1.5 text-${themeColor}-400"></i> ${cls.materi ? cls.materi.length : 0} Modul Materi</span>
+                        </div>
                     </div>
                 </div>`;
             });
