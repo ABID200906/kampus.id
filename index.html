@@ -3171,7 +3171,7 @@ window.renderSoalMahasiswa = (questions) => {
             }
         };
 
-        // ========================== FITUR E-LIBRARY (REAL-TIME GOOGLE BOOKS API) ==========================
+// ========================== FITUR E-LIBRARY (REAL-TIME OPEN LIBRARY API) ==========================
         window.renderLibrary = async (filter = "Semua", query = "") => {
             const container = document.getElementById('elibrary-container');
             if(!container) return;
@@ -3183,54 +3183,55 @@ window.renderSoalMahasiswa = (questions) => {
                         <i class="fa-solid fa-book-open text-3xl animate-pulse"></i>
                         <div class="absolute inset-0 border-4 border-violet-200 border-t-violet-500 rounded-full animate-spin"></div>
                     </div>
-                    <h3 class="font-black text-slate-800 text-lg mb-1">Mencari di Perpustakaan Dunia...</h3>
-                    <p class="text-slate-500 text-xs md:text-sm">Menyisir jutaan buku via Google Books API.</p>
+                    <h3 class="font-black text-slate-800 text-lg mb-1">Mencari di Open Library...</h3>
+                    <p class="text-slate-500 text-xs md:text-sm">Menyisir koleksi pustaka digital terbuka secara global.</p>
                 </div>`;
 
             try {
                 // 2. Menentukan Kata Kunci Pencarian Berdasarkan Tombol/Input
-                let keyword = "teknologi pendidikan sains"; // Default saat pertama buka
+                let keyword = "technology science"; // Default saat pertama buka
                 
                 if (query) {
-                    keyword = query; // Jika user mengetik di kotak pencarian
+                    keyword = query; 
                 } else {
-                    // Jika user menekan tombol filter cepat
-                    if (filter === 'Modul IT') keyword = "programming web development python javascript";
-                    else if (filter === 'Sains') keyword = "fisika mekanika matematika kalkulus";
-                    else if (filter === 'Jurnal') keyword = "jurnal penelitian ilmiah kampus";
+                    // Penyesuaian keyword berbahasa Inggris agar hasil dari Open Library maksimal
+                    if (filter === 'Modul IT') keyword = "programming computer science software";
+                    else if (filter === 'Sains') keyword = "physics mathematics science";
+                    else if (filter === 'Jurnal') keyword = "academic journal research";
                 }
 
-                // 3. Mengambil Data Asli dari Server Google Books
-                const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(keyword)}&maxResults=12`);
+                // 3. Mengambil Data Asli dari Server Open Library API
+                const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(keyword)}&limit=12`);
                 const data = await response.json();
 
-                if (!data.items || data.items.length === 0) {
+                if (!data.docs || data.docs.length === 0) {
                     container.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[2rem] bg-white"><i class="fa-solid fa-box-open text-4xl mb-3 block text-slate-300"></i>Tidak ada buku yang cocok dengan pencarian Anda.</div>';
                     return;
                 }
 
-                // 4. Merakit HTML Kartu Buku dari Data Asli
+                // 4. Merakit HTML Kartu Buku dari Data Open Library
                 let html = '';
-                data.items.forEach((item, idx) => {
-                    const b = item.volumeInfo;
-                    
-                    // Mencegah error jika data dari API ada yang kosong
+                data.docs.forEach((b, idx) => {
+                    // Penyesuaian struktur JSON bawaan Open Library
                     const judul = b.title || "Tanpa Judul";
-                    const penulis = b.authors ? b.authors.join(', ') : "Penulis Tidak Diketahui";
-                    const tahun = b.publishedDate ? b.publishedDate.substring(0,4) : "N/A";
-                    const urlBaca = b.previewLink || b.infoLink || "#";
+                    // Open Library menyimpan author dalam bentuk array, kita ambil maksimal 2 penulis
+                    const penulis = b.author_name ? b.author_name.slice(0, 2).join(', ') : "Penulis Tidak Diketahui";
+                    const tahun = b.first_publish_year || "N/A";
                     
-                    // Mengambil gambar cover dari Google (mengubah ke HTTPS agar aman)
-                    let coverUrl = b.imageLinks && b.imageLinks.thumbnail ? b.imageLinks.thumbnail.replace('http:', 'https:') : null;
+                    // URL ke halaman detail buku di Open Library (b.key berisi "/works/OLXXXXXW")
+                    const urlBaca = b.key ? `https://openlibrary.org${b.key}` : "#";
+                    
+                    // Mengambil gambar cover dari Covers Open Library API menggunakan 'cover_i' (ID Cover)
+                    let coverUrl = b.cover_i ? `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg` : null;
 
-                    // Fallback jika buku tidak punya gambar cover dari Google
+                    // Fallback jika buku tidak punya gambar cover dari server
                     const bgColors = ['from-blue-600 to-cyan-500', 'from-emerald-600 to-teal-500', 'from-orange-500 to-red-500', 'from-violet-600 to-purple-600'];
                     const randomBg = bgColors[idx % bgColors.length];
                     let coverHtml = coverUrl 
                         ? `<img src="${coverUrl}" alt="Cover" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">`
                         : `<div class="w-full h-full bg-gradient-to-br ${randomBg} flex items-center justify-center"><i class="fa-solid fa-book text-white/30 text-5xl"></i></div>`;
 
-                    // Menyusun Kartunya
+                    // Menyusun Kartunya (UI Premium yang sama)
                     html += `
                     <div class="bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-xl hover:border-violet-300 transition-all duration-300 fade-in flex flex-col overflow-hidden group">
                         
@@ -3239,7 +3240,7 @@ window.renderSoalMahasiswa = (questions) => {
                             ${coverHtml}
                             <!-- Tombol Melayang saat di-hover -->
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                                <a href="${urlBaca}" target="_blank" class="w-full text-center bg-violet-500 text-white font-black text-xs py-2.5 rounded-xl hover:bg-violet-400 transition-colors shadow-lg active:scale-95 uppercase tracking-wider">Info Detail</a>
+                                <a href="${urlBaca}" target="_blank" class="w-full text-center bg-violet-500 text-white font-black text-xs py-2.5 rounded-xl hover:bg-violet-400 transition-colors shadow-lg active:scale-95 uppercase tracking-wider">Buka di Open Library</a>
                             </div>
                         </div>
                         
@@ -3262,12 +3263,11 @@ window.renderSoalMahasiswa = (questions) => {
                 container.innerHTML = html;
 
             } catch (error) {
-                console.error("Google Books API Error:", error);
-                container.innerHTML = `<div class="col-span-full text-center py-10 bg-red-50 rounded-[2rem] border border-red-200 text-red-500 font-bold shadow-sm"><i class="fa-solid fa-triangle-exclamation text-3xl mb-2 block"></i> Gagal menghubungi Google Books.<br><span class="text-xs font-medium text-red-400 mt-1 block">Pastikan koneksi internet Anda stabil.</span></div>`;
+                console.error("Open Library API Error:", error);
+                container.innerHTML = `<div class="col-span-full text-center py-10 bg-red-50 rounded-[2rem] border border-red-200 text-red-500 font-bold shadow-sm"><i class="fa-solid fa-triangle-exclamation text-3xl mb-2 block"></i> Gagal menghubungi Open Library.<br><span class="text-xs font-medium text-red-400 mt-1 block">Pastikan koneksi internet Anda stabil.</span></div>`;
             }
         };
 
-        // Fungsi yang dijalankan saat user menekan Enter/Tombol Cari
         window.cariBuku = () => {
             const input = document.getElementById('library-search-input');
             if(input && input.value.trim() !== '') {
