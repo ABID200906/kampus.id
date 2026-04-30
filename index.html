@@ -1358,7 +1358,7 @@
                         <select id="input-jenis-materi" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-medium appearance-none">
                             <option value="pdf">Dokumen PDF</option>
                             <option value="video">Video Pembelajaran</option>
-                            <option value="video">Tugas</option>
+                            <option value="video">Tugas Pengumpulan File</option>
                             <option value="kuis">Kuis Evaluasi</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
@@ -2727,17 +2727,22 @@ window.renderSoalMahasiswa = (questions) => {
             container.innerHTML = html;
         };
 
-        window.simpanMateriDosen = async () => {
+window.simpanMateriDosen = async () => {
             const judul = document.getElementById('input-judul-materi').value.trim();
             const jenis = document.getElementById('input-jenis-materi').value;
             if(!judul) return window.showToast('Judul materi harus diisi!');
             if(!window.currentActiveKelasDsn) return window.showToast('Error: Kelas tidak ditemukan!');
 
             let tipeText = '';
-            if (jenis === 'pdf') tipeText = 'Dokumen PDF'; 
-            else if (jenis === 'video') tipeText = 'Video Pembelajaran'; 
-            else if (jenis === 'tugas') tipeText = 'Tugas Pengumpulan File'; // Teks Baru
-            else tipeText = 'Kuis Evaluasi';
+            if (jenis === 'pdf') {
+                tipeText = 'Dokumen PDF'; 
+            } else if (jenis === 'video') {
+                tipeText = 'Video Pembelajaran'; 
+            } else if (jenis === 'tugas') {
+                tipeText = 'Tugas Pengumpulan File'; // Pastikan ini persis seperti ini
+            } else {
+                tipeText = 'Kuis Evaluasi';
+            }
 
             const newMateri = { id: Date.now().toString(), judul: judul, jenis: jenis, tipeText: tipeText, timestamp: Date.now() };
             const classDoc = globalClasses.find(c => c.id === window.currentActiveKelasDsn);
