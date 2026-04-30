@@ -2697,76 +2697,95 @@
                     }, { enableHighAccuracy: true });
                 };
 
-                    // ========================== CHATBOT ECO-NEO ==========================
+        // ========================== CHATBOT ECO-NEO (INTEGRASI AI) ==========================
+        
+        // Fungsi untuk mengirim pesan ke API AI Asli
+        window.sendBotMessage = async () => {
+            const input = document.getElementById('bot-input');
+            const text = input.value.trim();
+            const chatBox = document.getElementById('bot-messages');
             
-            // Fungsi untuk mengirim dan membalas pesan AI
-            window.sendBotMessage = () => {
-                const input = document.getElementById('bot-input');
-                const text = input.value.trim();
-                const chatBox = document.getElementById('bot-messages');
+            if (!text) return; // Jangan kirim kalau kosong
+        
+            // 1. TAMPILKAN PESAN DARI MAHASISWA
+            const userMsgHtml = `
+            <div class="flex justify-end mb-4 fade-in">
+                <div class="bg-slate-800 text-white p-4 rounded-2xl rounded-tr-sm shadow-sm max-w-[80%] text-sm md:text-base">
+                    ${text}
+                </div>
+            </div>`;
+            chatBox.innerHTML += userMsgHtml;
+            input.value = ''; // Kosongkan kotak ketik
+            chatBox.scrollTop = chatBox.scrollHeight;
+        
+            // 2. TAMPILKAN ANIMASI AI SEDANG MENGETIK
+            const typingId = 'typing-' + Date.now();
+            const typingHtml = `
+            <div id="${typingId}" class="flex items-end space-x-3 mb-4 fade-in">
+                <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
+                <div class="bg-white border border-paper-200 text-slate-500 p-4 rounded-2xl rounded-tl-sm shadow-sm flex space-x-1.5 items-center h-12">
+                    <div class="w-2 h-2 bg-brand-300 rounded-full animate-bounce"></div>
+                    <div class="w-2 h-2 bg-brand-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+                    <div class="w-2 h-2 bg-brand-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+                </div>
+            </div>`;
+            chatBox.innerHTML += typingHtml;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        
+            try {
+                // 3. MENGIRIM PESAN KE SERVER AI (Menggunakan variabel kimiApiKey dari kodemu)
+                // Format API Key AIzaSy adalah milik Google Gemini AI
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${kimiApiKey}`;
                 
-                if (!text) return; // Jangan lakukan apa-apa kalau kotaknya kosong
-            
-                // 1. TAMPILKAN PESAN DARI MAHASISWA (Di sebelah kanan)
-                const userMsgHtml = `
-                <div class="flex justify-end mb-4 fade-in">
-                    <div class="bg-slate-800 text-white p-4 rounded-2xl rounded-tr-sm shadow-sm max-w-[80%] text-sm md:text-base">
-                        ${text}
-                    </div>
-                </div>`;
-                chatBox.innerHTML += userMsgHtml;
-                input.value = ''; // Kosongkan kotak ketik
+                // Memberi tahu AI siapa dirinya agar jawabannya sesuai tema EcoVerse
+                const promptSystem = `Kamu adalah Eco-Neo, asisten AI ramah di kampus EcoVerse. Jawab pertanyaan mahasiswa berikut dengan singkat, padat, berbahasa Indonesia, dan selipkan emoji. Pertanyaan: ${text}`;
+        
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptSystem }] }]
+                    })
+                });
+        
+                const data = await response.json();
                 
-                // Otomatis gulir ke bawah
-                chatBox.scrollTop = chatBox.scrollHeight;
-            
-                // 2. TAMPILKAN ANIMASI AI SEDANG MENGETIK
-                const typingId = 'typing-' + Date.now();
-                const typingHtml = `
-                <div id="${typingId}" class="flex items-end space-x-3 mb-4 fade-in">
+                // Hapus animasi mengetik karena balasan sudah datang
+                document.getElementById(typingId).remove();
+        
+                // Ambil teks balasan dari AI
+                let botReply = "Maaf, otak AI saya sedang agak pusing. Coba lagi ya!";
+                if (data && data.candidates && data.candidates.length > 0) {
+                    botReply = data.candidates[0].content.parts[0].text;
+                    // Rapikan format teks tebal (Markdown ke HTML)
+                    botReply = botReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+                }
+        
+                // 4. TAMPILKAN BALASAN AI KE LAYAR
+                const botMsgHtml = `
+                <div class="flex items-end space-x-3 mb-4 fade-in">
                     <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
-                    <div class="bg-white border border-paper-200 text-slate-500 p-4 rounded-2xl rounded-tl-sm shadow-sm flex space-x-1.5 items-center h-12">
-                        <div class="w-2 h-2 bg-slate-300 rounded-full animate-bounce"></div>
-                        <div class="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
-                        <div class="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+                    <div class="bg-white border border-paper-200 text-slate-700 p-4 rounded-2xl rounded-tl-sm shadow-sm max-w-[80%] text-sm md:text-base leading-relaxed">
+                        ${botReply}
                     </div>
                 </div>`;
-                chatBox.innerHTML += typingHtml;
+                
+                chatBox.innerHTML += botMsgHtml;
                 chatBox.scrollTop = chatBox.scrollHeight;
-            
-                // 3. SIMULASIKAN BALASAN DARI AI (Jeda 1.5 detik)
-                setTimeout(() => {
-                    // Hapus animasi mengetik
-                    const typingEl = document.getElementById(typingId);
-                    if (typingEl) typingEl.remove();
-            
-                    // Buat balasan cerdas sederhana berdasarkan kata kunci
-                    let botReply = "Halo! Saya Eco-Neo. Ada yang bisa saya bantu terkait akademik atau program penghijauan kampus hari ini?";
-                    const textLower = text.toLowerCase();
-                    
-                    if(textLower.includes("jadwal")) {
-                        botReply = "Untuk jadwal kuliah, kamu bisa langsung mengeceknya di menu <b>Jadwal</b> ya. Pastikan kamu selalu datang tepat waktu!";
-                    } else if(textLower.includes("sampah") || textLower.includes("plastik")) {
-                        botReply = "Wah, lingkungan kita butuh pahlawan sepertimu! 🌍 Pastikan kamu membuangnya ke tempat sampah daur ulang. Jangan lupa laporkan aksimu di menu <b>Tantangan</b> untuk klaim Eco Poin!";
-                    } else if(textLower.includes("tugas") || textLower.includes("ujian")) {
-                        botReply = "Tetap semangat! Cek menu <b>Tugasku</b> untuk melihat tenggat waktu tugas paperless, atau menu <b>Ujian</b> jika ada tes yang sedang aktif.";
-                    } else if(textLower.includes("terima kasih") || textLower.includes("makasih")) {
-                        botReply = "Sama-sama! Selalu semangat belajar dan menjaga bumi kita ya! 🌱";
-                    }
-                    
-                    // Tampilkan balasan AI (Di sebelah kiri)
-                    const botMsgHtml = `
-                    <div class="flex items-end space-x-3 mb-4 fade-in">
-                        <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
-                        <div class="bg-white border border-paper-200 text-slate-700 p-4 rounded-2xl rounded-tl-sm shadow-sm max-w-[80%] text-sm md:text-base leading-relaxed">
-                            ${botReply}
-                        </div>
-                    </div>`;
-                    
-                    chatBox.innerHTML += botMsgHtml;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }, 1500); // Waktu AI 'berpikir' (1.5 detik)
-            };
+        
+            } catch (error) {
+                // Jika internet putus atau API Key limit/bermasalah
+                document.getElementById(typingId).remove();
+                chatBox.innerHTML += `
+                <div class="flex items-end space-x-3 mb-4 fade-in">
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
+                    <div class="bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl rounded-tl-sm shadow-sm max-w-[80%] text-sm md:text-base">
+                        Koneksi ke AI terputus. Pastikan internetmu lancar ya!
+                    </div>
+                </div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        };
         
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
