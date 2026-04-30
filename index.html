@@ -2750,11 +2750,97 @@
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         };
+
+
+        // ========================== FITUR VIRTUAL PET & DRAG ==========================
+        
+        // 1. Fungsi agar Widget bisa diseret (Drag & Drop)
+        window.setupPetWidgetDrag = () => {
+            const petWidget = document.getElementById('floating-pet-widget');
+            if (!petWidget) return;
+
+            let isDragging = false;
+            let isMoved = false;
+
+            const dragStart = (e) => {
+                isDragging = true;
+                isMoved = false;
+                petWidget.style.transition = 'none'; // Matikan delay saat mulai ditarik
+            };
+
+            const drag = (e) => {
+                if (isDragging) {
+                    e.preventDefault(); // Mencegah layar ikut ter-scroll di HP
+                    isMoved = true;
+                    
+                    // Ambil posisi sentuhan jari (Touch) atau kursor (Mouse)
+                    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                    const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+                    
+                    // Posisikan elemen tepat di tengah jari/kursor
+                    petWidget.style.left = (clientX - (petWidget.offsetWidth / 2)) + 'px';
+                    petWidget.style.top = (clientY - (petWidget.offsetHeight / 2)) + 'px';
+                    
+                    // Lepaskan ikatan posisi bawaan (pojok kanan bawah)
+                    petWidget.style.bottom = 'auto';
+                    petWidget.style.right = 'auto';
+                }
+            };
+
+            const dragEnd = (e) => {
+                if (isDragging) {
+                    isDragging = false;
+                    petWidget.style.transition = 'all 0.3s ease'; // Kembalikan kelenturan animasi
+                    
+                    // Jika widget HANYA DIKLIK (tidak digeser), buka Pop-up-nya!
+                    if (!isMoved) {
+                        window.openModal('modal-pet');
+                    }
+                }
+            };
+
+            // Event untuk Mouse (Laptop/PC)
+            petWidget.addEventListener('mousedown', dragStart);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', dragEnd);
+
+            // Event untuk Touch (HP)
+            petWidget.addEventListener('touchstart', dragStart, { passive: false });
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', dragEnd);
+        };
+
+        // 2. Fungsi untuk memberi makan/menyiram Pet
+        window.feedPet = () => {
+            // Cek apakah poin mahasiswa cukup (Butuh 50 poin)
+            if (appState.points >= 50) {
+                appState.points -= 50; // Kurangi poin
+                appState.exp = (appState.exp || 0) + 25; // Tambah 25 EXP
+                
+                // Cek apakah EXP sudah penuh (100) untuk naik level
+                if (appState.exp >= 100) {
+                    appState.level = (appState.level || 1) + 1; // Naik 1 level
+                    appState.exp = 0; // Reset EXP ke 0
+                    window.showToast(`Yey Naik Level! Pipi si Pohon sekarang Level ${appState.level}!`);
+                } else {
+                    window.showToast("Pipi si Pohon senang disiram! (+25 EXP)");
+                }
+                
+                // Simpan dan perbarui tampilan layar
+                window.saveState();
+                window.updateUIMahasiswa();
+            } else {
+                window.showToast("Poin tidak cukup! Kerjakan Tantangan atau Presensi dulu.");
+            }
+        };
+
         
         // ========================== GLOBAL INIT ==========================
         const initApp = async () => {
             setupAllEventListeners();
 
+            window.setupPetWidgetDrag();
+            
             if (appState.isLoggedIn && appState.nim) {
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('mahasiswa-app').classList.remove('hidden');
