@@ -2844,11 +2844,14 @@
         };
 
         
-        // ========================== GLOBAL INIT ==========================
+// ========================== GLOBAL INIT ==========================
         const initApp = async () => {
             setupAllEventListeners();
 
-            window.setupPetWidgetDrag();
+            // Memanggil fungsi Drag Pet (jika sudah ditambahkan sebelumnya)
+            if (typeof window.setupPetWidgetDrag === 'function') {
+                window.setupPetWidgetDrag();
+            }
             
             if (appState.isLoggedIn && appState.nim) {
                 document.getElementById('login-view').classList.add('hidden');
@@ -2914,21 +2917,17 @@
                                 }
                             }
                         });
-                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'news'), (s) => { 
-                            window.globalNews = [];
-                            s.forEach(d => window.globalNews.push({id: d.id, ...d.data()})); 
-                            window.renderNewsSliderCustom();
-                            window.renderCustomNewsPage();
-                        });
+                        
+                        // KODE BERITA DIJADIKAN SATU (TIDAK DOBEL LAGI)
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'news'), (s) => { 
                             window.globalNews = [];
                             s.forEach(d => window.globalNews.push({id: d.id, ...d.data()})); 
                             window.renderNewsSliderCustom();
                             window.renderCustomNewsPage();
                             
-                            // BARIS YANG DITAMBAHKAN: Update juga tampilan di Dosen
                             if (typeof window.renderBeritaDosen === 'function') window.renderBeritaDosen();
                         });
+
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'schedules'), (s) => { 
                             window.globalSchedules = [];
                             s.forEach(d => window.globalSchedules.push({id: d.id, ...d.data()})); 
@@ -2939,7 +2938,7 @@
                 });
             }
 
-            window.checkAndFetchDailyNews();
+            // checkAndFetchDailyNews SUDAH DIHAPUS DARI SINI
             window.fetchGlobalNewsAI();
             window.renderChallenges();
         };
