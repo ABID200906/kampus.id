@@ -673,10 +673,10 @@
                         <div class="bg-white p-6 rounded-[2rem] border border-paper-200 shadow-sm mb-8 flex justify-between items-center relative z-10">
                             <div>
                                 <p class="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Progress Belajar</p>
-                                <p class="text-2xl font-black text-slate-800">0% <span class="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Selesai</span></p>
+                                <p class="text-2xl font-black text-slate-800"><span id="progress-angka">0</span>% <span class="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Selesai</span></p>
                             </div>
                             <div class="w-1/2 bg-paper-100 rounded-full h-3 overflow-hidden shadow-inner">
-                                <div class="bg-brand-500 h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
+                                <div id="progress-bar-kelas" class="bg-brand-500 h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
                             </div>
                         </div>
 
@@ -2052,38 +2052,17 @@
              const container = document.getElementById('mahasiswa-materi-items');
              if(!container) return;
 
-             if(!classDoc || !classDoc.materi || classDoc.materi.length === 0) {
-                 container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[2rem] bg-white">Belum ada materi yang diunggah oleh Dosen.</div>';
-                 return;
+             // Menghitung & Update Progress Belajar (Setiap 1 materi/tugas bernilai 20%)
+             let progress = 0;
+             if(classDoc && classDoc.materi) {
+                 progress = Math.min(classDoc.materi.length * 20, 100);
              }
+             const textAngka = document.getElementById('progress-angka');
+             const barKelas = document.getElementById('progress-bar-kelas');
+             if(textAngka) textAngka.innerText = progress;
+             if(barKelas) barKelas.style.width = progress + '%';
 
-             let html = '';
-             classDoc.materi.forEach(m => {
-                let iconHtml = ''; let bgClass = ''; let textClass = '';
-                if (m.jenis === 'pdf') { iconHtml = '<i class="fa-regular fa-file-pdf"></i>'; bgClass = 'bg-red-50'; textClass = 'text-red-500'; }
-                else if (m.jenis === 'video') { iconHtml = '<i class="fa-solid fa-circle-play"></i>'; bgClass = 'bg-blue-50'; textClass = 'text-blue-500'; }
-                else { iconHtml = '<i class="fa-solid fa-list-check"></i>'; bgClass = 'bg-amber-50'; textClass = 'text-amber-500'; }
-
-                html += `
-                <div class="p-5 border-b border-paper-100 flex items-center justify-between hover:bg-paper-50 transition cursor-pointer group" onclick="window.bukaMateriMahasiswa('${m.jenis}', '${m.judul.replace(/'/g, "\\'")}')">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 ${bgClass} ${textClass} rounded-[1rem] flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform">${iconHtml}</div>
-                        <div>
-                            <p class="font-bold text-slate-800 text-sm md:text-base">${m.judul}</p>
-                            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-1">${m.tipeText}</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-brand-500 transition text-lg"></i>
-                </div>`;
-             });
-             container.innerHTML = `<div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">${html}</div>`;
-        };
-
-window.renderMateriMahasiswa = () => {
-             const classDoc = globalClasses.find(c => c.id === window.currentActiveKelasMhs);
-             const container = document.getElementById('mahasiswa-materi-items');
-             if(!container) return;
-
+             // Cek jika kosong
              if(!classDoc || !classDoc.materi || classDoc.materi.length === 0) {
                  container.innerHTML = '<div class="text-center py-10 text-slate-400 font-medium border-2 border-dashed border-paper-200 rounded-[2rem] bg-white">Belum ada materi/tugas yang diunggah oleh Dosen.</div>';
                  return;
@@ -2094,11 +2073,12 @@ window.renderMateriMahasiswa = () => {
                 let iconHtml = ''; let bgClass = ''; let textClass = '';
                 if (m.jenis === 'pdf') { iconHtml = '<i class="fa-regular fa-file-pdf"></i>'; bgClass = 'bg-red-50'; textClass = 'text-red-500'; }
                 else if (m.jenis === 'video') { iconHtml = '<i class="fa-solid fa-circle-play"></i>'; bgClass = 'bg-blue-50'; textClass = 'text-blue-500'; }
-                else if (m.jenis === 'tugas') { iconHtml = '<i class="fa-solid fa-cloud-arrow-up"></i>'; bgClass = 'bg-indigo-50'; textClass = 'text-indigo-500'; } // Ikon Baru
+                else if (m.jenis === 'tugas') { iconHtml = '<i class="fa-solid fa-cloud-arrow-up"></i>'; bgClass = 'bg-indigo-50'; textClass = 'text-indigo-500'; } 
                 else { iconHtml = '<i class="fa-solid fa-list-check"></i>'; bgClass = 'bg-amber-50'; textClass = 'text-amber-500'; }
 
+                // Perhatikan pemanggilan onclick ini, kita mengirimkan m.url ke bukaMateriMahasiswa
                 html += `
-                <div class="p-5 border-b border-paper-100 flex items-center justify-between hover:bg-paper-50 transition cursor-pointer group" onclick="window.bukaMateriMahasiswa('${m.jenis}', '${m.judul.replace(/'/g, "\\'")}', '${classDoc.kode}')">
+                <div class="p-5 border-b border-paper-100 flex items-center justify-between hover:bg-paper-50 transition cursor-pointer group" onclick="window.bukaMateriMahasiswa('${m.jenis}', '${m.judul.replace(/'/g, "\\'")}', '${classDoc.kode}', '${m.url || ''}')">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 ${bgClass} ${textClass} rounded-[1rem] flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform">${iconHtml}</div>
                         <div>
@@ -2111,6 +2091,8 @@ window.renderMateriMahasiswa = () => {
              });
              container.innerHTML = `<div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">${html}</div>`;
         };
+
+
 
         window.bukaMateriMahasiswa = (jenis, judul, kodeKelas, urlMateri) => {
             const titleEl = document.getElementById('viewer-title');
