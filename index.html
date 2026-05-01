@@ -1585,60 +1585,6 @@
                     </div>
                 </div>
 
-                            <!-- MODAL E-KTM (VIRTUAL ID MAHASISWA) -->
-                <div id="modal-ektm" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[4000] hidden flex items-center justify-center p-4">
-                    <div class="w-full max-w-sm rounded-[2.5rem] relative scale-95 transition-transform duration-300" id="modal-ektm-content">
-                        <!-- Tombol Tutup Melayang -->
-                        <button onclick="window.closeModal('modal-ektm')" class="absolute -top-14 right-0 text-white hover:text-slate-200 bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition backdrop-blur-sm active:scale-95"><i class="fa-solid fa-xmark text-xl"></i></button>
-                        
-                        <!-- Kartu E-KTM -->
-                        <div class="bg-white rounded-[2rem] overflow-hidden shadow-2xl relative">
-                            <!-- Header Kartu -->
-                            <div class="h-32 bg-gradient-to-br from-brand-500 to-brand-700 relative overflow-hidden flex flex-col items-center justify-center">
-                                <div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
-                                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-black/10 rounded-full blur-xl pointer-events-none"></div>
-                                <i class="fa-solid fa-leaf text-white text-3xl mb-1 drop-shadow-md"></i>
-                                <h2 class="text-white font-black text-xl tracking-widest drop-shadow-md">KAMPUS.ID</h2>
-                                <p class="text-brand-100 text-[9px] font-bold tracking-[0.3em]">E-KTM VIRTUAL</p>
-                            </div>
-                            
-                            <!-- Foto Profil Mahasiswa -->
-                            <div class="relative flex justify-center -mt-12 mb-3 z-10">
-                                <div class="w-24 h-24 bg-white p-1.5 rounded-[1.2rem] shadow-lg border border-paper-200 rotate-3 transform hover:rotate-0 transition-transform duration-300">
-                                    <img id="ektm-photo" src="" class="w-full h-full object-cover rounded-xl">
-                                </div>
-                            </div>
-                            
-                            <!-- Identitas Mahasiswa -->
-                            <div class="text-center px-6 pb-8">
-                                <h3 id="ektm-name" class="text-2xl font-black text-slate-800 tracking-tight leading-none mb-1.5">Nama Mahasiswa</h3>
-                                <p id="ektm-nim" class="text-brand-600 font-black tracking-[0.2em] text-sm mb-5 bg-brand-50 inline-block px-4 py-1 rounded-lg border border-brand-100">00000000</p>
-                                
-                                <div class="bg-paper-50 rounded-2xl p-4 border border-paper-200 text-left space-y-3 mb-6 shadow-inner">
-                                    <div class="flex justify-between items-center border-b border-paper-200 pb-2">
-                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Program Studi</span>
-                                        <span class="text-xs font-bold text-slate-700 text-right">Teknologi Informasi</span>
-                                    </div>
-                                    <div class="flex justify-between items-center border-b border-paper-200 pb-2">
-                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status Mahasiswa</span>
-                                        <span class="text-xs font-black text-emerald-500 flex items-center bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> AKTIF</span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Berlaku Hingga</span>
-                                        <span class="text-xs font-bold text-slate-700">Des 2028</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- Dummy Barcode -->
-                                <div class="flex flex-col items-center opacity-80">
-                                    <i class="fa-solid fa-barcode text-[3.5rem] text-slate-800 scale-y-150 mb-3"></i>
-                                    <p class="text-[9px] tracking-[0.4em] font-mono font-bold text-slate-400">ID-1029384756</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Form Penilaian Kanan -->
                 <div class="w-full md:w-[400px] p-6 md:p-8 bg-white overflow-y-auto shrink-0 flex flex-col">
                     <h4 class="font-black text-slate-800 mb-6 text-lg border-b border-paper-100 pb-3"><i class="fa-solid fa-marker text-indigo-500 mr-2"></i> Form Penilaian</h4>
@@ -1663,6 +1609,66 @@
             </div>
         </div>
     </div>
+
+    <!-- (Ini adalah penutup modal-modal lainnya) -->
+    </div>
+
+    <!-- MODAL E-KTM (VIRTUAL ID MAHASISWA) YANG BARU DIPINDAHKAN -->
+    <div id="modal-ektm" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[4000] hidden flex items-center justify-center p-4">
+        <div class="w-full max-w-sm rounded-[2.5rem] relative scale-95 transition-transform duration-300" id="modal-ektm-content">
+            <!-- Tombol Tutup Melayang -->
+            <button onclick="window.closeModal('modal-ektm')" class="absolute -top-14 right-0 text-white hover:text-slate-200 bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition backdrop-blur-sm active:scale-95"><i class="fa-solid fa-xmark text-xl"></i></button>
+            
+            <div class="bg-white rounded-[2rem] overflow-hidden shadow-2xl relative">
+                <!-- Header Kartu -->
+                <div class="h-32 bg-gradient-to-br from-brand-500 to-brand-700 relative overflow-hidden flex flex-col items-center justify-center">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+                    <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-black/10 rounded-full blur-xl pointer-events-none"></div>
+                    <i class="fa-solid fa-leaf text-white text-3xl mb-1 drop-shadow-md"></i>
+                    <h2 class="text-white font-black text-xl tracking-widest drop-shadow-md">KAMPUS.ID</h2>
+                    <p class="text-brand-100 text-[9px] font-bold tracking-[0.3em]">E-KTM VIRTUAL</p>
+                </div>
+                
+                <!-- Foto Profil Mahasiswa -->
+                <div class="relative flex justify-center -mt-12 mb-3 z-10">
+                    <div class="w-24 h-24 bg-white p-1.5 rounded-[1.2rem] shadow-lg border border-paper-200 rotate-3 transform hover:rotate-0 transition-transform duration-300">
+                        <img id="ektm-photo" src="" class="w-full h-full object-cover rounded-xl">
+                    </div>
+                </div>
+                
+                <!-- Identitas Mahasiswa -->
+                <div class="text-center px-6 pb-8">
+                    <h3 id="ektm-name" class="text-2xl font-black text-slate-800 tracking-tight leading-none mb-1.5">Nama Mahasiswa</h3>
+                    <p id="ektm-nim" class="text-brand-600 font-black tracking-[0.2em] text-sm mb-5 bg-brand-50 inline-block px-4 py-1 rounded-lg border border-brand-100">00000000</p>
+                    
+                    <div class="bg-paper-50 rounded-2xl p-4 border border-paper-200 text-left space-y-3 mb-6 shadow-inner">
+                        <div class="flex justify-between items-center border-b border-paper-200 pb-2">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Program Studi</span>
+                            <span class="text-xs font-bold text-slate-700 text-right">Teknologi Informasi</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-paper-200 pb-2">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status Mahasiswa</span>
+                            <span class="text-xs font-black text-emerald-500 flex items-center bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> AKTIF</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Berlaku Hingga</span>
+                            <span class="text-xs font-bold text-slate-700">Des 2028</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Dummy Barcode -->
+                    <div class="flex flex-col items-center opacity-80">
+                        <i class="fa-solid fa-barcode text-[3.5rem] text-slate-800 scale-y-150 mb-3"></i>
+                        <p class="text-[9px] tracking-[0.4em] font-mono font-bold text-slate-400">ID-1029384756</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- AKHIR MODAL E-KTM -->
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 
     
     <script type="module">
