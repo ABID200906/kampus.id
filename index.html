@@ -231,60 +231,64 @@
                         </div>
 
                         <div class="grid grid-cols-4 gap-3 mb-10">
+                            <!-- Akademik -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('academy', document.querySelectorAll('.nav-btn')[1])">
                                 <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Akademik</span>
                             </div>
-                            <!-- TOMBOL BEASISWA -->
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-blue-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('beasiswa'); window.renderBeasiswa();">
-                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-award text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Beasiswa</span>
-                            </div>
+                            <!-- Tugasku -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-indigo-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('tugasku')">
                                 <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-open text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tugasku</span>
                             </div>
+                            <!-- Ujian -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-red-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('ujian')">
                                 <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-laptop-code text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Ujian</span>
                             </div>
+                            <!-- Jadwal -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-accent-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('jadwal')">
                                 <div class="w-12 h-12 bg-accent-50 text-accent-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-regular fa-calendar-days text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Jadwal</span>
                             </div>
+                            <!-- Izin -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-amber-300 cursor-pointer transition active:scale-95" onclick="window.openModal('modal-izin')">
                                 <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-envelope-open-text text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Izin</span>
                             </div>
+                            <!-- E-KTM -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition active:scale-95" onclick="window.showToast('E-KTM Virtual sedang diproses.')">
                                 <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-id-card text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-KTM</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" 
-                                 onclick="window.switchTabMhs('elibrary'); window.searchBooks('ekologi');">
-                                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2 shadow-inner">
-                                    <i class="fa-solid fa-book-journal-whills text-xl"></i>
-                                </div>
+                            <!-- E-Lib -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('elibrary'); window.searchBooks('ekologi');">
+                                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-journal-whills text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-Lib</span>
                             </div>
+                            <!-- Al-Quran -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-emerald-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('quran'); window.fetchDaftarSurah();">
                                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-quran text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Al-Quran</span>
                             </div>
+                            <!-- Info UKM -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-rose-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Informasi Pendaftaran UKM Kampus')">
                                 <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
                             </div>
+                            <!-- Obrolan -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" onclick="window.openGlobalChat()">
                                 <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-earth-asia text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Obrolan</span>
                             </div>
+                            <!-- Tantangan -->
                             <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('challenges')">
                                 <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-medal text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tantangan</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-slate-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Menampilkan semua menu...')">
-                                <div class="w-12 h-12 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-ellipsis text-xl"></i></div>
+                            <!-- Tombol Lainnya -->
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-slate-300 cursor-pointer transition active:scale-95" onclick="window.openModal('modal-semua-menu')">
+                                <div class="w-12 h-12 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-layer-group text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Lainnya</span>
                             </div>
                         </div>
