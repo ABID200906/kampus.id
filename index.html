@@ -2072,41 +2072,68 @@
                  return;
              }
 
-             let html = '';
-             classDoc.materi.forEach((m, idx) => {
-                let iconHtml = ''; let bgClass = ''; let textClass = '';
-                if (m.jenis === 'pdf') { iconHtml = '<i class="fa-regular fa-file-pdf"></i>'; bgClass = 'bg-red-50'; textClass = 'text-red-500'; }
-                else if (m.jenis === 'video') { iconHtml = '<i class="fa-solid fa-circle-play"></i>'; bgClass = 'bg-blue-50'; textClass = 'text-blue-500'; }
-                else if (m.jenis === 'tugas') { iconHtml = '<i class="fa-solid fa-cloud-arrow-up"></i>'; bgClass = 'bg-indigo-50'; textClass = 'text-indigo-500'; } 
-                else { iconHtml = '<i class="fa-solid fa-list-check"></i>'; bgClass = 'bg-amber-50'; textClass = 'text-amber-500'; }
-
-                // Desain Kartu Modul Premium
-                html += `
-                <div class="bg-white p-5 md:p-6 rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group flex flex-col relative overflow-hidden fade-in" style="animation-delay: ${idx * 0.05}s" onclick="window.bukaMateriMahasiswa('${m.jenis}', '${m.judul.replace(/'/g, "\\'")}', '${classDoc.kode}', '${m.url || ''}')">
-                    
-                    <!-- Lingkaran Glow di background saat di-hover -->
-                    <div class="absolute -right-6 -top-6 w-24 h-24 ${bgClass} rounded-full opacity-50 group-hover:scale-[2.5] transition-transform duration-500 pointer-events-none"></div>
-                    
-                    <div class="flex items-start justify-between mb-4 relative z-10">
-                        <div class="w-14 h-14 md:w-16 md:h-16 ${bgClass} ${textClass} rounded-2xl flex items-center justify-center text-2xl md:text-3xl shadow-inner group-hover:scale-110 transition-transform">
-                            ${iconHtml}
-                        </div>
-                        <span class="bg-paper-50 text-slate-400 group-hover:${textClass} group-hover:${bgClass} border border-paper-200 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors flex items-center shadow-sm">
-                            Buka <i class="fa-solid fa-arrow-right ml-1.5"></i>
-                        </span>
-                    </div>
-
-                    <div class="relative z-10 mt-2">
-                        <h4 class="font-black text-slate-800 text-base md:text-lg leading-tight mb-1.5 group-hover:${textClass} transition-colors line-clamp-2">${m.judul}</h4>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
-                           <i class="fa-solid fa-tag mr-1.5"></i> ${m.tipeText}
-                        </p>
-                    </div>
-                </div>`;
+             // --- KELOMPOKKAN BERDASARKAN SUBTOPIK (TIPE MATERI) ---
+             const groupedMateri = {};
+             classDoc.materi.forEach(m => {
+                 const tipe = m.tipeText || 'Lainnya';
+                 if(!groupedMateri[tipe]) groupedMateri[tipe] = [];
+                 groupedMateri[tipe].push(m);
              });
+
+             let finalHtml = '';
+             let delayCounter = 0;
+
+             for (const [tipe, items] of Object.entries(groupedMateri)) {
+                 let cardsHtml = '';
+                 items.forEach((m) => {
+                    let iconHtml = ''; let bgClass = ''; let textClass = '';
+                    if (m.jenis === 'pdf') { iconHtml = '<i class="fa-regular fa-file-pdf"></i>'; bgClass = 'bg-red-50'; textClass = 'text-red-500'; }
+                    else if (m.jenis === 'video') { iconHtml = '<i class="fa-solid fa-circle-play"></i>'; bgClass = 'bg-blue-50'; textClass = 'text-blue-500'; }
+                    else if (m.jenis === 'tugas') { iconHtml = '<i class="fa-solid fa-cloud-arrow-up"></i>'; bgClass = 'bg-indigo-50'; textClass = 'text-indigo-500'; } 
+                    else { iconHtml = '<i class="fa-solid fa-list-check"></i>'; bgClass = 'bg-amber-50'; textClass = 'text-amber-500'; }
+
+                    cardsHtml += `
+                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group flex flex-col relative overflow-hidden fade-in" style="animation-delay: ${delayCounter * 0.05}s" onclick="window.bukaMateriMahasiswa('${m.jenis}', '${m.judul.replace(/'/g, "\\'")}', '${classDoc.kode}', '${m.url || ''}')">
+                        <div class="absolute -right-6 -top-6 w-24 h-24 ${bgClass} rounded-full opacity-50 group-hover:scale-[2.5] transition-transform duration-500 pointer-events-none"></div>
+                        <div class="flex items-start justify-between mb-4 relative z-10">
+                            <div class="w-14 h-14 md:w-16 md:h-16 ${bgClass} ${textClass} rounded-2xl flex items-center justify-center text-2xl md:text-3xl shadow-inner group-hover:scale-110 transition-transform">
+                                ${iconHtml}
+                            </div>
+                            <span class="bg-paper-50 text-slate-400 group-hover:${textClass} group-hover:${bgClass} border border-paper-200 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors flex items-center shadow-sm">
+                                Buka <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                            </span>
+                        </div>
+                        <div class="relative z-10 mt-2">
+                            <h4 class="font-black text-slate-800 text-base md:text-lg leading-tight mb-1.5 group-hover:${textClass} transition-colors line-clamp-2">${m.judul}</h4>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
+                               <i class="fa-solid fa-tag mr-1.5"></i> ${m.tipeText}
+                            </p>
+                        </div>
+                    </div>`;
+                    delayCounter++;
+                 });
+
+                 // Wadah Subtopik dengan Latar Belakang Grid SVG
+                 finalHtml += `
+                 <div class="mb-8 relative bg-white/40 backdrop-blur-xl rounded-[2.5rem] border border-paper-200 p-6 md:p-8 overflow-hidden shadow-sm">
+                     <!-- Pola Grid Transparan Di Belakang Subtopik -->
+                     <div class="absolute inset-0 z-0 opacity-[0.25] pointer-events-none" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0iTTAgMzJWLjVIMzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2NiZDVlMSIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIvPjwvc3ZnPg=='); background-size: 24px 24px;"></div>
+                     
+                     <!-- Header Subtopik -->
+                     <div class="relative z-10 mb-6 flex items-center">
+                         <span class="bg-brand-50 text-brand-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border border-brand-200 shadow-sm"><i class="fa-solid fa-layer-group mr-2"></i> ${tipe}</span>
+                         <div class="h-px bg-brand-200/50 flex-1 ml-4"></div>
+                     </div>
+                     
+                     <!-- Grid Kartu Materi -->
+                     <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+                         ${cardsHtml}
+                     </div>
+                 </div>`;
+             }
              
-             // Membungkus kartu dengan Grid (2 kolom di desktop)
-             container.innerHTML = `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">${html}</div>`;
+             // Pastikan tidak ada "container.innerHTML =" tambahan di bawah ini
+             container.innerHTML = finalHtml;
         };
 
 
@@ -3078,43 +3105,68 @@ window.renderSoalMahasiswa = (questions) => {
                  return;
             }
 
-            let html = '';
-            classDoc.materi.forEach((m, idx) => {
-                let iconHtml = ''; let bgClass = ''; let textClass = ''; let stripColor = '';
-                if (m.jenis === 'pdf') { iconHtml = '<i class="fa-regular fa-file-pdf"></i>'; bgClass = 'bg-red-50'; textClass = 'text-red-500'; stripColor = 'bg-red-400'; }
-                else if (m.jenis === 'video') { iconHtml = '<i class="fa-solid fa-circle-play"></i>'; bgClass = 'bg-blue-50'; textClass = 'text-blue-500'; stripColor = 'bg-blue-400'; }
-                else if (m.jenis === 'tugas') { iconHtml = '<i class="fa-solid fa-cloud-arrow-up"></i>'; bgClass = 'bg-indigo-50'; textClass = 'text-indigo-500'; stripColor = 'bg-indigo-400';} 
-                else { iconHtml = '<i class="fa-solid fa-list-check"></i>'; bgClass = 'bg-amber-50'; textClass = 'text-amber-500'; stripColor = 'bg-amber-400'; }
+            // --- KELOMPOKKAN BERDASARKAN SUBTOPIK (TIPE MATERI) ---
+            const groupedMateri = {};
+            classDoc.materi.forEach(m => {
+                const tipe = m.tipeText || 'Lainnya';
+                if(!groupedMateri[tipe]) groupedMateri[tipe] = [];
+                groupedMateri[tipe].push(m);
+            });
 
-                // Desain Baris List Interaktif
-                html += `
-                <div class="bg-white flex items-center justify-between p-4 md:p-5 rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md transition-all duration-300 fade-in group relative overflow-hidden" style="animation-delay: ${idx * 0.05}s">
-                    
-                    <!-- Garis strip warna di tepi kiri yang muncul saat di-hover -->
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 ${stripColor} opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    
-                    <div class="flex items-center space-x-4 pl-2 relative z-10">
-                        <div class="w-12 h-12 md:w-14 md:h-14 ${bgClass} ${textClass} rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-inner group-hover:scale-110 transition-transform shrink-0">
-                            ${iconHtml}
+            let finalHtml = '';
+            let delayCounter = 0;
+
+            for (const [tipe, items] of Object.entries(groupedMateri)) {
+                let listHtml = '';
+                items.forEach((m) => {
+                    let iconHtml = ''; let bgClass = ''; let textClass = ''; let stripColor = '';
+                    if (m.jenis === 'pdf') { iconHtml = '<i class="fa-regular fa-file-pdf"></i>'; bgClass = 'bg-red-50'; textClass = 'text-red-500'; stripColor = 'bg-red-400'; }
+                    else if (m.jenis === 'video') { iconHtml = '<i class="fa-solid fa-circle-play"></i>'; bgClass = 'bg-blue-50'; textClass = 'text-blue-500'; stripColor = 'bg-blue-400'; }
+                    else if (m.jenis === 'tugas') { iconHtml = '<i class="fa-solid fa-cloud-arrow-up"></i>'; bgClass = 'bg-indigo-50'; textClass = 'text-indigo-500'; stripColor = 'bg-indigo-400';} 
+                    else { iconHtml = '<i class="fa-solid fa-list-check"></i>'; bgClass = 'bg-amber-50'; textClass = 'text-amber-500'; stripColor = 'bg-amber-400'; }
+
+                    listHtml += `
+                    <div class="bg-white flex items-center justify-between p-4 md:p-5 rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md transition-all duration-300 fade-in group relative overflow-hidden" style="animation-delay: ${delayCounter * 0.05}s">
+                        <div class="absolute left-0 top-0 bottom-0 w-1.5 ${stripColor} opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="flex items-center space-x-4 pl-2 relative z-10">
+                            <div class="w-12 h-12 md:w-14 md:h-14 ${bgClass} ${textClass} rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-inner group-hover:scale-110 transition-transform shrink-0">
+                                ${iconHtml}
+                            </div>
+                            <div>
+                                <h4 class="font-black text-slate-800 text-sm md:text-base group-hover:${textClass} transition-colors line-clamp-1">${m.judul}</h4>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1 flex items-center">
+                                    <i class="fa-solid fa-layer-group mr-1.5"></i>${m.tipeText}
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 class="font-black text-slate-800 text-sm md:text-base group-hover:${textClass} transition-colors line-clamp-1">${m.judul}</h4>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1 flex items-center">
-                                <i class="fa-solid fa-layer-group mr-1.5"></i>${m.tipeText}
-                            </p>
+                        <div class="relative z-10 pr-1">
+                            <button class="bg-paper-50 text-slate-400 hover:bg-red-500 hover:text-white transition-all w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-xl shadow-sm border border-paper-200 hover:border-red-500 active:scale-95" onclick="window.hapusMateriDosen('${m.id}')" title="Hapus Materi">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </div>
+                    </div>`;
+                    delayCounter++;
+                });
+
+                // Wadah Subtopik Dosen dengan Latar Belakang Grid SVG
+                finalHtml += `
+                <div class="mb-8 relative bg-white/40 backdrop-blur-xl rounded-[2.5rem] border border-paper-200 p-5 md:p-8 overflow-hidden shadow-sm">
+                    <!-- Pola Grid Transparan Di Belakang Subtopik -->
+                    <div class="absolute inset-0 z-0 opacity-[0.25] pointer-events-none" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0iTTAgMzJWLjVIMzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2NiZDVlMSIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIvPjwvc3ZnPg=='); background-size: 24px 24px;"></div>
+                    
+                    <div class="relative z-10 mb-5 flex items-center">
+                        <span class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border border-indigo-200 shadow-sm"><i class="fa-solid fa-layer-group mr-2"></i> ${tipe}</span>
+                        <div class="h-px bg-indigo-200/50 flex-1 ml-4"></div>
                     </div>
                     
-                    <div class="relative z-10 pr-1">
-                        <button class="bg-paper-50 text-slate-400 hover:bg-red-500 hover:text-white transition-all w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-xl shadow-sm border border-paper-200 hover:border-red-500 active:scale-95" onclick="window.hapusMateriDosen('${m.id}')" title="Hapus Materi">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
+                    <div class="relative z-10 space-y-4">
+                        ${listHtml}
                     </div>
                 </div>`;
-            });
+            }
             
-            // Bungkus dengan jarak antar item
-            container.innerHTML = `<div class="space-y-4">${html}</div>`;
+            // Pastikan tidak ada "container.innerHTML =" tambahan di bawah ini
+            container.innerHTML = finalHtml;
         };
 
         window.simpanMateriDosen = async () => {
