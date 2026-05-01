@@ -1441,8 +1441,8 @@
                     </div>
                 </div>
                 <div>
-                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">File / Tautan Lampiran</p>
-                    <input type="file" class="w-full bg-paper-50 p-3 rounded-xl border border-paper-200 text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100 cursor-pointer">
+                    <p class="text-xs font-bold text-slate-500 mb-2 ml-1 uppercase">Tautan Lampiran (URL YouTube / PDF)</p>
+                    <input type="text" id="input-url-materi" placeholder="Masukkan Link (contoh: https://youtube.com/...)" class="w-full bg-paper-50 focus:bg-white focus:ring-2 ring-indigo-400 p-4 rounded-xl border border-paper-200 outline-none text-slate-800 transition font-medium">
                 </div>
             </div>
             <button id="btn-simpan-materi-dsn" class="w-full bg-indigo-500 hover:bg-indigo-600 transition text-white py-4 rounded-xl font-bold shadow-md active:scale-95 mt-8">Upload ke Kelas</button>
@@ -2112,7 +2112,7 @@ window.renderMateriMahasiswa = () => {
              container.innerHTML = `<div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm overflow-hidden">${html}</div>`;
         };
 
-        window.bukaMateriMahasiswa = (jenis, judul, kodeKelas) => {
+        window.bukaMateriMahasiswa = (jenis, judul, kodeKelas, urlMateri) => {
             const titleEl = document.getElementById('viewer-title');
             const content = document.getElementById('viewer-content');
             
@@ -2121,12 +2121,10 @@ window.renderMateriMahasiswa = () => {
                 document.getElementById('kumpul-tugas-title').innerText = judul;
                 document.getElementById('kumpul-tugas-subtitle').innerText = `Mata Kuliah: ${kodeKelas}`;
                 
-                // Menitipkan data sementara di tombol agar mudah dibaca saat diklik kirim
                 const btnSubmit = document.getElementById('btn-submit-tugas-mhs');
                 btnSubmit.setAttribute('data-judul', judul);
                 btnSubmit.setAttribute('data-kelas', kodeKelas);
                 
-                // Kembalikan tampilan area file seperti semula
                 document.getElementById('tugas-file-name').innerHTML = 'Ketuk untuk pilih file PDF / Dokumen';
                 document.getElementById('tugas-file').value = '';
                 
@@ -2137,10 +2135,15 @@ window.renderMateriMahasiswa = () => {
             // JIKA TIPE MATERI LAINNYA (PDF/Video)
             if(titleEl) titleEl.innerText = judul;
             if(jenis === 'pdf') {
-                content.innerHTML = `<iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" class="w-full h-full border-none bg-paper-200 rounded-b-2xl"></iframe>`;
+                // Menggunakan URL dinamis dari Dosen
+                content.innerHTML = `<iframe src="${urlMateri || 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'}" class="w-full h-full border-none bg-paper-200 rounded-b-2xl"></iframe>`;
                 window.openModal('modal-materi-viewer');
             } else if (jenis === 'video') {
-                content.innerHTML = `<iframe class="w-full h-full rounded-b-2xl" src="https://www.youtube.com/embed/jNQXAC9IVRw?autoplay=1" title="Video Pembelajaran" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                // Merapikan link YouTube agar bisa di-embed
+                let embedUrl = urlMateri || 'https://www.youtube.com/embed/jNQXAC9IVRw';
+                if(embedUrl.includes('watch?v=')) embedUrl = embedUrl.replace('watch?v=', 'embed/');
+                
+                content.innerHTML = `<iframe class="w-full h-full rounded-b-2xl" src="${embedUrl}?autoplay=1" title="Video Pembelajaran" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
                 window.openModal('modal-materi-viewer');
             } else if (jenis === 'kuis') {
                 window.showToast("Untuk kuis, silakan masuk ke menu Ujian dan gunakan kode pengawas dari Dosen.");
@@ -3111,24 +3114,24 @@ window.renderSoalMahasiswa = (questions) => {
             container.innerHTML = html;
         };
 
-window.simpanMateriDosen = async () => {
+        window.simpanMateriDosen = async () => {
             const judul = document.getElementById('input-judul-materi').value.trim();
             const jenis = document.getElementById('input-jenis-materi').value;
+            // Ini yang baru: mengambil URL dari input yang kita buat di langkah 1
+            const urlMateri = document.getElementById('input-url-materi').value.trim(); 
+            
             if(!judul) return window.showToast('Judul materi harus diisi!');
+            if(jenis !== 'tugas' && !urlMateri) return window.showToast('Tautan/URL materi harus diisi!'); // Validasi link wajib diisi kecuali untuk tugas
             if(!window.currentActiveKelasDsn) return window.showToast('Error: Kelas tidak ditemukan!');
 
             let tipeText = '';
-            if (jenis === 'pdf') {
-                tipeText = 'Dokumen PDF'; 
-            } else if (jenis === 'video') {
-                tipeText = 'Video Pembelajaran'; 
-            } else if (jenis === 'tugas') {
-                tipeText = 'Tugas Pengumpulan File'; // Pastikan ini persis seperti ini
-            } else {
-                tipeText = 'Kuis Evaluasi';
-            }
+            if (jenis === 'pdf') tipeText = 'Dokumen PDF'; 
+            else if (jenis === 'video') tipeText = 'Video Pembelajaran'; 
+            else if (jenis === 'tugas') tipeText = 'Tugas Pengumpulan File'; 
+            else tipeText = 'Kuis Evaluasi';
 
-            const newMateri = { id: Date.now().toString(), judul: judul, jenis: jenis, tipeText: tipeText, timestamp: Date.now() };
+            // Masukkan urlMateri ke dalam objek untuk disimpan ke database
+            const newMateri = { id: Date.now().toString(), judul: judul, jenis: jenis, tipeText: tipeText, url: urlMateri, timestamp: Date.now() };
             const classDoc = globalClasses.find(c => c.id === window.currentActiveKelasDsn);
             
             if(classDoc && typeof useFirebase !== 'undefined' && useFirebase && currentUser) {
@@ -3141,6 +3144,7 @@ window.simpanMateriDosen = async () => {
             }
             window.closeModal('modal-tambah-materi');
             document.getElementById('input-judul-materi').value = '';
+            document.getElementById('input-url-materi').value = ''; // Kosongkan input url
         };
 
         window.hapusMateriDosen = async (materiId) => {
