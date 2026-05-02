@@ -502,24 +502,81 @@
                     </div>
                 </div>
 
-                <div id="mhs-view-chatbot" class="mhs-view-section hidden fade-in h-full flex flex-col bg-white rounded-b-[2rem] md:rounded-[2rem] md:my-4 md:mx-auto md:max-w-4xl border border-paper-200 overflow-hidden shadow-md">
-                    <div class="p-5 md:p-6 border-b border-paper-100 flex justify-between items-center bg-white shrink-0 rounded-t-[2rem]">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-14 h-14 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-2xl flex items-center justify-center shadow-md"><i class="fa-solid fa-robot text-2xl"></i></div>
-                            <div>
-                                <h2 class="font-bold text-slate-800 text-lg md:text-xl">Kampus Assistant</h2>
-                                <p class="text-[10px] md:text-xs text-brand-500 font-bold uppercase tracking-widest">Akademik & Lingkungan AI</p>
-                            </div>
+                <!-- HALAMAN AI / CHATBOT (ULTRA-PREMIUM UI) -->
+        <div id="mhs-view-chatbot" class="mhs-view-section hidden fade-in h-full flex flex-col bg-slate-50 absolute inset-0 z-30">
+            
+            <!-- Header AI Premium (Sticky & Glassmorphism) -->
+            <div class="bg-white/80 backdrop-blur-2xl border-b border-white/50 px-4 md:px-8 py-4 flex justify-between items-center shrink-0 shadow-[0_4px_30px_rgba(0,0,0,0.03)] sticky top-0 z-40">
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="w-10 h-10 bg-white border border-paper-200 hover:bg-paper-100 rounded-full flex items-center justify-center text-slate-500 transition shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="relative">
+                        <!-- Efek Cahaya di belakang Avatar AI -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-teal-400 to-blue-500 rounded-2xl blur-md animate-pulse opacity-60"></div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-teal-400 to-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg relative z-10 border border-white/20">
+                            <i class="fa-solid fa-robot text-xl"></i>
+                        </div>
+                        <!-- Indikator Online -->
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full z-20 shadow-sm"></div>
+                    </div>
+                    <div>
+                        <h2 class="font-black text-slate-800 text-xl tracking-tight">Lumi AI</h2>
+                        <div class="flex items-center mt-0.5">
+                            <span class="text-[9px] md:text-[10px] font-black text-teal-600 uppercase tracking-widest bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100">Asisten Kampus</span>
+                            <span class="text-[9px] md:text-[10px] font-bold text-slate-400 ml-2"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Selalu Aktif</span>
                         </div>
                     </div>
-                    <div class="flex-1 p-5 md:p-8 space-y-6 overflow-y-auto bg-paper-50 pb-24" id="bot-messages"></div>
-                    <div class="p-4 md:p-6 bg-white border-t border-paper-200 flex items-center space-x-3 shrink-0 rounded-b-[2rem]">
-                        <button onclick="document.getElementById('bot-image-input').click()" class="text-brand-500 hover:bg-brand-50 transition p-3 rounded-xl w-14 h-14 flex items-center justify-center"><i class="fa-solid fa-camera text-2xl"></i></button>
-                        <input type="file" id="bot-image-input" accept="image/*" class="hidden" id="btn-bot-img">
-                        <input type="text" id="bot-input" placeholder="Tanya soal kampus atau lingkungan..." class="flex-1 bg-paper-100 rounded-xl py-4 px-6 outline-none border-none text-sm md:text-base focus:ring-2 focus:ring-accent-300 transition text-slate-700">
-                        <button id="btn-bot-send" class="bg-slate-800 text-white hover:bg-slate-700 transition p-3 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg active:scale-95"><i class="fa-solid fa-paper-plane text-xl"></i></button>
+                </div>
+            </div>
+
+            <!-- Area Obrolan -->
+            <div class="flex-1 p-4 md:p-8 overflow-y-auto relative scroll-smooth" id="bot-messages">
+                
+                <!-- Pola Background Titik -->
+                <div class="absolute inset-0 z-0 opacity-[0.2] pointer-events-none" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+                <!-- Layar Selamat Datang (Empty State) -->
+                <div class="relative z-10 flex flex-col items-center justify-center mt-6 md:mt-16 fade-in text-center px-4" id="ai-welcome-screen">
+                    <div class="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-teal-50 to-blue-50 rounded-full flex items-center justify-center mb-6 shadow-inner border border-white relative overflow-hidden group">
+                        <i class="fa-solid fa-sparkles text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500 group-hover:scale-110 transition-transform"></i>
+                        <div class="absolute inset-0 border-2 border-dashed border-teal-200 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-black text-slate-800 tracking-tight mb-2">Halo, Mahasiswa! 👋</h3>
+                    <p class="text-slate-500 text-sm font-medium max-w-md leading-relaxed mb-8">Saya Lumi, asisten cerdas Kampus.id. Mau cari jurnal, cek jadwal, atau tanya seputar lingkungan hijau hari ini?</p>
+                    
+                    <!-- Suggested Prompts (Pintasan) -->
+                    <div class="flex flex-wrap justify-center gap-2 md:gap-3 max-w-2xl">
+                        <button onclick="document.getElementById('bot-input').value='Tolong rangkumkan materi ekologi'; window.sendBotMessage();" class="bg-white hover:bg-teal-50 border border-paper-200 hover:border-teal-200 text-slate-600 hover:text-teal-600 px-4 py-3 rounded-2xl text-xs md:text-sm font-bold transition-all shadow-sm active:scale-95 flex items-center group">
+                            <i class="fa-solid fa-book-open text-slate-400 group-hover:text-teal-400 mr-2 transition-colors"></i> Rangkum Materi
+                        </button>
+                        <button onclick="document.getElementById('bot-input').value='Bagaimana cara mengumpulkan poin misi hijau?'; window.sendBotMessage();" class="bg-white hover:bg-emerald-50 border border-paper-200 hover:border-emerald-200 text-slate-600 hover:text-emerald-600 px-4 py-3 rounded-2xl text-xs md:text-sm font-bold transition-all shadow-sm active:scale-95 flex items-center group">
+                            <i class="fa-solid fa-leaf text-slate-400 group-hover:text-emerald-400 mr-2 transition-colors"></i> Info Misi Hijau
+                        </button>
+                        <button onclick="document.getElementById('bot-input').value='Apa itu Kampus.id?'; window.sendBotMessage();" class="bg-white hover:bg-blue-50 border border-paper-200 hover:border-blue-200 text-slate-600 hover:text-blue-600 px-4 py-3 rounded-2xl text-xs md:text-sm font-bold transition-all shadow-sm active:scale-95 flex items-center group">
+                            <i class="fa-solid fa-circle-question text-slate-400 group-hover:text-blue-400 mr-2 transition-colors"></i> Bantuan Umum
+                        </button>
                     </div>
                 </div>
+
+            </div>
+
+            <!-- Area Input Mengambang (Floating Input) -->
+            <div class="p-4 md:p-6 bg-gradient-to-t from-slate-50 via-slate-50 to-transparent shrink-0 relative z-20 pb-24 md:pb-8">
+                <div class="max-w-4xl mx-auto bg-white/90 backdrop-blur-xl border border-white shadow-[0_10px_40px_rgba(0,0,0,0.08)] p-2.5 rounded-[2rem] flex items-end space-x-2 relative focus-within:ring-4 ring-teal-500/20 transition-all">
+                    
+                    <button onclick="document.getElementById('bot-image-input').click()" class="text-slate-400 hover:text-teal-500 hover:bg-teal-50 transition-colors p-3 rounded-2xl w-12 h-12 flex items-center justify-center shrink-0 mb-0.5">
+                        <i class="fa-solid fa-camera text-xl"></i>
+                    </button>
+                    <input type="file" id="bot-image-input" accept="image/*" class="hidden">
+                    
+                    <textarea id="bot-input" rows="1" placeholder="Tanya Lumi apa saja..." class="flex-1 bg-transparent py-3 px-2 outline-none border-none text-sm md:text-base text-slate-700 resize-none max-h-32 min-h-[48px] leading-relaxed placeholder-slate-400 font-medium" oninput="this.style.height = ''; this.style.height = Math.min(this.scrollHeight, 128) + 'px'"></textarea>
+                    
+                    <button id="btn-bot-send" class="bg-gradient-to-br from-teal-400 to-blue-600 text-white hover:shadow-lg hover:shadow-teal-500/40 transition-all p-3 w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 mb-0.5 active:scale-95 group border border-teal-300/50">
+                        <i class="fa-solid fa-paper-plane text-lg group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform drop-shadow-sm"></i>
+                    </button>
+                </div>
+                <p class="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">AI dapat membuat kesalahan. Periksa kembali informasi akademik.</p>
+            </div>
+        </div>
 
         <!-- HALAMAN OBROLAN GLOBAL (PREMIUM UI) -->
                 <div id="mhs-view-chat-detail" class="mhs-view-section hidden fade-in h-full flex flex-col bg-[#F8FAFC] rounded-b-[2rem] md:rounded-[2rem] md:my-4 md:mx-auto md:max-w-4xl border border-paper-200 overflow-hidden shadow-xl relative z-40">
@@ -4161,41 +4218,53 @@ window.renderSoalMahasiswa = (questions) => {
                     }, { enableHighAccuracy: true });
                 };
 
-        // ========================== CHATBOT ECO-NEO (CUSTOM BASE URL KONEKTIKA) ==========================
-        
+        // ========================== CHATBOT ECO-NEO (ULTRA PREMIUM UI) ==========================
         window.sendBotMessage = async () => {
             const input = document.getElementById('bot-input');
             const text = input.value.trim();
             const chatBox = document.getElementById('bot-messages');
+            const welcomeScreen = document.getElementById('ai-welcome-screen');
             
             if (!text) return; 
+
+            // Sembunyikan layar selamat datang saat pesan pertama dikirim
+            if (welcomeScreen) welcomeScreen.classList.add('hidden');
         
-            // 1. TAMPILKAN PESAN MAHASISWA
+            // 1. TAMPILKAN PESAN MAHASISWA (UI Baru)
             const userMsgHtml = `
-            <div class="flex justify-end mb-4 fade-in">
-                <div class="bg-slate-800 text-white p-4 rounded-2xl rounded-tr-sm shadow-sm max-w-[80%] text-sm md:text-base">
-                    ${text}
+            <div class="flex justify-end mb-6 fade-in relative z-10 w-full group">
+                <div class="max-w-[85%] md:max-w-[70%] flex flex-col items-end">
+                    <div class="bg-gradient-to-br from-teal-500 to-blue-600 text-white p-4 md:p-5 rounded-[2rem] rounded-tr-sm shadow-md text-sm md:text-base leading-relaxed border border-teal-400/50">
+                        ${text}
+                    </div>
+                    <span class="text-[10px] text-slate-400 font-bold mt-1.5 mr-2 opacity-0 group-hover:opacity-100 transition-opacity">Anda</span>
                 </div>
             </div>`;
+            
             chatBox.innerHTML += userMsgHtml;
+            
+            // Kembalikan tinggi textarea ke semula
             input.value = ''; 
+            input.style.height = ''; 
             chatBox.scrollTop = chatBox.scrollHeight;
         
-            // 2. TAMPILKAN ANIMASI AI SEDANG MENGETIK
+            // 2. TAMPILKAN ANIMASI AI SEDANG MENGETIK (UI Baru)
             const typingId = 'typing-' + Date.now();
             chatBox.innerHTML += `
-            <div id="${typingId}" class="flex items-end space-x-3 mb-4 fade-in">
-                <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
-                <div class="bg-white border border-paper-200 p-4 rounded-2xl rounded-tl-sm shadow-sm flex space-x-1.5 items-center h-12">
-                    <div class="w-2 h-2 bg-brand-300 rounded-full animate-bounce"></div>
-                    <div class="w-2 h-2 bg-brand-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
-                    <div class="w-2 h-2 bg-brand-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+            <div id="${typingId}" class="flex items-end space-x-3 mb-6 fade-in relative z-10 w-full">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-teal-400 to-blue-600 text-white rounded-[1.2rem] flex items-center justify-center shrink-0 shadow-sm border border-white/20">
+                    <i class="fa-solid fa-robot text-base"></i>
+                </div>
+                <div class="bg-white border border-paper-200 p-4 rounded-[2rem] rounded-tl-sm shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex space-x-1.5 items-center h-12">
+                    <div class="w-2 h-2 bg-teal-300 rounded-full animate-bounce"></div>
+                    <div class="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+                    <div class="w-2 h-2 bg-teal-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
                 </div>
             </div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
         
             try {
-                const promptSystem = "Kamu adalah LUMI, asisten AI ramah di kampus. Jawab singkat, padat, berbahasa Indonesia, dan selipkan emoji.";
+                const promptSystem = "Kamu adalah Lumi, asisten AI ramah di kampus EcoVerse. Jawab singkat, padat, berbahasa Indonesia, dan selipkan emoji yang relevan.";
         
                 // 3. MENGHUBUNGI SERVER KONEKTIKA
                 const response = await fetch('https://konektika.web.id/v1/chat/completions', {
@@ -4205,7 +4274,7 @@ window.renderSoalMahasiswa = (questions) => {
                         'Authorization': `Bearer ${kimiApiKey}` 
                     },
                     body: JSON.stringify({
-                        model: "kimi-pro", // <--- SUDAH DISESUAIKAN DENGAN PANDUAN GAMBAR
+                        model: "kimi-pro",
                         messages: [
                             { role: "system", content: promptSystem },
                             { role: "user", content: text }
@@ -4215,40 +4284,48 @@ window.renderSoalMahasiswa = (questions) => {
         
                 const data = await response.json();
                 
-                // Pengecekan error yang lebih kebal
                 if (!response.ok) {
-                    throw new Error(data.error?.message || data.message || `Gagal! Server membalas dengan status: ${response.status}`);
+                    throw new Error(data.error?.message || data.message || `Gagal! Server membalas: ${response.status}`);
                 }
                 
                 if (!data.choices || !data.choices[0]) {
-                    throw new Error("Server terhubung, tapi format balasan dari Konektika tidak sesuai standar.");
+                    throw new Error("Format balasan dari server tidak sesuai standar.");
                 }
                 
                 let botReply = data.choices[0].message.content;
         
-                // Rapikan teks balasan (Tebal & Baris baru)
-                botReply = botReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+                // Merapikan format teks balasan
+                botReply = botReply.replace(/\*\*(.*?)\*\*/g, '<b class="text-slate-800">$1</b>').replace(/\n/g, '<br>');
                 
-                // 4. TAMPILKAN BALASAN AI KE LAYAR
+                // 4. TAMPILKAN BALASAN AI KE LAYAR (UI Baru)
                 document.getElementById(typingId).remove();
                 chatBox.innerHTML += `
-                <div class="flex items-end space-x-3 mb-4 fade-in">
-                    <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-brand-400 to-accent-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-robot text-sm"></i></div>
-                    <div class="bg-white border border-paper-200 text-slate-700 p-4 rounded-2xl rounded-tl-sm shadow-sm max-w-[80%] text-sm md:text-base leading-relaxed">
-                        ${botReply}
+                <div class="flex items-end space-x-3 mb-6 fade-in relative z-10 w-full group">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-teal-400 to-blue-600 text-white rounded-[1.2rem] flex items-center justify-center shrink-0 shadow-sm border border-white/20 mb-5">
+                        <i class="fa-solid fa-robot text-base"></i>
+                    </div>
+                    <div class="max-w-[85%] md:max-w-[75%] flex flex-col items-start">
+                        <span class="text-[10px] text-slate-400 font-bold mb-1.5 ml-2 uppercase tracking-widest">Lumi AI</span>
+                        <div class="bg-white border border-paper-200 text-slate-600 p-4 md:p-6 rounded-[2rem] rounded-tl-sm shadow-[0_8px_30px_rgba(0,0,0,0.04)] text-sm md:text-base leading-relaxed">
+                            ${botReply}
+                        </div>
                     </div>
                 </div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
         
             } catch (error) {
                 document.getElementById(typingId).remove();
-                console.error("AI Error Detail:", error);
                 chatBox.innerHTML += `
-                <div class="flex items-end space-x-3 mb-4 fade-in">
-                    <div class="w-8 h-8 md:w-10 md:h-10 bg-red-500 text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid fa-triangle-exclamation text-sm"></i></div>
-                    <div class="bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl rounded-tl-sm shadow-sm max-w-[80%] text-sm md:text-base">
-                        <b>Oops, gagal terhubung!</b><br>
-                        <span class="text-xs text-red-500">${error.message}</span>
+                <div class="flex items-end space-x-3 mb-6 fade-in relative z-10 w-full">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-red-500 text-white rounded-[1.2rem] flex items-center justify-center shrink-0 shadow-sm border border-white/20 mb-5">
+                        <i class="fa-solid fa-triangle-exclamation text-base"></i>
+                    </div>
+                    <div class="max-w-[85%] md:max-w-[75%] flex flex-col items-start">
+                        <span class="text-[10px] text-red-400 font-bold mb-1.5 ml-2 uppercase tracking-widest">Sistem Eror</span>
+                        <div class="bg-red-50 border border-red-200 text-red-600 p-4 md:p-6 rounded-[2rem] rounded-tl-sm shadow-sm text-sm md:text-base leading-relaxed">
+                            <b class="text-red-700">Oops, sepertinya ada gangguan sinyal!</b><br>
+                            <span class="text-xs text-red-500 mt-1 block">${error.message}</span>
+                        </div>
                     </div>
                 </div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
