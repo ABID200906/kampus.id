@@ -210,92 +210,157 @@
             </header>
 
             <main class="flex-1 relative w-full overflow-hidden">
+
+                <!-- HALAMAN BERANDA / FEED (ULTRA-PREMIUM BENTO UI) -->
+        <div id="mhs-view-feed" class="mhs-view-section fade-in h-full w-full overflow-y-auto bg-slate-50 absolute inset-0 z-30">
+            
+            <!-- Header Banner Dinamis -->
+            <div class="h-64 md:h-72 relative overflow-hidden bg-slate-900 rounded-b-[3rem] shadow-lg shrink-0 pt-8 md:pt-10 px-6 md:px-10">
+                <!-- Ornamen Mesh Gradient -->
+                <div class="absolute inset-0 opacity-40 pointer-events-none">
+                    <div class="absolute -right-10 -top-20 w-80 h-80 bg-brand-500 rounded-full mix-blend-screen filter blur-[80px] animate-pulse"></div>
+                    <div class="absolute top-20 -left-10 w-64 h-64 bg-accent-600 rounded-full mix-blend-screen filter blur-[80px]"></div>
+                </div>
+
+                <!-- Teks Sapaan Real-time -->
+                <div class="relative z-10 flex justify-between items-start mt-4 md:mt-2">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 bg-white/10 border border-white/20 backdrop-blur-md px-3 py-1.5 rounded-full mb-3 shadow-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-400 animate-ping"></span>
+                            <span class="text-[9px] md:text-[10px] font-black text-brand-100 uppercase tracking-widest" id="home-date-display">Memuat Tanggal...</span>
+                        </div>
+                        <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-none mb-1 drop-shadow-md">
+                            <span id="home-greeting-time" class="block text-xl md:text-2xl text-brand-200 mb-1 opacity-90 font-bold">Selamat datang,</span> 
+                            <span id="home-greeting-name">Mahasiswa</span>! 👋
+                        </h2>
+                    </div>
+                    
+                    <!-- Notifikasi Lonceng -->
+                    <button class="w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors relative shadow-sm active:scale-95">
+                        <i class="fa-regular fa-bell text-lg"></i>
+                        <span class="absolute top-2.5 right-3 w-2.5 h-2.5 bg-red-500 border-2 border-slate-900 rounded-full"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Area Konten Utama (Overlapping ke atas banner) -->
+            <div class="max-w-4xl mx-auto px-4 md:px-8 pb-32 relative -mt-20 md:-mt-24 z-20">
                 
-                <div id="mhs-view-feed" class="mhs-view-section fade-in h-full w-full overflow-y-auto">
-                    <div class="max-w-3xl mx-auto pt-4 md:pt-8 px-4 pb-6">
-                        <div class="relative w-full h-32 mb-8 rounded-[2rem] overflow-hidden shadow-sm border border-brand-100 bg-white group eco-news-glow cursor-pointer" onclick="window.switchTabMhs('news', document.querySelectorAll('.nav-btn')[3])">
-                            <div id="news-slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out">
-                                <div class="min-w-full h-full flex items-center px-8 bg-gradient-to-r from-brand-50 to-white">
-                                    <p class="text-sm font-bold text-brand-600 animate-pulse">Memuat kabar kampus hari ini...</p>
-                                </div>
-                            </div>
-                            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2" id="slider-dots"></div>
-                            <div class="absolute top-4 left-4 bg-brand-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md z-10 uppercase tracking-widest transform -rotate-6 italic">Hot News</div>
+                <!-- 1. Hot News Slider (Floating Card) -->
+                <div class="relative w-full h-24 md:h-28 mb-8 rounded-[2rem] overflow-hidden shadow-xl border border-white bg-white/90 backdrop-blur-xl group cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all duration-500" onclick="window.switchTabMhs('news', document.querySelectorAll('.nav-btn')[3])">
+                    <div id="news-slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out">
+                        <div class="min-w-full h-full flex items-center px-6 md:px-10 bg-gradient-to-r from-brand-50 to-white/50">
+                            <p class="text-sm font-bold text-brand-600 animate-pulse"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Memuat kabar kampus...</p>
                         </div>
-
-                        <div class="mb-6 flex justify-between items-end">
-                            <div>
-                                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Halo, <span id="home-greeting-name">Mahasiswa</span>! 👋</h2>
-                                <p class="text-sm text-slate-500 font-medium mt-1">Siap untuk produktif dan menjaga bumi hari ini?</p>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-4 gap-3 mb-10">
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('academy', document.querySelectorAll('.nav-btn')[1])">
-                                <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Akademik</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-indigo-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('tugasku')">
-                                <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-open text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tugasku</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-red-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('ujian')">
-                                <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-laptop-code text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Ujian</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-accent-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('jadwal')">
-                                <div class="w-12 h-12 bg-accent-50 text-accent-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-regular fa-calendar-days text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Jadwal</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-amber-300 cursor-pointer transition active:scale-95" onclick="window.openModal('modal-izin')">
-                                <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-envelope-open-text text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Izin</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-purple-300 cursor-pointer transition active:scale-95" onclick="window.tampilkanEKTM()">
-                                <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-id-card text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-KTM</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 cursor-pointer transition active:scale-95" 
-                                 onclick="window.switchTabMhs('elibrary'); window.searchBooks('ekologi');">
-                                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-2 shadow-inner">
-                                    <i class="fa-solid fa-book-journal-whills text-xl"></i>
-                                </div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">E-Lib</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-emerald-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('quran'); window.fetchDaftarSurah();">
-                                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-quran text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Al-Quran</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-rose-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Informasi Pendaftaran UKM Kampus')">
-                                <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition active:scale-95" onclick="window.openGlobalChat()">
-                                <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-earth-asia text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Obrolan</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('challenges')">
-                                <div class="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-medal text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tantangan</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-blue-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('beasiswa'); window.renderBeasiswa();">
-                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-award text-xl"></i></div>
-                                <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Beasiswa</span>
-                            </div>
-                        </div>
-
-                        <h3 class="font-black text-slate-800 text-lg mb-4 flex items-center"><i class="fa-solid fa-layer-group text-brand-500 mr-2"></i> Green Feed</h3>
-                        <div class="bg-white p-4 mb-6 flex items-center space-x-3 shadow-sm rounded-[2rem] border border-paper-200 shrink-0">
-                            <img id="feed-input-avatar" src="" class="w-10 h-10 rounded-full shadow-sm border border-paper-100">
-                            <div class="flex-1 bg-paper-50 border border-paper-200 rounded-full py-3 px-4 text-xs text-slate-400 cursor-pointer hover:bg-paper-100 transition font-medium" onclick="window.openModal('modal-post')">
-                                Bagikan aksi hijau kampusmu...
-                            </div>
-                            <button class="text-brand-500 hover:text-white hover:bg-brand-500 transition p-2 bg-brand-50 rounded-full w-10 h-10 flex items-center justify-center shadow-sm" onclick="window.openModal('modal-post')"><i class="fa-solid fa-camera"></i></button>
-                        </div>
-
-                        <div id="feed-container" class="space-y-6 pb-20"></div>
+                    </div>
+                    <div class="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex space-x-2" id="slider-dots"></div>
+                    <div class="absolute top-0 left-0 h-full w-1.5 bg-gradient-to-b from-brand-400 to-brand-600"></div>
+                    <!-- Badge Kiri Atas -->
+                    <div class="absolute top-3 left-5 bg-brand-500 text-white text-[9px] font-black px-2.5 py-1 rounded-md shadow-sm z-10 uppercase tracking-widest flex items-center">
+                        <i class="fa-solid fa-bolt mr-1 text-yellow-300"></i> Hot News
                     </div>
                 </div>
+
+                <!-- 2. Bento Grid Menu (Shortcut Cerdas) -->
+                <h3 class="font-black text-slate-800 text-lg md:text-xl mb-4 flex items-center"><i class="fa-solid fa-layer-group text-brand-500 mr-2"></i> Akses Cepat</h3>
+                
+                <div class="grid grid-cols-4 gap-3 md:gap-4 mb-10">
+                    
+                    <!-- Menu Utama (Ukuran Besar - Span 2) -->
+                    <button onclick="window.switchTabMhs('academy', document.querySelectorAll('.nav-btn')[1])" class="col-span-2 bg-gradient-to-br from-brand-500 to-emerald-600 p-4 md:p-5 rounded-[2rem] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between items-start group relative overflow-hidden active:scale-95 text-left h-28 md:h-32 border border-brand-400">
+                        <i class="fa-solid fa-graduation-cap absolute -right-2 -bottom-4 text-[5rem] text-white/20 group-hover:rotate-12 transition-transform duration-500"></i>
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-md text-white rounded-xl flex items-center justify-center text-lg md:text-xl shadow-inner mb-2"><i class="fa-solid fa-chart-line"></i></div>
+                        <div class="relative z-10">
+                            <h4 class="font-black text-white text-sm md:text-base leading-tight drop-shadow-sm">Akademik</h4>
+                            <p class="text-[9px] md:text-[10px] font-bold text-brand-100 uppercase tracking-widest mt-0.5">Nilai & SKS</p>
+                        </div>
+                    </button>
+
+                    <button onclick="window.switchTabMhs('jadwal')" class="col-span-2 bg-gradient-to-br from-sky-500 to-indigo-600 p-4 md:p-5 rounded-[2rem] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between items-start group relative overflow-hidden active:scale-95 text-left h-28 md:h-32 border border-sky-400">
+                        <i class="fa-regular fa-calendar-days absolute -right-2 -bottom-2 text-[5rem] text-white/20 group-hover:-rotate-12 transition-transform duration-500"></i>
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-md text-white rounded-xl flex items-center justify-center text-lg md:text-xl shadow-inner mb-2"><i class="fa-regular fa-calendar-check"></i></div>
+                        <div class="relative z-10">
+                            <h4 class="font-black text-white text-sm md:text-base leading-tight drop-shadow-sm">Jadwal Kuliah</h4>
+                            <p class="text-[9px] md:text-[10px] font-bold text-sky-100 uppercase tracking-widest mt-0.5">Timeline Kelas</p>
+                        </div>
+                    </button>
+
+                    <!-- Menu Reguler (Ukuran Standar - Span 1) -->
+                    <!-- Baris 1 -->
+                    <button onclick="window.switchTabMhs('tugasku')" class="col-span-1 bg-white p-3 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all duration-300 flex flex-col items-center justify-center active:scale-95 group">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-50 text-indigo-500 rounded-[1.2rem] flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-book-open text-lg md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-700 text-center leading-tight">Tugasku</span>
+                    </button>
+                    
+                    <button onclick="window.switchTabMhs('ujian')" class="col-span-1 bg-white p-3 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md hover:border-red-300 transition-all duration-300 flex flex-col items-center justify-center active:scale-95 group relative overflow-hidden">
+                        <div class="absolute inset-0 bg-red-500 opacity-0 group-hover:opacity-5 transition-opacity"></div>
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-red-50 text-red-600 rounded-[1.2rem] flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-laptop-code text-lg md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-700 text-center leading-tight">Ujian</span>
+                    </button>
+                    
+                    <button onclick="window.tampilkanEKTM()" class="col-span-1 bg-white p-3 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md hover:border-purple-300 transition-all duration-300 flex flex-col items-center justify-center active:scale-95 group">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-50 text-purple-500 rounded-[1.2rem] flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-id-card text-lg md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-700 text-center leading-tight">E-KTM</span>
+                    </button>
+                    
+                    <button onclick="window.openModal('modal-izin')" class="col-span-1 bg-white p-3 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md hover:border-amber-300 transition-all duration-300 flex flex-col items-center justify-center active:scale-95 group">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-50 text-amber-500 rounded-[1.2rem] flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-envelope-open-text text-lg md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-700 text-center leading-tight">Izin</span>
+                    </button>
+
+                    <!-- Baris 2 -->
+                    <button onclick="window.switchTabMhs('elibrary'); window.searchBooks('ekologi');" class="col-span-1 bg-white p-3 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md hover:border-teal-300 transition-all duration-300 flex flex-col items-center justify-center active:scale-95 group">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-teal-50 text-teal-600 rounded-[1.2rem] flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-book-journal-whills text-lg md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-700 text-center leading-tight">E-Lib</span>
+                    </button>
+
+                    <button onclick="window.switchTabMhs('quran'); window.fetchDaftarSurah();" class="col-span-1 bg-white p-3 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all duration-300 flex flex-col items-center justify-center active:scale-95 group">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-emerald-50 text-emerald-600 rounded-[1.2rem] flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-book-quran text-lg md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-700 text-center leading-tight">Al-Quran</span>
+                    </button>
+
+                    <button onclick="window.switchTabMhs('beasiswa'); window.renderBeasiswa();" class="col-span-1 bg-white p-3 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-300 flex flex-col items-center justify-center active:scale-95 group">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-50 text-blue-600 rounded-[1.2rem] flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-award text-lg md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-700 text-center leading-tight">Beasiswa</span>
+                    </button>
+
+                    <button onclick="window.switchTabMhs('challenges')" class="col-span-1 bg-white p-3 rounded-3xl border border-paper-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all duration-300 flex flex-col items-center justify-center active:scale-95 group relative overflow-hidden">
+                        <!-- Indikator badge kecil -->
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-brand-50 text-brand-600 rounded-[1.2rem] flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform"><i class="fa-solid fa-medal text-lg md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-700 text-center leading-tight">Tantangan</span>
+                    </button>
+                    
+                </div>
+
+                <!-- 3. Green Feed (Komunitas Kampus) -->
+                <div class="flex items-center justify-between mb-4 px-2">
+                    <h3 class="font-black text-slate-800 text-lg md:text-xl tracking-tight flex items-center"><i class="fa-solid fa-users text-brand-500 mr-2"></i> Ruang Komunitas</h3>
+                    <button onclick="window.openGlobalChat()" class="text-[10px] md:text-xs font-black text-brand-600 bg-brand-50 hover:bg-brand-100 transition border border-brand-100 px-3 py-1.5 rounded-lg uppercase tracking-widest shadow-sm active:scale-95"><i class="fa-solid fa-earth-asia mr-1"></i> Global Chat</button>
+                </div>
+                
+                <!-- Kotak Bikin Postingan Modern -->
+                <div class="bg-white/90 backdrop-blur-md p-4 md:p-5 mb-8 flex flex-col md:flex-row md:items-center gap-3 md:gap-4 shadow-[0_8px_30px_rgba(0,0,0,0.04)] rounded-[2rem] border border-paper-200 group hover:border-brand-300 transition-colors">
+                    <div class="flex items-center space-x-3 w-full">
+                        <img id="feed-input-avatar" src="" class="w-10 h-10 md:w-12 md:h-12 rounded-full shadow-inner border-2 border-paper-100 object-cover">
+                        <div class="flex-1 bg-paper-50 group-hover:bg-white border border-paper-200 group-hover:border-brand-200 rounded-full py-3 md:py-3.5 px-5 text-sm text-slate-400 cursor-pointer transition-all font-medium flex items-center justify-between shadow-inner" onclick="window.openModal('modal-post')">
+                            <span>Apa yang ingin Anda bagikan?</span>
+                            <i class="fa-solid fa-pen text-brand-400"></i>
+                        </div>
+                    </div>
+                    <!-- Tombol Upload Gambar Cepat -->
+                    <div class="flex justify-end shrink-0 pl-14 md:pl-0">
+                        <button class="text-slate-400 hover:text-white hover:bg-brand-500 transition-all p-2 bg-paper-50 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shadow-sm border border-paper-200 active:scale-95" onclick="window.openModal('modal-post')">
+                            <i class="fa-solid fa-camera md:text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="feed-container" class="space-y-6 pb-20">
+                    <!-- Postingan akan dimuat di sini -->
+                </div>
+            </div>
+        </div>
 
                 <div id="mhs-view-academy" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-slate-50 absolute inset-0 z-30">
                     
@@ -2159,6 +2224,19 @@
         };
 
         window.updateUIMahasiswa = () => {
+            // 1. Logika Waktu Sapaan Real-time
+            const hour = new Date().getHours();
+            let greeting = 'Pagi';
+            if (hour >= 11 && hour < 15) greeting = 'Siang';
+            else if (hour >= 15 && hour < 18) greeting = 'Sore';
+            else if (hour >= 18) greeting = 'Malam';
+            
+            const dateStr = new Date().toLocaleDateString('id-ID', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
+            
+            if(document.getElementById('home-greeting-time')) document.getElementById('home-greeting-time').innerText = `Selamat ${greeting},`;
+            if(document.getElementById('home-date-display')) document.getElementById('home-date-display').innerText = dateStr;
+
+            // 2. Update Teks Standar
             if(document.getElementById('profile-points')) document.getElementById('profile-points').innerText = appState.points;
             if(document.getElementById('profile-level')) document.getElementById('profile-level').innerText = appState.level;
             const progressPct = Math.min((appState.points / 2500) * 100, 100);
@@ -2169,15 +2247,43 @@
             if(document.getElementById('pet-level-float')) document.getElementById('pet-level-float').innerText = appState.level;
             if(document.getElementById('pet-status')) document.getElementById('pet-status').innerText = "LEVEL " + appState.level;
             
+            // Nama Panggilan (Nama Depan Saja untuk Sapaan Beranda)
+            const namaDepan = appState.userName.split(' ')[0];
+            if(document.getElementById('home-greeting-name')) document.getElementById('home-greeting-name').innerText = namaDepan;
+            
             if(document.getElementById('profile-name-display')) document.getElementById('profile-name-display').innerText = appState.userName;
             if(document.getElementById('profile-bio-display')) document.getElementById('profile-bio-display').innerText = appState.userBio;
             if(document.getElementById('profile-nim-display')) document.getElementById('profile-nim-display').innerText = appState.nim;
-            if(document.getElementById('home-greeting-name')) document.getElementById('home-greeting-name').innerText = appState.userName.split(' ')[0];
             
             if(document.getElementById('edit-profile-name')) {
                 document.getElementById('edit-profile-name').value = appState.userName;
                 document.getElementById('edit-profile-bio').value = appState.userBio;
             }
+
+            if(document.getElementById('challenge-points-display')) document.getElementById('challenge-points-display').innerHTML = `${appState.points || 0} <span class="text-sm font-bold text-slate-400">PTS</span>`;
+
+            // 3. Update Avatar ke Berbagai Tempat
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(appState.userName)}&background=10b981&color=fff&size=256&rounded=true`;
+            if(document.getElementById('main-profile-avatar')) document.getElementById('main-profile-avatar').src = avatarUrl;
+            if(document.getElementById('feed-input-avatar')) document.getElementById('feed-input-avatar').src = avatarUrl;
+            if(document.getElementById('my-comment-avatar')) document.getElementById('my-comment-avatar').src = avatarUrl;
+            if(document.getElementById('modal-post-avatar')) {
+                document.getElementById('modal-post-avatar').src = avatarUrl;
+                document.getElementById('modal-post-name').innerText = appState.userName;
+            }
+
+            // 4. Update Status Presensi (Geofence)
+            const btn = document.getElementById('btn-checkin');
+            const todayDateString = new Date().toDateString();
+            if (btn && appState.lastAttendanceDate === todayDateString) {
+                btn.classList.replace('from-emerald-500', 'from-slate-600');
+                btn.classList.replace('to-teal-600', 'to-slate-800');
+                btn.classList.replace('border-emerald-400', 'border-slate-500');
+                btn.classList.replace('hover:from-emerald-600', 'cursor-default');
+                btn.classList.replace('hover:to-teal-700', 'pointer-events-none');
+                btn.innerHTML = `<i class="fa-solid fa-check-double mr-2 text-xl drop-shadow-md text-emerald-400"></i> Selesai Presensi`;
+            }
+        };
 
             // Tambahkan baris ini di dalam window.updateUIMahasiswa
             if(document.getElementById('challenge-points-display')) document.getElementById('challenge-points-display').innerHTML = `${appState.points || 0} <span class="text-sm font-bold text-slate-400">PTS</span>`;
