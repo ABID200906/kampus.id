@@ -510,48 +510,76 @@
             </div>
         </div>
 
-        <!-- HALAMAN TANTANGAN HARIAN (PREMIUM UI) -->
-                <div id="mhs-view-challenges" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
-                    
-                    <!-- Header Banner Misi -->
-                    <div class="h-56 md:h-64 relative overflow-hidden flex flex-col justify-center px-6 md:px-10 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-b-[2.5rem] shadow-sm shrink-0 pt-8">
-                        <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="absolute top-6 left-4 md:left-8 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 transition z-20 shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
-                        <i class="fa-solid fa-leaf absolute -right-10 -bottom-10 text-[10rem] md:text-[14rem] text-white/10 pointer-events-none transform -rotate-12"></i>
-                        <div class="relative z-10 md:ml-16 mt-2">
-                            <span class="bg-white/20 border border-white/30 backdrop-blur-md px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[10px] md:text-xs font-black text-white uppercase tracking-widest mb-3 inline-block shadow-sm">Misi Hijau Harian</span>
-                            <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight leading-none mb-2">Tantangan Eco</h2>
-                            <p class="text-emerald-100 font-medium text-xs md:text-sm max-w-md">Selesaikan aksi ramah lingkungan, kumpulkan poin, dan rawat Pipi si Pohon!</p>
-                        </div>
+        <!-- HALAMAN TANTANGAN HARIAN (ULTRA-PREMIUM GAMIFICATION UI) -->
+        <div id="mhs-view-challenges" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-slate-50 absolute inset-0 z-30">
+            
+            <!-- Header Banner Premium Dark & Mesh Gradient -->
+            <div class="h-64 md:h-72 relative overflow-hidden flex flex-col justify-center px-6 md:px-12 bg-slate-900 rounded-b-[3rem] shadow-2xl shrink-0 pt-8 z-10">
+                <!-- Dekorasi Mesh Gradient & Light Orbs -->
+                <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div class="absolute -right-10 top-0 w-80 h-80 bg-emerald-500 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-pulse"></div>
+                    <div class="absolute bottom-0 -left-20 w-72 h-72 bg-teal-600 rounded-full mix-blend-screen filter blur-[80px] opacity-60"></div>
+                </div>
+                
+                <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="absolute top-6 left-4 md:left-8 w-11 h-11 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white hover:bg-white/30 transition z-20 shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left text-sm"></i></button>
+                
+                <!-- Ikon Background -->
+                <i class="fa-solid fa-leaf absolute -right-6 -bottom-10 text-[12rem] md:text-[16rem] text-white/5 pointer-events-none transform -rotate-12"></i>
+                
+                <div class="relative z-10 md:ml-14 mt-4">
+                    <div class="inline-flex items-center space-x-2 bg-white/10 border border-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl mb-4 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-[10px] md:text-xs font-black text-emerald-100 uppercase tracking-widest">Gamifikasi Kampus</span>
                     </div>
-        
-                    <!-- Area Konten Misi -->
-                    <div class="max-w-4xl mx-auto px-4 pb-24 relative -mt-8 z-20">
+                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-none mb-3 drop-shadow-md">Misi Hijau</h2>
+                    <p class="text-emerald-200 font-medium text-xs md:text-sm max-w-md leading-relaxed">Selesaikan aksi ramah lingkungan di sekitarmu, kumpulkan Eco Poin, dan naikkan level Pipi si Pohon!</p>
+                </div>
+            </div>
+
+            <!-- Konten Area Utama -->
+            <div class="max-w-5xl mx-auto px-4 md:px-8 pb-32 relative z-20">
+                
+                <!-- Dashboard Poin & Level (Glassmorphism Overlapping) -->
+                <div class="bg-white/90 backdrop-blur-xl p-6 md:p-8 rounded-[2.5rem] border border-white shadow-[0_15px_40px_rgba(0,0,0,0.08)] mb-10 relative overflow-hidden group -mt-12 flex flex-col md:flex-row items-center gap-6 md:gap-8">
+                    <!-- Efek Glow Internal -->
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-emerald-100 rounded-full blur-[40px] opacity-60 group-hover:scale-150 transition-transform duration-700 pointer-events-none"></div>
+                    
+                    <!-- Avatar Level -->
+                    <div class="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-[2rem] p-1.5 shadow-lg shadow-emerald-500/30 shrink-0 transform group-hover:rotate-6 transition-transform duration-500 relative">
+                        <div class="w-full h-full bg-slate-900 rounded-[1.5rem] flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-white/10 mix-blend-overlay"></div>
+                            <span class="text-5xl md:text-6xl animate-bounce">🌱</span>
+                        </div>
+                        <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-slate-900 text-emerald-400 border border-emerald-400/50 px-4 py-1 rounded-full text-[10px] font-black tracking-widest shadow-md">LVL <span id="challenge-level-display">1</span></div>
+                    </div>
+                    
+                    <!-- Info Poin & Progress Bar -->
+                    <div class="flex-1 w-full text-center md:text-left relative z-10">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Eco Poin Kamu</p>
+                        <h3 class="text-4xl md:text-5xl font-black text-slate-800 tracking-tighter mb-4" id="challenge-points-display">0 <span class="text-base md:text-xl font-bold text-slate-400 tracking-normal">PTS</span></h3>
                         
-                        <!-- Card Poin Info -->
-                        <div class="bg-white p-5 md:p-6 rounded-[2rem] border border-paper-200 shadow-xl mb-8 flex justify-between items-center relative overflow-hidden">
-                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-50 rounded-full opacity-50 pointer-events-none"></div>
-                            <div class="relative z-10 flex items-center space-x-4">
-                                <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl shadow-inner shrink-0">
-                                    <i class="fa-solid fa-medal"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Total Poin Kamu</p>
-                                    <h3 class="text-xl md:text-2xl font-black text-slate-800" id="challenge-points-display">0 <span class="text-sm font-bold text-slate-400">PTS</span></h3>
-                                </div>
-                            </div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Progress Level</span>
+                            <span class="text-[10px] font-black text-slate-500" id="challenge-exp-text">0 / 100 EXP</span>
                         </div>
-        
-                        <div class="flex items-center justify-between mb-5 px-2">
-                            <h3 class="font-black text-slate-800 text-lg md:text-xl tracking-tight flex items-center"><i class="fa-solid fa-list-check text-emerald-500 mr-2"></i> Daftar Misi Tersedia</h3>
-                            <span class="text-[10px] font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full uppercase tracking-widest">Diperbarui</span>
-                        </div>
-        
-                        <!-- Wadah Kartu Tantangan -->
-                        <div class="space-y-4" id="challenge-list">
-                            <!-- Misi akan dirender JS di sini -->
+                        <!-- Progress Bar Glow -->
+                        <div class="w-full bg-slate-100 rounded-full h-3 md:h-4 overflow-hidden shadow-inner border border-slate-200">
+                            <div id="challenge-exp-bar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(16,185,129,0.5)]" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
+
+                <div class="flex items-center justify-between mb-6 px-2">
+                    <h3 class="font-black text-slate-800 text-xl md:text-2xl tracking-tight flex items-center"><i class="fa-solid fa-list-check text-emerald-500 mr-3"></i> Daftar Misi Tersedia</h3>
+                    <span class="text-[10px] md:text-xs font-black text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg uppercase tracking-widest shadow-sm">Real-time</span>
+                </div>
+
+                <!-- Wadah Kartu Tantangan -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6" id="challenge-list">
+                    <!-- Misi akan dirender JS di sini -->
+                </div>
+            </div>
+        </div>
 
                 <!-- HALAMAN AI / CHATBOT (ULTRA-PREMIUM UI) -->
         <div id="mhs-view-chatbot" class="mhs-view-section hidden fade-in h-full flex flex-col bg-slate-50 absolute inset-0 z-30">
@@ -1714,31 +1742,81 @@
         </div>
     </div>
 
-    <div id="modal-challenge" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-[3rem] p-8 md:p-10 shadow-2xl relative scale-95 transform transition-all duration-300" id="modal-challenge-content">
-            <button onclick="window.closeModal('modal-challenge')" class="absolute top-6 right-6 text-slate-400 bg-paper-50 hover:bg-paper-100 w-12 h-12 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="text-center mb-8 mt-2">
-                <div class="w-20 h-20 bg-brand-50 text-brand-500 rounded-full flex items-center justify-center mx-auto mb-5 text-4xl shadow-sm"><i class="fa-solid fa-shield-check"></i></div>
-                <h3 class="font-black text-2xl md:text-3xl text-slate-800 mb-3">Validasi AI</h3>
-                <p id="cv-title" class="text-brand-500 font-bold uppercase tracking-widest text-xs md:text-sm bg-brand-50 inline-block px-4 py-1.5 rounded-full shadow-inner">Judul Tantangan</p>
-            </div>
-            <div id="cv-upload-area" class="border-2 border-dashed border-brand-300 bg-brand-50 rounded-[2rem] p-10 text-center cursor-pointer hover:bg-brand-100 transition-colors mb-6 group" onclick="document.getElementById('cv-image-input').click()">
-                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 transition-transform"><i class="fa-solid fa-camera text-3xl text-brand-500"></i></div>
-                <p class="text-base font-black text-slate-800 uppercase tracking-wider">Ambil Foto Bukti</p>
-                <p class="text-xs text-slate-500 mt-2 font-bold uppercase tracking-widest">Scan otomatis oleh AI</p>
-            </div>
-            <input type="file" id="cv-image-input" accept="image/*" capture="environment" class="hidden">
-            <div id="cv-preview-area" class="hidden mb-6 relative rounded-[2rem] overflow-hidden h-64 bg-paper-100 border-4 border-white shadow-lg">
-                <img id="cv-image" src="" class="w-full h-full object-cover">
-                <div id="cv-loading" class="absolute inset-0 bg-slate-900/80 flex flex-col items-center justify-center text-white hidden backdrop-blur-sm">
-                    <i class="fa-solid fa-robot animate-spin text-5xl mb-5 text-brand-400"></i>
-                    <p class="text-sm font-black tracking-widest uppercase">Menganalisis...</p>
+    <!-- MODAL AI SCANNER (PREMIUM UI) -->
+    <div id="modal-challenge" class="fixed inset-0 bg-slate-950/90 backdrop-blur-xl z-[5000] hidden flex items-center justify-center p-4">
+        <div class="w-full max-w-sm relative scale-95 transform transition-all duration-500" id="modal-challenge-content">
+            
+            <!-- Tombol Tutup -->
+            <button onclick="window.closeModal('modal-challenge')" class="absolute -top-16 right-0 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all backdrop-blur-md active:scale-95 shadow-lg border border-white/10 z-50">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <!-- Card Utama Scanner -->
+            <div class="bg-slate-900 rounded-[2.5rem] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-slate-700 relative overflow-hidden flex flex-col items-center">
+                
+                <div class="text-center mb-6 mt-2 relative z-10">
+                    <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center justify-center mx-auto w-max mb-3">
+                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-2 animate-pulse"></span> Eco-Vision AI
+                    </span>
+                    <h3 class="font-black text-2xl text-white tracking-tight" id="cv-title">Judul Tantangan</h3>
                 </div>
+
+                <!-- Area Viewfinder Scanner -->
+                <div class="relative w-full aspect-square bg-slate-950 rounded-[1.5rem] border-2 border-slate-800 flex items-center justify-center overflow-hidden mb-6 group cursor-pointer shadow-inner" onclick="document.getElementById('cv-image-input').click()">
+                    
+                    <!-- Ujung Bingkai Scanner (Corners) -->
+                    <div class="absolute top-4 left-4 w-8 h-8 border-t-4 border-l-4 border-emerald-500 rounded-tl-xl z-20 transition-all duration-300 group-hover:scale-110 group-hover:-translate-x-1 group-hover:-translate-y-1"></div>
+                    <div class="absolute top-4 right-4 w-8 h-8 border-t-4 border-r-4 border-emerald-500 rounded-tr-xl z-20 transition-all duration-300 group-hover:scale-110 group-hover:translate-x-1 group-hover:-translate-y-1"></div>
+                    <div class="absolute bottom-4 left-4 w-8 h-8 border-b-4 border-l-4 border-emerald-500 rounded-bl-xl z-20 transition-all duration-300 group-hover:scale-110 group-hover:-translate-x-1 group-hover:translate-y-1"></div>
+                    <div class="absolute bottom-4 right-4 w-8 h-8 border-b-4 border-r-4 border-emerald-500 rounded-br-xl z-20 transition-all duration-300 group-hover:scale-110 group-hover:translate-x-1 group-hover:translate-y-1"></div>
+
+                    <!-- Mode 1: Menunggu Upload -->
+                    <div id="cv-upload-area" class="text-center z-10 relative">
+                        <div class="w-16 h-16 bg-white/5 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10 group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-colors duration-300 text-white/50">
+                            <i class="fa-solid fa-camera text-2xl"></i>
+                        </div>
+                        <p class="text-white/70 font-bold text-sm">Ketuk untuk Memindai</p>
+                    </div>
+
+                    <!-- Mode 2: Gambar Ditampilkan + Scanner Laser -->
+                    <div id="cv-preview-area" class="hidden absolute inset-0 z-10">
+                        <img id="cv-image" src="" class="w-full h-full object-cover opacity-80">
+                        
+                        <!-- Animasi Garis Laser Scan AI -->
+                        <div id="cv-loading" class="absolute inset-0 z-20 hidden">
+                            <div class="absolute left-0 right-0 h-1 bg-emerald-400 shadow-[0_0_15px_#34d399] animate-[scan_2s_ease-in-out_infinite]"></div>
+                            <div class="absolute inset-0 bg-emerald-500/10 mix-blend-overlay animate-pulse"></div>
+                            <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
+                                <p class="text-emerald-400 font-black tracking-[0.2em] uppercase text-xs flex items-center"><i class="fa-solid fa-microchip mr-2 animate-spin"></i> Menganalisis Objek...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="file" id="cv-image-input" accept="image/*" capture="environment" class="hidden">
+                
+                <!-- Hasil Validasi -->
+                <div id="cv-result" class="hidden w-full bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl text-center fade-in relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-emerald-500/20 rounded-full blur-xl"></div>
+                    <i class="fa-solid fa-circle-check text-2xl text-emerald-400 mb-2"></i>
+                    <p class="text-emerald-300 font-black text-sm uppercase tracking-wider">Validasi Sukses!</p>
+                    <p class="text-emerald-500 text-[10px] font-bold mt-1">+ Poin Ditambahkan</p>
+                </div>
+
+                <p class="text-[9px] text-slate-500 font-bold tracking-widest uppercase mt-4 text-center">Pastikan objek terlihat jelas di dalam kotak</p>
             </div>
-            <div id="cv-result" class="hidden p-6 rounded-2xl mb-6 text-base font-bold text-center border-2"></div>
-            <button onclick="window.closeModal('modal-challenge')" class="w-full bg-paper-100 text-slate-600 font-black py-4 md:py-5 rounded-full transition hover:bg-paper-200 text-sm tracking-widest active:scale-95 transform">BATALKAN</button>
         </div>
     </div>
+
+    <!-- Tambahkan keyframes untuk laser scan ke dalam <style> di bagian <head> -->
+    <style>
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
 
     <div id="modal-pet" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[3000] hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-[3rem] p-8 md:p-10 shadow-2xl relative scale-95 transition-transform duration-300" id="modal-pet-content">
@@ -4276,109 +4354,121 @@ window.renderSoalMahasiswa = (questions) => {
                     }
                 };
 
-                            // ========================== TANTANGAN HARIAN ==========================
-                    
-        // 1. Fungsi untuk menampilkan daftar tantangan ke layar (Premium UI)
-                window.renderChallenges = () => {
-                    const container = document.getElementById('challenge-list');
-                    const pointsDisplay = document.getElementById('challenge-points-display');
-                    if (!container) return;
-        
-                    // Update skor poin secara real-time di halaman tantangan
-                    if (pointsDisplay && appState) {
-                        pointsDisplay.innerHTML = `${appState.points || 0} <span class="text-sm font-bold text-slate-400">PTS</span>`;
-                    }
-        
-                    // Daftar tantangan
-                    const challenges = [
-                        { id: 1, title: "Bawa Tumbler Sendiri", desc: "Kurangi botol plastik dengan membawa tumbler minummu hari ini ke kampus.", poin: 50, icon: "fa-bottle-water", color: "blue", theme: "from-blue-400 to-cyan-500" },
-                        { id: 2, title: "Pejuang Kendaraan Umum", desc: "Gunakan bus kampus atau transportasi umum untuk berangkat kuliah.", poin: 100, icon: "fa-bus", color: "emerald", theme: "from-emerald-400 to-teal-500" },
-                        { id: 3, title: "Pahlawan Sampah", desc: "Buang dan pilah 3 sampah botol/kertas ke tempat sampah daur ulang.", poin: 75, icon: "fa-recycle", color: "amber", theme: "from-amber-400 to-orange-500" }
-                    ];
-        
-                    let html = '';
-                    challenges.forEach((c, idx) => {
-                        html += `
-                        <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm hover:shadow-xl hover:border-${c.color}-300 transition-all duration-300 p-5 md:p-6 fade-in group relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4" style="animation-delay: ${idx * 0.1}s">
-                            
-                            <!-- Pita Warna Latar Belakang (Melengkung) -->
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-${c.color}-50/50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
-        
-                            <div class="flex items-center space-x-4 md:space-x-5 relative z-10 w-full md:w-auto">
-                                <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br ${c.theme} text-white rounded-[1.2rem] flex items-center justify-center text-2xl md:text-3xl shadow-md shrink-0 group-hover:-translate-y-1 transition-transform duration-300">
-                                    <i class="fa-solid ${c.icon}"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <span class="bg-${c.color}-50 text-${c.color}-600 text-[9px] md:text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md mb-1.5 inline-block border border-${c.color}-100">Reward: +${c.poin} PTS</span>
-                                    <h4 class="font-black text-slate-800 text-base md:text-lg leading-tight mb-1 group-hover:text-${c.color}-600 transition-colors">${c.title}</h4>
-                                    <p class="text-xs text-slate-500 font-medium leading-relaxed line-clamp-2 md:line-clamp-1">${c.desc}</p>
-                                </div>
-                            </div>
-        
-                            <button onclick="window.mulaiTantangan('${c.title}')" class="w-full md:w-auto bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 md:py-3.5 rounded-xl font-black text-xs transition active:scale-95 shrink-0 shadow-lg shadow-slate-800/20 relative z-10 flex items-center justify-center uppercase tracking-widest">
-                                <i class="fa-solid fa-camera mr-2 text-brand-400"></i> Buktikan
-                            </button>
-                        </div>`;
-                    });
-        
-                    container.innerHTML = html;
-                };
-                    
-                    // 2. Fungsi untuk membuka pop-up kamera validasi AI
-                    window.mulaiTantangan = (judul) => {
-                        // Ubah judul pop-up sesuai tantangan yang dipilih
-                        const titleEl = document.getElementById('cv-title');
-                        if(titleEl) titleEl.innerText = judul;
-                        
-                        // Pastikan pop-up kembali ke tampilan awal (belum ada foto)
-                        const preview = document.getElementById('cv-preview-area');
-                        const uploadArea = document.getElementById('cv-upload-area');
-                        const resultArea = document.getElementById('cv-result');
-                        
-                        if(preview) preview.classList.add('hidden');
-                        if(uploadArea) uploadArea.classList.remove('hidden');
-                        if(resultArea) resultArea.classList.add('hidden');
-                    
-                        // Buka pop-up modalnya
-                        window.openModal('modal-challenge');
-                    };
+        // ========================== TANTANGAN HARIAN (PREMIUM GAMIFICATION UI) ==========================
+        window.renderChallenges = () => {
+            const container = document.getElementById('challenge-list');
+            const pointsDisplay = document.getElementById('challenge-points-display');
+            const levelDisplay = document.getElementById('challenge-level-display');
+            const expText = document.getElementById('challenge-exp-text');
+            const expBar = document.getElementById('challenge-exp-bar');
+            
+            if (!container) return;
 
-                            // 3. Fungsi saat foto dipilih/kamera menjepret
-                    window.handleChallengeImage = (event) => {
-                        const file = event.target.files[0];
-                        if(!file) return;
+            // Update Status Gamifikasi di Dashboard Atas
+            if (appState) {
+                if(pointsDisplay) pointsDisplay.innerHTML = `${appState.points || 0} <span class="text-base md:text-xl font-bold text-slate-400 tracking-normal">PTS</span>`;
+                if(levelDisplay) levelDisplay.innerText = appState.level || 1;
+                if(expText) expText.innerText = `${appState.exp || 0} / 100 EXP`;
+                if(expBar) expBar.style.width = `${appState.exp || 0}%`;
+            }
+
+            const challenges = [
+                { id: 1, title: "Bawa Tumbler Sendiri", desc: "Kurangi penggunaan botol plastik sekali pakai.", poin: 50, icon: "fa-bottle-water", color: "blue", theme: "from-blue-500 to-cyan-500" },
+                { id: 2, title: "Pejuang Transportasi Umum", desc: "Gunakan bus kampus atau angkutan umum hari ini.", poin: 100, icon: "fa-bus", color: "emerald", theme: "from-emerald-500 to-teal-500" },
+                { id: 3, title: "Pahlawan Daur Ulang", desc: "Buang sampah sesuai dengan jenis tong sampah daur ulang.", poin: 75, icon: "fa-recycle", color: "amber", theme: "from-amber-400 to-orange-500" },
+                { id: 4, title: "Hemat Energi Kelas", desc: "Matikan AC/Lampu saat kelas selesai dan ruangan kosong.", poin: 60, icon: "fa-bolt", color: "violet", theme: "from-violet-500 to-fuchsia-500" }
+            ];
+
+            let html = '';
+            challenges.forEach((c, idx) => {
+                html += `
+                <div class="bg-white rounded-[2rem] border border-paper-200 shadow-sm hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:border-${c.color}-300 hover:-translate-y-1 transition-all duration-300 p-5 md:p-6 fade-in group relative overflow-hidden flex flex-col justify-between h-full" style="animation-delay: ${idx * 0.05}s">
                     
-                        // Sembunyikan tombol upload, tampilkan area gambar & loading
-                        document.getElementById('cv-upload-area').classList.add('hidden');
-                        document.getElementById('cv-preview-area').classList.remove('hidden');
-                        document.getElementById('cv-loading').classList.remove('hidden');
+                    <!-- Latar Belakang Kartu (Glow) -->
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-${c.color}-50 rounded-full opacity-60 group-hover:scale-150 transition-transform duration-700 pointer-events-none -z-10"></div>
+
+                    <div class="flex items-start justify-between mb-4 relative z-10">
+                        <div class="w-14 h-14 bg-gradient-to-br ${c.theme} text-white rounded-[1.2rem] flex items-center justify-center text-2xl shadow-md shrink-0 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid ${c.icon}"></i>
+                        </div>
+                        <span class="bg-${c.color}-50 text-${c.color}-600 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-${c.color}-100 shadow-sm flex items-center">
+                            <i class="fa-solid fa-coins mr-1.5 opacity-70"></i> +${c.poin} PTS
+                        </span>
+                    </div>
+
+                    <div class="flex-1 relative z-10 mb-6">
+                        <h4 class="font-black text-slate-800 text-lg md:text-xl leading-tight mb-2 group-hover:text-${c.color}-600 transition-colors">${c.title}</h4>
+                        <p class="text-sm font-medium text-slate-500 leading-relaxed">${c.desc}</p>
+                    </div>
+
+                    <button onclick="window.mulaiTantangan('${c.title}')" class="w-full bg-slate-900 hover:bg-slate-800 text-white px-6 py-4 rounded-xl font-black text-xs md:text-sm transition active:scale-95 shadow-lg shadow-slate-900/20 relative z-10 flex items-center justify-center uppercase tracking-widest group/btn">
+                        <i class="fa-solid fa-camera mr-2 text-${c.color}-400 group-hover/btn:scale-110 transition-transform"></i> Pindai Bukti
+                    </button>
+                </div>`;
+            });
+            container.innerHTML = html;
+        };
+
+        window.mulaiTantangan = (judul) => {
+            const titleEl = document.getElementById('cv-title');
+            if(titleEl) titleEl.innerText = judul;
+            
+            // Reset tampilan scanner
+            const uploadArea = document.getElementById('cv-upload-area');
+            const previewArea = document.getElementById('cv-preview-area');
+            const loadingArea = document.getElementById('cv-loading');
+            const resultArea = document.getElementById('cv-result');
+            const imageEl = document.getElementById('cv-image');
+            
+            if(uploadArea) uploadArea.classList.remove('hidden');
+            if(previewArea) previewArea.classList.add('hidden');
+            if(loadingArea) loadingArea.classList.add('hidden');
+            if(resultArea) resultArea.classList.add('hidden');
+            if(imageEl) imageEl.src = "";
+
+            window.openModal('modal-challenge');
+        };
+
+        window.handleChallengeImage = (event) => {
+            const file = event.target.files[0];
+            if(!file) return;
+        
+            // Ganti mode UI ke Scanning Mode
+            document.getElementById('cv-upload-area').classList.add('hidden');
+            document.getElementById('cv-preview-area').classList.remove('hidden');
+            document.getElementById('cv-loading').classList.remove('hidden');
+            document.getElementById('cv-result').classList.add('hidden');
+        
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('cv-image').src = e.target.result;
+                
+                // Simulasi AI scanning (3 detik)
+                setTimeout(() => {
+                    document.getElementById('cv-loading').classList.add('hidden');
+                    document.getElementById('cv-result').classList.remove('hidden');
                     
-                        // Tampilkan gambar yang difoto ke layar
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            document.getElementById('cv-image').src = e.target.result;
-                            
-                            // Simulasi AI sedang mengecek foto (pura-pura loading 3 detik)
-                            setTimeout(() => {
-                                document.getElementById('cv-loading').classList.add('hidden');
-                                
-                                const resultArea = document.getElementById('cv-result');
-                                resultArea.classList.remove('hidden');
-                                
-                                // Anggap saja AI selalu menganggap fotonya valid
-                                resultArea.className = "p-6 rounded-2xl mb-6 text-base font-bold text-center border-2 bg-emerald-50 text-emerald-600 border-emerald-200 fade-in";
-                                resultArea.innerHTML = '<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>Validasi Berhasil! Poin ditambahkan.';
-                                
-                                // Tambahkan poin ke user
-                                appState.points += 50;
-                                window.saveState();
-                                window.updateUIMahasiswa();
-                                
-                                window.showToast("Hebat! Tantangan berhasil diselesaikan.");
-                            }, 3000); // 3 detik
-                        };
-                        reader.readAsDataURL(file);
-                    };
+                    // Tambahkan poin gamifikasi
+                    appState.points += 50;
+                    appState.exp = (appState.exp || 0) + 20;
+                    
+                    if (appState.exp >= 100) {
+                        appState.level = (appState.level || 1) + 1;
+                        appState.exp = 0;
+                        window.showToast(`Level Up! Pipi si Pohon sekarang Level ${appState.level}!`);
+                    } else {
+                        window.showToast("Validasi Berhasil! (+50 PTS & +20 EXP)");
+                    }
+                    
+                    window.saveState();
+                    window.updateUIMahasiswa();
+                    window.renderChallenges(); // Perbarui bar di halaman tantangan
+
+                }, 3000); 
+            };
+            reader.readAsDataURL(file);
+        };
+                    
 
                         // ========================== MANAJEMEN BERITA DOSEN ==========================
                 
