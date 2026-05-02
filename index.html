@@ -2320,7 +2320,7 @@
             }
         };
 
-// ========================== JADWAL MAHASISWA (PREMIUM TIMELINE) ==========================
+        // ========================== JADWAL MAHASISWA (PREMIUM TIMELINE UI) ==========================
         window.renderJadwalMahasiswa = () => {
             const container = document.getElementById('mhs-jadwal-container');
             if(!container || !appState.isLoggedIn) return;
@@ -2380,54 +2380,77 @@
                 if(hari === 'Jumat') { tColor = 'emerald'; icon = 'fa-leaf'; }
 
                 const isToday = currentDay === hari;
-                const badgeToday = isToday ? `<span class="ml-auto bg-red-500 text-white px-3 py-1 rounded-full text-[9px] md:text-[10px] uppercase tracking-widest font-black animate-pulse shadow-sm flex items-center"><i class="fa-solid fa-circle text-[8px] mr-1.5"></i> Hari Ini</span>` : '';
+                const badgeToday = isToday ? `<span class="bg-gradient-to-r from-red-500 to-rose-500 text-white px-3 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-black shadow-md flex items-center animate-bounce"><i class="fa-solid fa-bolt text-[10px] mr-1.5 text-yellow-300"></i> Hari Ini</span>` : '';
 
                 html += `
-                <div class="bg-white rounded-[2rem] border ${isToday ? `border-${tColor}-300 shadow-lg ring-4 ring-${tColor}-50/50` : 'border-paper-200 shadow-sm'} overflow-hidden fade-in mb-6 relative">
-                    
-                    <!-- Header Hari (Premium) -->
-                    <div class="bg-gradient-to-r from-${tColor}-50 to-white px-6 md:px-8 py-5 border-b border-paper-100 flex items-center">
-                        <div class="w-12 h-12 bg-${tColor}-100 text-${tColor}-600 rounded-xl flex items-center justify-center text-xl md:text-2xl mr-4 shadow-sm shrink-0">
-                            <i class="fa-solid ${icon}"></i>
+                <div class="mb-10 fade-in relative" style="animation-delay: 0.1s">
+                    <!-- Sticky Day Header -->
+                    <div class="flex items-center justify-between mb-6 sticky top-0 z-10 bg-paper-50/95 backdrop-blur-md py-3 px-2 rounded-xl">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-${tColor}-100 text-${tColor}-600 rounded-2xl flex items-center justify-center text-xl shadow-inner mr-4 border border-${tColor}-200">
+                                <i class="fa-solid ${icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-black text-slate-800 text-2xl tracking-tight">${hari}</h3>
+                                <p class="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest">${jadwalHari.length} Sesi Kelas</p>
+                            </div>
                         </div>
-                        <h3 class="font-black text-slate-800 text-xl md:text-2xl tracking-tight">${hari}</h3>
                         ${badgeToday}
                     </div>
-                    
-                    <!-- Daftar Kartu Mata Kuliah -->
-                    <div class="p-6 md:p-8 space-y-4">
-                        ${jadwalHari.map((j, i) => `
-                            ${i !== 0 ? `<hr class="border-paper-100">` : ''}
-                            <div class="flex flex-col md:flex-row md:items-center gap-4 hover:bg-paper-50 p-2 md:p-3 rounded-2xl transition group cursor-default">
+
+                    <!-- Timeline Container -->
+                    <div class="relative pl-6 md:pl-8 space-y-6 before:absolute before:inset-y-0 before:left-[1.35rem] md:before:left-[1.85rem] before:w-1 before:bg-paper-200 before:rounded-full">
+                        ${jadwalHari.map((j, i) => {
+                            return `
+                            <div class="relative group">
+                                <!-- Timeline Dot -->
+                                <div class="absolute -left-[1.85rem] md:-left-[2.35rem] top-6 w-5 h-5 bg-white border-4 border-${tColor}-400 rounded-full group-hover:scale-150 group-hover:border-${tColor}-500 transition-transform duration-300 shadow-sm z-10"></div>
                                 
-                                <!-- 1. Blok Waktu (Timeline) -->
-                                <div class="flex items-center md:flex-col md:w-32 shrink-0 md:border-r-2 border-paper-100 md:pr-4">
-                                    <span class="bg-${tColor}-100 text-${tColor}-700 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg border border-${tColor}-200">${j.mulai}</span>
-                                    <span class="text-slate-300 font-black mx-2 md:my-1">-</span>
-                                    <span class="bg-paper-100 text-slate-500 text-[10px] md:text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">${j.selesai}</span>
-                                </div>
-                                
-                                <!-- 2. Detail Kelas -->
-                                <div class="flex-1 mt-2 md:mt-0">
-                                    <h4 class="font-black text-slate-800 text-lg leading-tight mb-2 group-hover:text-${tColor}-600 transition-colors line-clamp-1">${j.nama}</h4>
-                                    <div class="flex flex-wrap items-center gap-2 md:gap-3">
-                                        <span class="text-[10px] md:text-xs font-bold text-slate-500 flex items-center bg-paper-50 px-2 md:px-3 py-1 md:py-1.5 rounded-md border border-paper-200 shadow-sm"><i class="fa-solid fa-fingerprint mr-1.5 text-slate-400"></i> ${j.kode}</span>
-                                        <span class="text-[10px] md:text-xs font-bold text-slate-500 flex items-center bg-paper-50 px-2 md:px-3 py-1 md:py-1.5 rounded-md border border-paper-200 shadow-sm"><i class="fa-solid fa-door-open mr-1.5 text-amber-500"></i> Ruang ${j.ruang}</span>
+                                <!-- Class Card -->
+                                <div class="bg-white p-5 md:p-6 rounded-[2rem] border ${isToday ? `border-${tColor}-200 shadow-md ring-2 ring-${tColor}-50` : 'border-paper-200 shadow-sm'} hover:shadow-xl hover:border-${tColor}-300 transition-all duration-300 ml-4 md:ml-6 flex flex-col md:flex-row gap-4 relative overflow-hidden group-hover:-translate-y-1 cursor-pointer">
+                                    
+                                    <!-- BG Glow Effect -->
+                                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-${tColor}-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+                                    <!-- Time Block -->
+                                    <div class="flex flex-row md:flex-col items-center md:items-start md:w-32 shrink-0 md:border-r border-paper-100 md:pr-4">
+                                        <span class="text-sm md:text-base font-black text-slate-800">${j.mulai}</span>
+                                        <span class="text-slate-300 mx-2 md:mx-0 md:my-0.5 text-xs font-bold">s/d</span>
+                                        <span class="text-xs md:text-sm font-bold text-slate-500">${j.selesai}</span>
+                                        <div class="mt-2 hidden md:block">
+                                            <span class="bg-paper-100 text-slate-500 text-[9px] font-black uppercase tracking-widest px-2.5 py-1.5 rounded-lg border border-paper-200 shadow-inner">${j.kode}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Info Block -->
+                                    <div class="flex-1 relative z-10">
+                                        <h4 class="font-black text-slate-800 text-lg md:text-xl leading-tight mb-2 group-hover:text-${tColor}-600 transition-colors">${j.nama}</h4>
+                                        <div class="flex flex-wrap items-center gap-2 mb-4">
+                                            <span class="text-[10px] md:text-xs font-bold text-${tColor}-600 bg-${tColor}-50 px-3 py-1.5 rounded-lg border border-${tColor}-100 flex items-center shadow-sm">
+                                                <i class="fa-solid fa-door-open mr-1.5"></i> Ruang ${j.ruang}
+                                            </span>
+                                            <span class="md:hidden bg-paper-100 text-slate-500 text-[10px] font-black uppercase tracking-widest px-2.5 py-1.5 rounded-lg border border-paper-200">${j.kode}</span>
+                                        </div>
+                                        
+                                        <!-- Lecturer & Action -->
+                                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-paper-50">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 rounded-full bg-paper-200 overflow-hidden shadow-sm mr-3 shrink-0 border border-paper-100">
+                                                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(j.dosen)}&background=random&color=fff" class="w-full h-full object-cover">
+                                                </div>
+                                                <div>
+                                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Dosen Pengampu</p>
+                                                    <p class="text-xs font-bold text-slate-700 leading-tight">${j.dosen}</p>
+                                                </div>
+                                            </div>
+                                            <button class="w-8 h-8 md:w-10 md:h-10 bg-paper-50 hover:bg-${tColor}-500 text-slate-400 hover:text-white rounded-full flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 border border-paper-200 hover:border-transparent group-hover:rotate-0 -rotate-45">
+                                                <i class="fa-solid fa-arrow-right"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <!-- 3. Info Dosen -->
-                                <div class="mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-paper-100 md:pl-6 shrink-0 flex items-center">
-                                    <div class="w-10 h-10 rounded-full bg-paper-200 overflow-hidden border-2 border-white shadow-sm mr-3 shrink-0">
-                                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(j.dosen)}&background=random&color=fff" class="w-full h-full object-cover">
-                                    </div>
-                                    <div>
-                                        <p class="text-[9px] font-black text-${tColor}-400 uppercase tracking-widest leading-none mb-1">Dosen Pengampu</p>
-                                        <p class="text-xs md:text-sm font-bold text-slate-700 leading-tight">${j.dosen}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>`;
             }
