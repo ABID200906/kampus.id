@@ -266,7 +266,7 @@
                                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-book-quran text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Al-Quran</span>
                             </div>
-                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-rose-300 cursor-pointer transition active:scale-95" onclick="window.showToast('Informasi Pendaftaran UKM Kampus')">
+                            <div class="flex flex-col items-center justify-center p-3 bg-white rounded-[1.5rem] border border-paper-200 shadow-sm hover:shadow-md hover:border-rose-300 cursor-pointer transition active:scale-95" onclick="window.switchTabMhs('ukm'); window.renderUKM();">
                                 <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
                                 <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Info UKM</span>
                             </div>
@@ -626,6 +626,51 @@
                     </button>
                 </div>
                 <p class="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">AI dapat membuat kesalahan. Periksa kembali informasi akademik.</p>
+            </div>
+        </div>
+
+        <!-- HALAMAN INFO UKM (ULTRA-PREMIUM UI) -->
+        <div id="mhs-view-ukm" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-slate-50 absolute inset-0 z-30">
+            
+            <!-- Header Banner Premium Dark & Mesh Gradient -->
+            <div class="h-64 md:h-72 relative overflow-hidden flex flex-col justify-center px-6 md:px-12 bg-slate-900 rounded-b-[3rem] shadow-2xl shrink-0 pt-8 z-10">
+                <!-- Dekorasi Mesh Gradient & Light Orbs -->
+                <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div class="absolute -right-20 top-0 w-96 h-96 bg-rose-600 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-pulse"></div>
+                    <div class="absolute bottom-0 -left-20 w-80 h-80 bg-orange-500 rounded-full mix-blend-screen filter blur-[80px] opacity-50"></div>
+                </div>
+                
+                <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="absolute top-6 left-4 md:left-8 w-11 h-11 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white hover:bg-white/30 transition z-20 shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left text-sm"></i></button>
+                
+                <!-- Ikon Latar Belakang -->
+                <i class="fa-solid fa-masks-theater absolute -right-6 -bottom-10 text-[12rem] md:text-[16rem] text-white/5 pointer-events-none transform rotate-12"></i>
+                
+                <div class="relative z-10 md:ml-14 mt-4">
+                    <div class="inline-flex items-center space-x-2 bg-white/10 border border-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl mb-4 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-orange-400 animate-ping"></span>
+                        <span class="text-[10px] md:text-xs font-black text-orange-100 uppercase tracking-widest">Kembangkan Bakatmu</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-none mb-3 drop-shadow-md">Eksplorasi UKM</h2>
+                    <p class="text-rose-100 font-medium text-xs md:text-sm max-w-md leading-relaxed">Temukan komunitas yang tepat, asah kemampuanmu, dan bangun relasi di luar jam kuliah akademik.</p>
+                </div>
+            </div>
+
+            <!-- Area Konten (Overlapping) -->
+            <div class="max-w-6xl mx-auto px-4 md:px-8 pb-32 relative z-20">
+                
+                <!-- Search Bar Floating (Glassmorphism) -->
+                <div class="bg-white/90 backdrop-blur-xl p-2.5 md:p-3 rounded-[2rem] border border-white shadow-[0_8px_30px_rgba(0,0,0,0.08)] mb-8 flex items-center space-x-3 transition-all focus-within:shadow-[0_8px_30px_rgba(244,63,94,0.2)] focus-within:ring-4 ring-rose-500/20 relative mx-auto max-w-3xl -mt-8">
+                    <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center shrink-0 ml-1 shadow-inner"><i class="fa-solid fa-magnifying-glass text-xl"></i></div>
+                    <input type="text" id="ukm-search-input" placeholder="Cari unit kegiatan mahasiswa..." class="flex-1 outline-none border-none text-sm md:text-base font-bold text-slate-700 bg-transparent placeholder-slate-400 px-2 w-full" oninput="window.cariUKM()">
+                </div>
+
+                <!-- Filter Kategori Premium -->
+                <div class="flex space-x-3 overflow-x-auto pb-4 mb-6 no-scrollbar justify-start md:justify-center px-2" id="ukm-filter-container">
+                    <!-- Tombol filter di-render otomatis oleh JS -->
+                </div>
+
+                <!-- Wadah Hasil Grid UKM -->
+                <div id="ukm-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 pt-2"></div>
             </div>
         </div>
 
@@ -4679,6 +4724,114 @@ window.renderSoalMahasiswa = (questions) => {
             } else {
                 window.showToast("Poin tidak cukup! Kerjakan Tantangan atau Presensi dulu.");
             }
+        };
+
+        // ========================== FITUR INFO UKM (ULTRA-PREMIUM UI) ==========================
+        const dummyUKMData = [
+            { id: 1, nama: "Teater Kampus", kategori: "Seni & Budaya", desc: "Wadahi bakat akting, tata panggung, dan penyutradaraanmu di teater bergengsi kampus.", status: "Oprec Dibuka", anggota: 124, icon: "fa-masks-theater", color: "rose" },
+            { id: 2, nama: "Klub Robotika", kategori: "Akademik", desc: "Riset dan rakit robot masa depan. Persiapan turnamen Metaverse Robot Challenge antar universitas.", status: "Oprec Dibuka", anggota: 86, icon: "fa-robot", color: "blue" },
+            { id: 3, nama: "UKM Bulutangkis", kategori: "Olahraga", desc: "Latihan rutin dan persiapan kompetisi olahraga tingkat regional dan nasional.", status: "Penuh", anggota: 150, icon: "fa-medal", color: "emerald" },
+            { id: 4, nama: "Pecinta Alam (MAPALA)", kategori: "Relawan", desc: "Eksplorasi alam liar, pelestarian ekosistem lingkungan, dan pelatihan survival.", status: "Oprec Dibuka", anggota: 210, icon: "fa-mountain-sun", color: "amber" },
+            { id: 5, nama: "Paduan Suara", kategori: "Seni & Budaya", desc: "Sumbangkan suara emasmu untuk acara protokoler kampus dan padus tingkat internasional.", status: "Seleksi Ketat", anggota: 95, icon: "fa-music", color: "violet" },
+            { id: 6, nama: "Jurnalistik & Pers", kategori: "Akademik", desc: "Asah kemampuan menulis, reportase, dan publikasi berita melalui media kampus.", status: "Oprec Dibuka", anggota: 64, icon: "fa-newspaper", color: "teal" }
+        ];
+
+        window.currentUKMFilter = 'Semua';
+
+        window.renderUKM = (kategori = window.currentUKMFilter, query = document.getElementById('ukm-search-input')?.value || '') => {
+            const container = document.getElementById('ukm-container');
+            const filterContainer = document.getElementById('ukm-filter-container');
+            if(!container) return;
+
+            window.currentUKMFilter = kategori;
+
+            // Render Tombol Filter
+            const categories = ['Semua', 'Seni & Budaya', 'Akademik', 'Olahraga', 'Relawan'];
+            filterContainer.innerHTML = categories.map(cat => {
+                const isActive = cat === kategori;
+                const baseClass = isActive 
+                    ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20' 
+                    : 'bg-white border border-paper-200 text-slate-600 hover:text-rose-600 hover:border-rose-300 shadow-sm';
+                return `<button onclick="window.renderUKM('${cat}')" class="${baseClass} px-5 py-2.5 rounded-full text-xs md:text-sm font-black tracking-widest uppercase shrink-0 transition active:scale-95">${cat}</button>`;
+            }).join('');
+
+            // Filter Data
+            let filtered = dummyUKMData.filter(u => kategori === 'Semua' || u.kategori === kategori);
+            if (query.trim() !== '') {
+                const q = query.toLowerCase();
+                filtered = filtered.filter(u => u.nama.toLowerCase().includes(q) || u.desc.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white rounded-[2.5rem] border border-paper-200 shadow-sm">
+                        <i class="fa-solid fa-users-slash text-5xl mb-4 block text-slate-300"></i>
+                        <h3 class="font-black text-slate-700 text-lg mb-1">UKM Tidak Ditemukan</h3>
+                        <p class="text-slate-500 text-sm">Coba ubah kata kunci atau filter kategori Anda.</p>
+                    </div>`;
+                return;
+            }
+
+            // Render Kartu UKM
+            let html = '';
+            filtered.forEach((u, idx) => {
+                const isFull = u.status === 'Penuh';
+                const statusColor = isFull ? 'bg-slate-100 text-slate-500 border-slate-200' : `bg-${u.color}-50 text-${u.color}-600 border-${u.color}-200`;
+                const btnAction = isFull 
+                    ? `<button class="w-full bg-paper-100 text-slate-400 cursor-not-allowed px-6 py-4 rounded-xl font-black text-xs md:text-sm uppercase tracking-widest">Kuota Penuh</button>`
+                    : `<button onclick="window.showToast('Menuju portal pendaftaran ${u.nama}!')" class="w-full bg-slate-900 text-white hover:bg-${u.color}-600 transition-colors px-6 py-4 rounded-xl font-black text-xs md:text-sm active:scale-95 shadow-lg shadow-slate-900/20 uppercase tracking-widest flex justify-center items-center">Daftar Sekarang <i class="fa-solid fa-arrow-right ml-2 opacity-70"></i></button>`;
+
+                html += `
+                <div class="bg-white rounded-[2rem] border border-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)] transition-all duration-500 fade-in relative overflow-hidden group flex flex-col hover:-translate-y-2 hover:border-${u.color}-300" style="animation-delay: ${idx * 0.05}s">
+                    
+                    <!-- Glow Bayangan 3D di Hover -->
+                    <div class="absolute -inset-4 bg-${u.color}-400/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none -z-10"></div>
+                    
+                    <!-- Latar Atas (Aksen Warna) -->
+                    <div class="h-24 w-full bg-gradient-to-br from-${u.color}-500 to-${u.color}-700 relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
+                        <i class="fa-solid ${u.icon} absolute -right-2 -bottom-2 text-6xl text-white/20 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 flex flex-col flex-1 relative z-10 -mt-12">
+                        <!-- Icon Melayang -->
+                        <div class="w-16 h-16 rounded-2xl bg-white p-1.5 shadow-lg border border-paper-100 shrink-0 mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
+                            <div class="w-full h-full rounded-xl bg-${u.color}-100 text-${u.color}-600 flex items-center justify-center text-3xl shadow-inner">
+                                <i class="fa-solid ${u.icon}"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Konten Teks -->
+                        <div class="flex-1 text-center mb-6">
+                            <div class="flex justify-center mb-2">
+                                <span class="bg-paper-50 text-slate-500 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-md border border-paper-200">${u.kategori}</span>
+                            </div>
+                            <h4 class="font-black text-slate-800 text-xl leading-tight mb-2 group-hover:text-${u.color}-600 transition-colors line-clamp-1" title="${u.nama}">${u.nama}</h4>
+                            <p class="text-sm font-medium text-slate-500 leading-relaxed line-clamp-2">${u.desc}</p>
+                        </div>
+                        
+                        <!-- Status & Anggota -->
+                        <div class="flex items-center justify-between bg-paper-50 p-3 rounded-xl border border-paper-200 mb-5 shadow-inner">
+                            <div class="flex items-center text-xs font-bold text-slate-600">
+                                <i class="fa-solid fa-users mr-2 text-slate-400"></i> ${u.anggota} Anggota
+                            </div>
+                            <span class="${statusColor} text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md shadow-sm border">
+                                ${u.status}
+                            </span>
+                        </div>
+                        
+                        <!-- Footer Action -->
+                        <div class="mt-auto">
+                            ${btnAction}
+                        </div>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        };
+
+        window.cariUKM = () => {
+            window.renderUKM(window.currentUKMFilter);
         };
 
         // ========================== FITUR PENCARIAN BEASISWA (REAL-TIME DARI AI - PREMIUM UI) ==========================
