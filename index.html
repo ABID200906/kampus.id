@@ -441,23 +441,74 @@
                     </div>
                 </div>
 
-                <div id="mhs-view-news" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto">
-                    <div class="max-w-3xl mx-auto pt-4 md:pt-8 px-4 pb-20">
-                        
-                        <h2 class="text-2xl font-black mb-2 text-slate-800 flex items-center"><i class="fa-solid fa-bullhorn text-brand-500 mr-3"></i>Berita Kampus Utama</h2>
-                        <div id="mhs-custom-news-container" class="space-y-4 mb-10">
-                            <div class="text-center py-6 text-slate-400 text-sm">Belum ada berita kampus.</div>
-                        </div>
+                <!-- HALAMAN BERITA (ULTRA-PREMIUM UI) -->
+        <div id="mhs-view-news" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-slate-50 absolute inset-0 z-30">
+            
+            <!-- Header Banner Premium -->
+            <div class="h-64 md:h-72 relative overflow-hidden flex flex-col justify-center px-6 md:px-12 bg-slate-900 rounded-b-[3rem] shadow-2xl shrink-0 pt-8">
+                <!-- Dekorasi Mesh Gradient Dinamis -->
+                <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div class="absolute -right-20 -top-20 w-80 h-80 bg-rose-500 rounded-full mix-blend-screen filter blur-[80px] opacity-60 animate-pulse"></div>
+                    <div class="absolute top-10 -left-20 w-72 h-72 bg-orange-500 rounded-full mix-blend-screen filter blur-[80px] opacity-60"></div>
+                </div>
+                
+                <button onclick="window.switchTabMhs('feed', document.querySelectorAll('.nav-btn')[0])" class="absolute top-6 left-4 md:left-8 w-11 h-11 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white hover:bg-white/30 transition z-20 shadow-sm active:scale-95"><i class="fa-solid fa-arrow-left text-sm"></i></button>
+                
+                <i class="fa-regular fa-newspaper absolute -right-4 bottom-0 text-[12rem] md:text-[16rem] text-white/5 pointer-events-none transform -rotate-12"></i>
+                
+                <div class="relative z-10 md:ml-14 mt-4">
+                    <div class="inline-flex items-center space-x-2 bg-white/10 border border-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl mb-4 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
+                        <span class="text-[10px] md:text-xs font-black text-rose-100 uppercase tracking-widest">Portal Informasi</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-none mb-3 drop-shadow-md">Kabar Kampus</h2>
+                    <p class="text-rose-100 font-medium text-xs md:text-sm max-w-md leading-relaxed">Pembaruan terkini dari pihak akademik dan kurasi berita global cerdas dari AI.</p>
+                </div>
+            </div>
 
-                        <h2 class="text-2xl font-black mb-2 text-slate-800 flex items-center"><i class="fa-solid fa-globe text-accent-500 mr-3"></i>Berita Global Harian (AI)</h2>
-                        <div id="news-container" class="space-y-4">
-                            <div class="text-center py-10 text-brand-500 font-medium flex flex-col items-center">
-                                <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4"></i>
-                                Memuat berita global dari Kimi AI...
-                            </div>
+            <!-- Area Konten Utama (Overlapping Layout) -->
+            <div class="max-w-4xl mx-auto px-4 md:px-8 pb-32 relative -mt-10 z-20">
+                
+                <!-- Tab Shortcut Ala Premium (Pill Shape) -->
+                <div class="bg-white/80 backdrop-blur-xl p-2 rounded-[2rem] border border-white shadow-lg mb-10 flex items-center justify-center relative w-max mx-auto md:mx-0">
+                    <button onclick="document.getElementById('section-kampus').scrollIntoView({behavior:'smooth'})" class="px-5 py-2.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest text-slate-800 hover:bg-slate-100 transition-colors active:scale-95"><i class="fa-solid fa-bullhorn text-rose-500 mr-2"></i>Kampus</button>
+                    <div class="w-px h-6 bg-slate-200 mx-2"></div>
+                    <button onclick="document.getElementById('section-global').scrollIntoView({behavior:'smooth'})" class="px-5 py-2.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest text-slate-800 hover:bg-slate-100 transition-colors active:scale-95"><i class="fa-solid fa-earth-asia text-blue-500 mr-2"></i>Global AI</button>
+                </div>
+
+                <!-- Bagian 1: Berita Kampus -->
+                <div id="section-kampus" class="mb-14 scroll-mt-24">
+                    <div class="flex items-center justify-between mb-6 px-2">
+                        <h3 class="font-black text-slate-800 text-xl md:text-2xl tracking-tight flex items-center">
+                            <i class="fa-solid fa-bullhorn text-rose-500 mr-3"></i>Berita Resmi
+                        </h3>
+                        <span class="bg-rose-50 text-rose-600 px-3 py-1 rounded-md text-[10px] md:text-xs font-black uppercase tracking-widest border border-rose-100">Internal</span>
+                    </div>
+                    <!-- Layout Grid agar jika berita banyak tampil 2 kolom di tablet/PC -->
+                    <div id="mhs-custom-news-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="col-span-full text-center py-6 text-slate-400 text-sm">Memuat data...</div>
+                    </div>
+                </div>
+
+                <!-- Bagian 2: Berita Global AI -->
+                <div id="section-global" class="scroll-mt-24">
+                    <div class="flex items-center justify-between mb-6 px-2">
+                        <h3 class="font-black text-slate-800 text-xl md:text-2xl tracking-tight flex items-center">
+                            <i class="fa-solid fa-robot text-blue-500 mr-3"></i>Kimi AI News
+                        </h3>
+                        <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-md text-[10px] md:text-xs font-black uppercase tracking-widest border border-blue-100 animate-pulse">Live Feed</span>
+                    </div>
+                    <!-- Layout Stack List -->
+                    <div id="news-container" class="space-y-5">
+                        <div class="text-center py-10 text-blue-500 font-medium flex flex-col items-center bg-white rounded-[2.5rem] border border-paper-200 shadow-sm">
+                            <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4"></i>
+                            Memuat kurasi berita dari seluruh dunia...
                         </div>
                     </div>
                 </div>
+
+            </div>
+        </div>
 
         <!-- HALAMAN TANTANGAN HARIAN (PREMIUM UI) -->
                 <div id="mhs-view-challenges" class="mhs-view-section hidden fade-in h-full w-full overflow-y-auto bg-paper-50 absolute inset-0 z-30">
@@ -2862,31 +2913,102 @@ window.renderSoalMahasiswa = (questions) => {
             }
         };
 
+        // 1. RENDER BERITA KAMPUS (UI Bento Grid)
         window.renderCustomNewsPage = () => {
             const container = document.getElementById('mhs-custom-news-container');
             if(!container) return;
 
             if(window.globalNews.length === 0) {
-                container.innerHTML = '<div class="text-center py-6 text-slate-400 text-sm border-2 border-dashed border-paper-200 rounded-[2rem] bg-white">Belum ada berita dari pihak kampus.</div>';
+                container.innerHTML = `
+                <div class="col-span-full text-center py-12 bg-white rounded-[2.5rem] border-2 border-dashed border-paper-200 shadow-sm fade-in">
+                    <div class="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl"><i class="fa-regular fa-newspaper"></i></div>
+                    <p class="text-slate-500 font-bold text-sm">Belum ada siaran pers dari pihak akademik.</p>
+                </div>`;
                 return;
             }
 
             let html = '';
+            // Urutkan dari yang terbaru
             window.globalNews.sort((a,b) => b.timestamp - a.timestamp).forEach((n, idx) => {
-                const imgHtml = n.image ? `<img src="${n.image}" class="w-full h-48 object-cover mt-4 rounded-xl border border-paper-100 shadow-sm">` : '';
+                const dateStr = new Date(n.timestamp).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'});
+                
+                // Jika berita punya foto, tampilkan besar di atas. Jika tidak, gunakan header gradasi.
+                const imgHtml = n.image ? `
+                <div class="w-full h-48 bg-slate-100 overflow-hidden relative shrink-0">
+                    <img src="${n.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                </div>` : `
+                <div class="w-full h-32 bg-gradient-to-br from-orange-400 to-rose-500 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-bullhorn text-white/30 text-5xl group-hover:scale-110 transition-transform duration-500"></i>
+                </div>`;
+
                 html += `
-                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] border border-paper-200 shadow-sm fade-in" style="animation-delay: ${idx * 0.05}s">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center shrink-0 shadow-inner"><i class="fa-solid fa-bullhorn text-xl"></i></div>
-                            <div>
-                                <h4 class="font-black text-slate-800 text-base md:text-lg leading-tight">${n.judul}</h4>
-                                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mt-1">Oleh: ${n.dosen}</p>
+                    <div class="bg-white rounded-[2.5rem] border border-paper-200 shadow-sm hover:shadow-xl hover:border-rose-300 transition-all duration-300 flex flex-col overflow-hidden group fade-in cursor-pointer" style="animation-delay: ${idx * 0.05}s">
+                        ${imgHtml}
+                        <div class="p-6 md:p-8 flex flex-col flex-1 relative ${n.image ? '-mt-10' : ''}">
+                            ${n.image ? `<div class="mb-4"><span class="bg-white text-rose-600 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm border border-paper-100">Info Kampus</span></div>` : ''}
+                            
+                            <h4 class="font-black text-slate-800 text-lg md:text-xl leading-tight mb-3 group-hover:text-rose-600 transition-colors">${n.judul}</h4>
+                            ${n.deskripsi ? `<p class="text-sm text-slate-500 font-medium leading-relaxed line-clamp-3 mb-6">${n.deskripsi}</p>` : ''}
+                            
+                            <!-- Penulis & Waktu -->
+                            <div class="mt-auto flex flex-wrap items-center justify-between pt-5 border-t border-paper-100 gap-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-paper-200 overflow-hidden shadow-sm shrink-0 border border-paper-100">
+                                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(n.dosen)}&background=random&color=fff" class="w-full h-full object-cover">
+                                    </div>
+                                    <div>
+                                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">Penulis</p>
+                                        <p class="text-xs font-bold text-slate-700 leading-tight">${n.dosen}</p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 flex items-center"><i class="fa-regular fa-clock mr-1.5"></i>${dateStr}</span>
                             </div>
                         </div>
-                        ${n.deskripsi ? `<p class="text-sm text-slate-600 font-medium leading-relaxed bg-paper-50 p-4 rounded-xl">${n.deskripsi}</p>` : ''}
-                        ${imgHtml}
                     </div>
                 `;
+            });
+            container.innerHTML = html;
+        };
+
+        // 2. RENDER BERITA GLOBAL AI (UI List Card)
+        window.renderGlobalNewsFeed = (articles) => {
+            const container = document.getElementById('news-container');
+            if(!container) return;
+            
+            let html = '';
+            articles.forEach((news, idx) => {
+                html += `
+                    <div class="bg-white p-4 md:p-5 rounded-[2.5rem] border border-paper-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 fade-in group cursor-pointer relative overflow-hidden" style="animation-delay: ${idx * 0.05}s">
+                        <!-- Pita Aksen Warna AI di Kiri -->
+                        <div class="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-blue-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="flex flex-col md:flex-row gap-5 md:items-center">
+                            <!-- Thumbnail Gambar (Menggunakan Pollinations AI Image) -->
+                            <div class="w-full md:w-48 h-56 md:h-36 rounded-[1.5rem] bg-paper-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm relative border border-paper-100 ml-2 md:ml-0">
+                                <img src="${news.image}" alt="News Image" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-white/20 shadow-sm">
+                                    <i class="fa-solid fa-robot text-blue-400 text-[10px]"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Konten Teks Berita -->
+                            <div class="flex-1 flex flex-col justify-center py-2 pr-2 ml-2 md:ml-0">
+                                <div class="flex items-center space-x-2 mb-2.5">
+                                    <span class="text-[9px] md:text-[10px] font-black text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100 uppercase tracking-widest flex items-center shadow-sm">
+                                        <i class="fa-solid fa-bolt text-yellow-500 mr-1.5"></i>${news.source}
+                                    </span>
+                                </div>
+                                <h4 class="text-lg md:text-xl font-black text-slate-800 leading-tight mb-2 group-hover:text-blue-600 transition-colors">${news.title}</h4>
+                                <p class="text-xs md:text-sm text-slate-500 font-medium line-clamp-2 leading-relaxed">${news.snippet}</p>
+                                
+                                <!-- Interaksi Pseudo (Hanya Tampilan) -->
+                                <div class="mt-4 flex items-center text-[11px] md:text-xs font-black text-slate-400 uppercase tracking-widest group-hover:text-blue-500 transition-colors">
+                                    Baca Selengkapnya <i class="fa-solid fa-arrow-right-long ml-2 transform group-hover:translate-x-1.5 transition-transform"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
             });
             container.innerHTML = html;
         };
